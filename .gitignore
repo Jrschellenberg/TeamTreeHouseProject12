@@ -1,0 +1,15 @@
+node_modules/
+.idea/
+dist/
+coverage/
+package-lock.json
+src/frontEndJS/dependencies/bundle.js*
+secrets.js
+src/public/js/bundle.js
+src/public/js/bundle.js.map
+src/public/stylesheets/
+data/
+.snyk
+npm-debug.log.*
+error.log
+warning.log
