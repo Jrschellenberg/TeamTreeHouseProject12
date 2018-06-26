@@ -26,7 +26,18 @@ const LocationSchema = new mongoose.Schema({
 		unique: true
 	},
 	isGeoEncoded: {
-		type: Boolean
+		type: Boolean,
+		default: false
+	},
+	isStartAddress: {
+		type: Boolean,
+		unique: true,
+		default: false
+	},
+	isEndAddress: {
+		type: Boolean,
+		unique: true,
+		default: false
 	}
 });
 

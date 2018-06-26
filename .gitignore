@@ -8,7 +8,6 @@ secrets.js
 src/public/js/bundle.js
 src/public/js/bundle.js.map
 src/public/stylesheets/
-data/
 .snyk
 npm-debug.log.*
 error.log

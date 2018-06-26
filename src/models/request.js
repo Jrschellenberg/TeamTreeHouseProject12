@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const RequestSchema = new mongoose.Schema({
 	lastReqTimeStamp: {
 		type: Date,
+		default: Date.now()
 	},
 	currentNumberRequestAttempts: {
 		type: Number,
@@ -19,11 +20,12 @@ const RequestSchema = new mongoose.Schema({
 	},
 	requestLimitMaxTimestamp: {
 		type: Date,
+		default: Date.now()
 	},
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: 'User'
-	}
+	// user: {
+	// 	type: Schema.Types.ObjectId,
+	// 	ref: 'User'
+	// }
 });
 
 const Request = mongoose.model('Request', RequestSchema);

@@ -24,7 +24,8 @@ const UserSchema = new mongoose.Schema({
 	},
 	request: {
 		type: Schema.Types.ObjectId,
-		ref: 'Request'
+		ref: 'Request',
+		required: true // To enforce that request table is already initialized?
 	},
 	currentStops: [{
 		type: Schema.Types.ObjectId,
