@@ -33,7 +33,7 @@ function callAlgo() {
 
 
 function geoCode(){
-	geocoder.geocode('29 champs elysée paris')
+	geocoder.geocode('r3p 2r5')
 		.then(function(res) {
 			console.log(res);
 		})
@@ -42,7 +42,7 @@ function geoCode(){
 		});
 }
 
-callAlgo();
+//callAlgo();
 
 geoCode();
 
