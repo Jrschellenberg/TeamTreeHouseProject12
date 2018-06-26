@@ -19,11 +19,13 @@ const LocationSchema = new mongoose.Schema({
 	},
 	lat: {
 		type: String,
-		unique: true
+		unique: true,
+		default: null
 	},
 	long: {
 		type: String,
-		unique: true
+		unique: true,
+		default: null
 	},
 	isGeoEncoded: {
 		type: Boolean,
