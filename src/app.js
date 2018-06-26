@@ -8,6 +8,8 @@ const seeder = require('mongoose-seed');
 const data = require('./data/seedData.json');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const passport = require('passport');
+const User = require('./models/user');
 
 const config = require('config');
 const dbConfig = config.get('DBHost');
@@ -15,6 +17,16 @@ const dbConfig = config.get('DBHost');
 const course = require('./routes/index');
 const user = require('./routes/users');
 const app = express();
+
+
+passport.serializeUser(function(user, done){
+	done(null, user._id);
+});
+
+passport.deserializeUser(function(userId, done){
+	User.findById(userId, done);
+});
+
 
 // const env = process.env.NODE_ENV || 'dev';
 
@@ -29,19 +41,23 @@ db.on('connected', function () {
 	if(config.util.getEnv('NODE_ENV') === 'test') { // If the environment is test, then nuke the Test Database
 		seeder.connect(dbConfig, function () {
 			console.log('seeder connected to Database ' + dbConfig);
-			// Load Mongoose models
-			seeder.loadModels([
-				path.join(__dirname, '/models/user'),
-				path.join(__dirname, '/models/location'),
-				path.join(__dirname, '/models/request')
-			]);
-			// Clear specified collections
-			seeder.clearModels(['User', 'Request', 'Location'], function () {
-				// Callback to populate DB once collections have been cleared
-				seeder.populateModels(data, function () {
-					console.log('Finished seeding Database!');
-					
-					app.emit('appStarted'); // Emits an event to tell our tests it is ok to now test.
+			console.log("Deleting Test Database...");
+			db.dropDatabase(function(){
+				console.log("dropping Database Finished ------ Now Seeding");
+				// Load Mongoose models
+				seeder.loadModels([
+					path.join(__dirname, '/models/user'),
+					path.join(__dirname, '/models/location'),
+					path.join(__dirname, '/models/request')
+				]);
+				// Clear specified collections
+				seeder.clearModels(['User', 'Request', 'Location'], function () {
+					// Callback to populate DB once collections have been cleared
+					seeder.populateModels(data, function () {
+						console.log('Finished seeding Database!');
+						
+						app.emit('appStarted'); // Emits an event to tell our tests it is ok to now test.
+					});
 				});
 			});
 		});
@@ -61,6 +77,11 @@ app.use(session({
 	saveUninitialized: false,
 	store: new MongoStore({mongooseConnection: db})
 }));
+
+app.use(passport.initialize());
+
+//Restore Sesssion
+app.use(passport.session());
 
 
 if (config.util.getEnv('NODE_ENV') !== 'test') {
