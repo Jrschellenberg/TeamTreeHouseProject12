@@ -25,14 +25,16 @@ router.get('/', (req, res, next) => {
 	User.find()
 		.exec((err, users) => {
 			//if (err) { return Utils.propagateError(err, 400, next) }
-      let userMap = {};
+      let userArray = [];
       
       users.forEach((user) => {
-        userMap[user._id] = user;
+	      userArray.push(user);
       });
 			let status = 200;
 			
-			res.status(status).json({ success: true, message: 'User Successfully retrieved', status: status, users: userMap });
+			console.log(userArray);
+			
+			res.status(status).json({ success: true, message: 'User Successfully retrieved', status: status, users: userArray });
 		});
 });
 
