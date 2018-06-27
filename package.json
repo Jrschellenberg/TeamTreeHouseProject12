@@ -4,6 +4,8 @@
   "description": "Final Project for tech Degree TeamTreeHouse",
   "main": "index.js",
   "scripts": {
+    "nodemon": "nodemon -e pug,js,css --exec npm run babel-node -- src/bin/www",
+    "start": "cross-env NODE_ENV=development && npm run nodemon",
     "babel-node": "babel-node --presets=es2015",
     "test": "mocha --exit --timeout 10000 --compilers js:babel-register"
   },
@@ -27,6 +29,7 @@
     "morgan": "~1.9.0",
     "node-geocoder": "^3.22.0",
     "passport": "^0.4.0",
+    "passport-google-oauth20": "^1.0.0",
     "popper.js": "^1.14.1",
     "pug": "^2.0.3",
     "serve-favicon": "~2.4.5"
@@ -38,6 +41,7 @@
     "babelify": "^8.0.0",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
+    "cross-env": "^5.2.0",
     "mocha": "^5.1.1",
     "node-sass": "^4.9.0",
     "nodemon": "^1.17.4",

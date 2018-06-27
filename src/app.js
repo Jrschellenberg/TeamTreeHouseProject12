@@ -9,15 +9,47 @@ const data = require('./data/seedData.json');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20');
 const User = require('./models/user');
 
+import {googleAuthClientId,googleAuthClientSecret} from "./secrets";
+
 const config = require('config');
+
+console.log("hit here?");
+console.log(process.NODE_ENV);
+
 const dbConfig = config.get('DBHost');
+
+console.log(dbConfig);
 
 const course = require('./routes/index');
 const user = require('./routes/users');
+const auth = require('./routes/auth');
+
 const app = express();
 
+//Configure google Strategy.
+passport.use(new GoogleStrategy({
+	clientID: googleAuthClientId,
+	clientSecret: googleAuthClientSecret,
+	callbackURL: "http://localhost:3000/auth/google/return"
+}, function(acessToken, refreshToken, profile, done){
+	console.log("profile is");
+	console.log(profile);
+	//TODO: ADD CHECK IF FIRST USER BEING ADDED TO DATABASE, MAKE THEM ADMIN!
+	
+	
+	//TODO: SET UP MONGOOSE ADD/UPDATE METHOD HERE FOR USER WHEN THEY LOG INTO APP
+	// User.findOneAndUpdate({
+	// 	email: profile.emails[0].value
+	// }, {
+	// 	name: profile.displayName || profile.username,
+	// 	email: profile.emails[0].value,
+	// 	photo:
+	// })
+	done();
+}));
 
 passport.serializeUser(function(user, done){
 	done(null, user._id);
@@ -94,6 +126,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/courses', course);
 app.use('/api/users', user);
+
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
