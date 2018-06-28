@@ -1,3 +1,5 @@
+
+require('dotenv').config();  // Get all of our secrets...
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -13,9 +15,8 @@ const GoogleStrategy = require('passport-google-oauth20');
 const User = require('./models/user');
 const Request = require('./models/request');
 
-import {googleAuthClientId,googleAuthClientSecret} from "./secrets";
-
 const config = require('config');
+
 
 const dbConfig = config.get('DBHost');
 
@@ -28,8 +29,8 @@ const app = express();
 
 //Configure google Strategy.
 passport.use(new GoogleStrategy({
-	clientID: googleAuthClientId,
-	clientSecret: googleAuthClientSecret,
+	clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
+	clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
 	callbackURL: "http://localhost:3000/auth/google/return"
 }, function(accessToken, refreshToken, profile, done){
 	let request = new Request({

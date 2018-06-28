@@ -1,8 +1,7 @@
 import Utils from '../utils';
 const User = require('../models/user');
 const request = require('request');
-import {recaptchaSecret} from "../secrets";
-const secretCaptcha = recaptchaSecret;
+const secretCaptcha = process.env.RECAPTCHA_SECRET;
 
 export function loggedOut(req, res, next) {
 	if(req.session && req.session.userId){

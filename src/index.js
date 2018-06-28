@@ -1,7 +1,5 @@
-import { googleMapAPI, algorithmiaAPI } from "./secrets";
-
 const Algorithmia = require('algorithmia');
-const client = Algorithmia(algorithmiaAPI);
+const client = Algorithmia(process.env.ALGORITHMIA_API_KEY);
 const NodeGeocoder = require('node-geocoder');
 
 //let mapAPIKey = "AIzaSyCQClwazNXqYZJpilU-8L7Uow0GdtCFYrE";
@@ -11,7 +9,7 @@ var options = {
 	
 	// Optional depending on the providers
 	httpAdapter: 'https', // Default
-	apiKey: googleMapAPI, // for Mapquest, OpenCage, Google Premier
+	apiKey: process.env.GOOGLE_MAP_API_KEY, // for Mapquest, OpenCage, Google Premier
 	formatter: null         // 'gpx', 'string', ...
 };
 

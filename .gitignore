@@ -12,3 +12,4 @@ src/public/stylesheets/
 npm-debug.log.*
 error.log
 warning.log
+.env
