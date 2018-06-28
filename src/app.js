@@ -126,6 +126,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+app.use((req, res, next) =>{
+	res.locals.currentUser = req.session.passport.user;
+	next();
+});
+
+
 if (config.util.getEnv('NODE_ENV') !== 'test') {
 	app.use(logger('dev'));
 }
@@ -152,11 +158,26 @@ app.use(function (err, req, res, next) {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
-	
+
 	const status = err.status || 500;
 	// render the error page
-	
+
 	res.status(status).json({success: false, status: status, message: err.message});
 });
+
+// app.use(function(err, req, res, next) {
+// 	// set locals, only providing error in development
+// 	res.locals.message = err.message;
+// 	res.locals.error = req.app.get('env') === 'development' ? err : {};
+//	
+// 	// render the error page
+// 	res.status(err.status || 500);
+// 	if(err.link){
+// 		res.redirect(err.link+'?errorMessage='+res.locals.message+'&errorStatus='+err.status+'&error='+res.locals.error);
+// 	}
+// 	else{ //Fall back if can't redirect error to same page.
+// 		res.render('error', { title: "Error", errorMessage: res.locals.message, errorStatus: err.status, error: res.locals.error });
+// 	}
+// });
 
 module.exports = app; // This for testing...

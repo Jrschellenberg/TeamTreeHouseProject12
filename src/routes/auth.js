@@ -16,7 +16,7 @@ router.get('/google/return',
 	(req, res) => {
 	//Successful login
 		req.session.token = req.user.token;
-		res.redirect("/home");
+		res.redirect("/");
 	});
 
 //GET /auth/logout
