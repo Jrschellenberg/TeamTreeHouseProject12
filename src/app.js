@@ -11,19 +11,16 @@ const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20');
 const User = require('./models/user');
+const Request = require('./models/request');
 
 import {googleAuthClientId,googleAuthClientSecret} from "./secrets";
 
 const config = require('config');
 
-console.log("hit here?");
-console.log(process.NODE_ENV);
-
 const dbConfig = config.get('DBHost');
 
-console.log(dbConfig);
 
-const course = require('./routes/index');
+const index = require('./routes/index');
 const user = require('./routes/users');
 const auth = require('./routes/auth');
 
@@ -34,21 +31,34 @@ passport.use(new GoogleStrategy({
 	clientID: googleAuthClientId,
 	clientSecret: googleAuthClientSecret,
 	callbackURL: "http://localhost:3000/auth/google/return"
-}, function(acessToken, refreshToken, profile, done){
-	console.log("profile is");
-	console.log(profile);
-	//TODO: ADD CHECK IF FIRST USER BEING ADDED TO DATABASE, MAKE THEM ADMIN!
+}, function(accessToken, refreshToken, profile, done){
+	let request = new Request({
+		_id: new mongoose.Types.ObjectId(),
+	});
+	if(!profile.emails[0]) {
+		let noEmailError = new Error("Your email privacy settings prevent you from authorizing with this application!");
+		done(noEmailError, null);
+	}
 	
-	
-	//TODO: SET UP MONGOOSE ADD/UPDATE METHOD HERE FOR USER WHEN THEY LOG INTO APP
-	// User.findOneAndUpdate({
-	// 	email: profile.emails[0].value
-	// }, {
-	// 	name: profile.displayName || profile.username,
-	// 	email: profile.emails[0].value,
-	// 	photo:
-	// })
-	done();
+	let userProfile = {
+		email: profile.emails[0].value,
+		firstName: profile.name.givenName,
+		lastName: profile.name.familyName,
+		request: request._id
+	};
+	User.findOne((err, result) => {
+		if (err){
+			done(err, null);
+		}
+		if(!result){ //There is no users currently in the database. Set our First user as admin
+			userProfile.isAdmin = true;
+		}
+		User.findOneAndUpdate({
+			email: profile.emails[0].value
+		}, userProfile, {
+			upsert: true
+		}, done);
+	});
 }));
 
 passport.serializeUser(function(user, done){
@@ -124,7 +134,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/courses', course);
+app.use('/', index);
 app.use('/api/users', user);
 
 app.use('/auth', auth);
