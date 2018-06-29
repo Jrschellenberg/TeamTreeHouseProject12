@@ -16,8 +16,6 @@ const express = require('express'),
 	path = require('path'),
 	dbConfig = config.get('DBHost');
 
-
-
 //Configure sessions
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -80,7 +78,6 @@ passport.deserializeUser(function(userId, done){
 /*
 Initialize Database, Or seed it if we are testing!!
  */
-// mongoDb Connection
 mongoose.connect(dbConfig);
 
 const db = mongoose.connection;
@@ -105,7 +102,6 @@ db.on('connected', function () {
 					// Callback to populate DB once collections have been cleared
 					seeder.populateModels(data, function () {
 						console.log('Finished seeding Database!');
-						
 						app.emit('appStarted'); // Emits an event to tell our tests it is ok to now test.
 					});
 				});
@@ -114,7 +110,9 @@ db.on('connected', function () {
 	}
 });
 
-
+/*
+Setup our Sessions and bind them with our passport!
+ */
 app.use(session({
 	secret: 'The Session secret, which should not be public. Put into a secrets.js',
 	resave: true,
@@ -130,8 +128,6 @@ app.use(passport.session());
 if (config.util.getEnv('NODE_ENV') === 'test') {
 	process.env.NODE_ENV = 'test'
 }
-
-
 
 
 // view engine setup
