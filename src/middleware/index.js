@@ -3,6 +3,8 @@ const User = require('../models/user');
 const request = require('request');
 const secretCaptcha = process.env.RECAPTCHA_SECRET;
 
+const redirectUrl = '/login'
+
 export function loggedOut(req, res, next) {
 	if(req.session && req.session.userId){
 		return res.redirect('/profile');
@@ -10,13 +12,38 @@ export function loggedOut(req, res, next) {
 	return next();
 }
 
+export function setResponseAPI(req, res, next){
+	res.locals.isAPICall = true;
+	return next();
+}
 
-export function requiresLogin(req, res, next){
+export function setResponseRender(req, res, next){
+	res.locals.isRenderCall = true;
+	return next();
+}
+
+
+export function isUserAuthorized(req, res, next){
 	//TODO: ADD A CHECK HERE ON DATABASE AS WELL!
 	if(!req.session || !req.session.passport.user){
-		return Utils.throwError(401, 'You must be logged in to view Profile Assets, Please login now', '/login', next);
+		return Utils.throwError(401, 'You must be logged in to view Profile Assets, Please login now', redirectUrl, next);
 	}
+	
 	return next();
+}
+
+export function isUserAuthorized(req, res, next){
+	if(!req.session || !req.session.passport.user){
+		return Utils.throwError(401, 'You must be logged in to view Profile Assets, Please login now', redirectUrl, next);
+	}
+	let userId = req.session.passport.user;
+	User.authenticate(userId, (status,err, user) => {
+		if(err){
+			return Utils.throwError(status, err, redirectUrl, next);
+		}
+		res.locals.user = user;
+		return next();
+	});
 }
 
 export function getUser(req, res, next){
