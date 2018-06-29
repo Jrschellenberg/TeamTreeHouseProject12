@@ -18,6 +18,7 @@ describe('App', () => {
 			chai.request(server)
 				.get(invalidURLPath)
 				.end((err, res) => {
+					
 					handleEnd(404, "Not Found", false, err, res, done);
 				});
 		});
@@ -32,6 +33,8 @@ describe('App', () => {
 		});
 	});
 	function handleEnd(status, msg, success, err, res, done){
+		//console.log(err);
+		//console.log(res);
 		res.should.have.status(status);
 		res.body.should.have.property('success').equal(success);
 		res.body.should.have.property('message').equal(msg);

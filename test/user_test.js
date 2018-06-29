@@ -35,19 +35,20 @@ describe('Users', () => {
 		request: "57029ed4795118be119cc43a",
 		__v: 0 },
 		{ currentStops: [],
-			_id: "57029ed4795118be119cc438",
-			email: 'sam@jones.com',
-			firstName: 'Sam',
-			lastName: 'Jones',
-			request: "57029ed4795118be119cc43c",
-			__v: 0 },
-		{ currentStops: [],
 			_id: "57029ed4795118be119cc439",
 			email: 'sam@smith.com',
 			firstName: 'Sam',
 			lastName: 'Jones',
 			request: "57029ed4795118be119cc43b",
-			__v: 0 } ];
+			__v: 0 },
+		{ currentStops: [],
+			_id: "57029ed4795118be119cc438",
+			email: 'sam@jones.com',
+			firstName: 'Sam',
+			lastName: 'Jones',
+			request: "57029ed4795118be119cc43c",
+			__v: 0 }
+		 ];
 	
 	it('should get all users from the database', (done) => {
 		chai.request(server)
