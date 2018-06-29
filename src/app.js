@@ -1,42 +1,42 @@
-
 require('dotenv').config();  // Get all of our secrets...
-const express = require('express');
-const path = require('path');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const seeder = require('mongoose-seed');
-const data = require('./data/seedData.json');
+
+//Require all of our dependencies...
+const express = require('express'),
+ logger = require('morgan'),
+ cookieParser = require('cookie-parser'),
+ bodyParser = require('body-parser'),
+	passport = require('passport'),
+	GoogleStrategy = require('passport-google-oauth20'),
+	User = require('./models/user'),
+	Request = require('./models/request'),
+	mongoose = require('mongoose'),
+	seeder = require('mongoose-seed'),
+	data = require('./data/seedData.json'),
+	config = require('config'),
+	path = require('path'),
+	dbConfig = config.get('DBHost');
+
+
+
+//Configure sessions
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20');
-const User = require('./models/user');
-const Request = require('./models/request');
-
-const config = require('config');
-
-
-const dbConfig = config.get('DBHost');
-
-
-const index = require('./routes/index');
-const user = require('./routes/users');
-const auth = require('./routes/auth');
 
 const app = express();
 
 //Configure google Strategy.
 passport.use(new GoogleStrategy({
+	
 	clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
 	clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
 	callbackURL: "http://localhost:3000/auth/google/return"
 }, function(accessToken, refreshToken, profile, done){
+	console.log("hitting this");
 	let request = new Request({
 		_id: new mongoose.Types.ObjectId(),
 	});
 	if(!profile.emails[0]) {
+		console.log("we hitting this here?!?!");
 		let noEmailError = new Error("Your email privacy settings prevent you from authorizing with this application!");
 		done(noEmailError, null);
 	}
@@ -57,8 +57,14 @@ passport.use(new GoogleStrategy({
 		User.findOneAndUpdate({
 			email: profile.emails[0].value
 		}, userProfile, {
-			upsert: true
-		}, done);
+			upsert: true,
+			new: true
+		}, (err, user) => {
+			if(err){
+				done(err, null);
+			}
+			return done(null, user);
+		});
 	});
 }));
 
@@ -71,8 +77,9 @@ passport.deserializeUser(function(userId, done){
 });
 
 
-// const env = process.env.NODE_ENV || 'dev';
-
+/*
+Initialize Database, Or seed it if we are testing!!
+ */
 // mongoDb Connection
 mongoose.connect(dbConfig);
 
@@ -107,12 +114,6 @@ db.on('connected', function () {
 	}
 });
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
-// uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 app.use(session({
 	secret: 'The Session secret, which should not be public. Put into a secrets.js',
@@ -126,6 +127,20 @@ app.use(passport.initialize());
 //Restore Sesssion
 app.use(passport.session());
 
+if (config.util.getEnv('NODE_ENV') === 'test') {
+	process.env.NODE_ENV = 'test'
+}
+
+
+
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+// uncomment after placing your favicon in /public
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 
 app.use((req, res, next) =>{
 	res.locals.currentUser = req.session.passport.user;
@@ -133,7 +148,7 @@ app.use((req, res, next) =>{
 });
 
 
-if (config.util.getEnv('NODE_ENV') !== 'test') {
+if(process.env.NODE_ENV !== 'test') {
 	app.use(logger('dev'));
 }
 app.use(bodyParser.json());
@@ -141,10 +156,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/api/users', user);
-
-app.use('/auth', auth);
+app.use(require('./routes'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

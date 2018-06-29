@@ -1,4 +1,4 @@
-import Utils from '../utils';
+import Utils from '../utilities/utils';
 const User = require('../models/user');
 const request = require('request');
 const secretCaptcha = process.env.RECAPTCHA_SECRET;
