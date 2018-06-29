@@ -22,16 +22,6 @@ export function setResponseRender(req, res, next){
 	return next();
 }
 
-
-export function isUserAuthorized(req, res, next){
-	//TODO: ADD A CHECK HERE ON DATABASE AS WELL!
-	if(!req.session || !req.session.passport.user){
-		return Utils.throwError(401, 'You must be logged in to view Profile Assets, Please login now', redirectUrl, next);
-	}
-	
-	return next();
-}
-
 export function isUserAuthorized(req, res, next){
 	if(!req.session || !req.session.passport.user){
 		return Utils.throwError(401, 'You must be logged in to view Profile Assets, Please login now', redirectUrl, next);

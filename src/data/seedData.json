@@ -56,8 +56,8 @@
         "_id": "54759eb3c090d83494e2d805",
         "streetAddress": "2595-B McGillivray Blvd",
         "postalCode": "R4G0B3",
-        "isStartAddress": true,
-        "isEndAddress": true
+        "isStartingAddress": true,
+        "isEndingAddress": true
       },
       "four": {
         "_id": "54759eb3c090d83494e2d804",

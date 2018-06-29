@@ -22,7 +22,7 @@ router.get('/google/return',
 //GET /auth/logout
 router.get('/logout', (req, res) => {
 	req.logout();
-	res.send("logged OUT!");
+	res.redirect("/");
 });
 
 module.exports = router;

@@ -44,7 +44,27 @@ UserSchema.statics.authenticate = function (id, callback){
 			}
 			return callback(200, null, user); //User was found, return user
 		});
-}
+};
+
+UserSchema.statics.findAll = function (isAdmin){
+	return new Promise(function(resolve, reject){
+		if(!isAdmin){
+			reject(403, "Forbidden");
+		}
+		User.find()
+			.exec(function(err, users) {
+				if(err){
+					reject(500, err);
+				}
+				let userArray = [];
+				users.forEach(function(user) {
+					userArray.push(user);
+				});
+				resolve(userArray);
+			});
+	});
+};
+
 const User = mongoose.model('User', UserSchema);
 
 
