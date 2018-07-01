@@ -2,7 +2,7 @@ import Utils from '../utilities/utils';
 var express = require('express');
 var router = express.Router();
 const User = require('../models/user');
-import { isUserAuthorized, setResponseAPI} from "../middleware/index";
+import { isUserAuthenticated, setResponseAPI} from "../middleware/index";
 
 /* GET users listing. */
 // router.get('/', (req, res, next) => {
@@ -19,7 +19,7 @@ import { isUserAuthorized, setResponseAPI} from "../middleware/index";
 // });
 
 
-router.get('/', setResponseAPI, isUserAuthorized, (req, res, next) => {
+router.get('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 	User.findAll(res.locals.user.isAdmin).then((userArray) => {
 		res.status(200).json({ success: true, message: 'User Successfully retrieved', status: 200, users: userArray });
 	}).catch((status, err) => {

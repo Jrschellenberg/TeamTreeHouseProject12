@@ -19,13 +19,8 @@ export function setResponseAPI(req, res, next){
 	return next();
 }
 
-export function setResponseRender(req, res, next){
-	res.locals.isRenderCall = true;
-	return next();
-}
-
-export function isUserAuthorized(req, res, next){
-	if(!req.session || !req.session.passport.user){
+export function isUserAuthenticated(req, res, next){
+	if(!req.session || !req.session.passport || !req.session.passport.user){
 		return Utils.throwError(401, 'You must be logged in to view Profile Assets, Please login now', redirectUrl, next);
 	}
 	let userId = req.session.passport.user;

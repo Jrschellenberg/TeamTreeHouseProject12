@@ -96,10 +96,11 @@ db.on('connected', function () {
 				seeder.loadModels([
 					path.join(__dirname, '/models/user'),
 					path.join(__dirname, '/models/location'),
-					path.join(__dirname, '/models/request')
+					path.join(__dirname, '/models/request'),
+					path.join(__dirname, '/models/currentRoute')
 				]);
 				// Clear specified collections
-				seeder.clearModels(['User', 'Request', 'Location'], function () {
+				seeder.clearModels(['User', 'Request', 'Location', 'CurrentRoute'], function () {
 					// Callback to populate DB once collections have been cleared
 					seeder.populateModels(data, function () {
 						console.log('Finished seeding Database!');
@@ -178,6 +179,8 @@ app.use(function(err, req, res, next) {
 	//TODO: Add a dual logic check in here if res.locals.isAPICall is true handle errors for API aka in JSON
 	//TODO: IF not, then handle rendering ones.
 	
+	console.log("hitting the errors here...");
+	
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -186,7 +189,9 @@ app.use(function(err, req, res, next) {
 	res.status(err.status || 500);
 	
 	if(res.locals.isAPICall){
-		res.status(err.status).json({success: false, status: err.status, message: err.message});
+		const status = err.status || 500;
+		console.log("hitting inside this if statement?");
+		res.status(status).json({success: false, status: status, message: err.message});
 	}
 	if(err.link){
 		res.redirect(err.link+'?errorMessage='+res.locals.message+'&errorStatus='+err.status+'&error='+res.locals.error);

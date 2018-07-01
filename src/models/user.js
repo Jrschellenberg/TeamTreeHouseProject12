@@ -27,10 +27,10 @@ const UserSchema = new mongoose.Schema({
 		ref: 'Request',
 		required: true // To enforce that request table is already initialized?
 	},
-	currentStops: [{
+	currentStops: {
 		type: Schema.Types.ObjectId,
-		ref: 'Location'
-	}]
+		ref: 'CurrentRoute'
+	}
 });
 
 const User = mongoose.model('User', UserSchema);

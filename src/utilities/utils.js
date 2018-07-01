@@ -23,6 +23,7 @@ export default class Utils {
 		return Date.parse(dateStr);
 	}
 	static throwError(status, message, link, next){
+		console.log("Inside throwError Utility method?!?!");
 		let err = new Error(message);
 		err.status = status;
 		err.link = link;

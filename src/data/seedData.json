@@ -7,14 +7,16 @@
         "email": "tooth.paste.hurt@gmail.com",
         "firstName": "Joe",
         "lastName": "Smith",
-        "request": "57029ed4795118be119cc43a"
+        "request": "57029ed4795118be119cc43a",
+        "currentStops": "5b39440fcda6237afb56e1b9"
       },
       "samJones": {
         "_id": "57029ed4795118be119cc438",
         "email": "sam@jones.com",
         "firstName": "Sam",
         "lastName": "Jones",
-        "request": "57029ed4795118be119cc43c"
+        "request": "57029ed4795118be119cc43c",
+        "currentStops": "5b3943f3cda6237afb56e1b8"
       },
       "samSmith": {
         "_id": "57029ed4795118be119cc439",
@@ -65,5 +67,25 @@
         "postalCode": "R3G1C6"
       }
     }
+  },
+  {
+    "model": "CurrentRoute",
+    "documents": {
+      "one": {
+        "_id": "5b3943f3cda6237afb56e1b8",
+        "stops": ["57029ed4795118be119cc43d", "57029ed4795118be119cc440"],
+        "startingAddress": "54759eb3c090d83494e2d805",
+        "endingAddress": "54759eb3c090d83494e2d805"
+      },
+      "two": {
+        "_id": "5b39440fcda6237afb56e1b9",
+        "stops": ["57029ed4795118be119cc43d", "57029ed4795118be119cc440", "54759eb3c090d83494e2d804"],
+        "startingAddress": "54759eb3c090d83494e2d805",
+        "endingAddress": "54759eb3c090d83494e2d805"
+      }
+    }
   }
+  
+    
+
 ]
