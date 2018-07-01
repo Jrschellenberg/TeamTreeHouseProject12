@@ -33,6 +33,8 @@ const UserSchema = new mongoose.Schema({
 	}]
 });
 
+const User = mongoose.model('User', UserSchema);
+
 UserSchema.statics.authenticate = function (id, callback){
 	User.findOne({_id: id})
 		.exec(function(err, user){
@@ -65,7 +67,7 @@ UserSchema.statics.findAll = function (isAdmin){
 	});
 };
 
-const User = mongoose.model('User', UserSchema);
+
 
 
 module.exports = User;

@@ -1,6 +1,6 @@
-const Algorithmia = require('algorithmia');
-const client = Algorithmia(process.env.ALGORITHMIA_API_KEY);
-const NodeGeocoder = require('node-geocoder');
+const algorithmia = require('algorithmia');
+const client = algorithmia(process.env.ALGORITHMIA_API_KEY);
+const nodeGeocoder = require('node-geocoder');
 
 //let mapAPIKey = "AIzaSyCQClwazNXqYZJpilU-8L7Uow0GdtCFYrE";
 
@@ -13,7 +13,7 @@ var options = {
 	formatter: null         // 'gpx', 'string', ...
 };
 
-const geocoder = NodeGeocoder(options);
+const geocoder = nodeGeocoder(options);
 
 function callAlgo() {
 	

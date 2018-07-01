@@ -1,9 +1,11 @@
+//@ts-check
+
 import Utils from '../utilities/utils';
 const User = require('../models/user');
 const request = require('request');
 const secretCaptcha = process.env.RECAPTCHA_SECRET;
 
-const redirectUrl = '/login'
+const redirectUrl = '/login';
 
 export function loggedOut(req, res, next) {
 	if(req.session && req.session.userId){

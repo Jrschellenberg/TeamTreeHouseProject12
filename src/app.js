@@ -1,3 +1,4 @@
+//@ts-check
 require('dotenv').config();  // Get all of our secrets...
 
 //Require all of our dependencies...
@@ -126,7 +127,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 if (config.util.getEnv('NODE_ENV') === 'test') {
-	process.env.NODE_ENV = 'test'
+	process.env.NODE_ENV = 'test';
 }
 
 
