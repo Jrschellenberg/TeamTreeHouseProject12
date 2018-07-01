@@ -50,15 +50,48 @@ describe('Users', () => {
 			__v: 0 }
 		 ];
 	
-	it('should get all users from the database', (done) => {
+	it('should throw 401 error if user is not logged in', (done) => {
+		let msg = 'You must be logged in to view Profile Assets, Please login now';
+		requestUsers(401, false, msg, null, done);
+	});
+	it('should give 401 if user supplied wrong _id', (done) => {
+		let auth = {
+			user: "THIS IS AN INVALID USER!"
+		};
+		getAuthRequest(auth, 200, true, "User Successfully retrieved", done);
+	});
+	
+	
+	function getAuthRequest(auth, status, success, msg, done) {
+		chai.request(server)
+			.get(getAPI)
+			.auth(auth.user)
+			.end((err, res) => {
+				res.should.have.status(status);
+				res.body.should.have.property('success').equal(success);
+				res.body.should.have.property('message').equal(msg);
+				// if(user){
+				// 	res.body.should.have.property('user').property('fullName').equal(user.fullName);
+				// 	res.body.should.have.property('user').property('emailAddress').equal(user.emailAddress);
+				// 	res.body.should.have.property('user').property('_id').equal(user._id);
+				// }
+				done();
+			});
+	}
+	
+	
+	function requestUsers(status, success, message, users, done){
 		chai.request(server)
 			.get(getAPI)
 			.end((err, res) => {
-				res.should.have.status(200);
-				res.body.should.have.property('success').equal(true);
-				res.body.should.have.property('message').equal("User Successfully retrieved");
-				res.body.should.have.property('users').deep.equal(users);
+				res.should.have.status(status);
+				res.body.should.have.property('success').equal(success);
+				res.body.should.have.property('message').equal(message);
+				if(users) {
+					res.body.should.have.property('users').deep.equal(users);
+				}
 				done();
 			});
-	});
+	}
+	
 });

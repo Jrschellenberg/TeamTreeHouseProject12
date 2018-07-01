@@ -21,7 +21,7 @@ import { isUserAuthenticated, setResponseAPI} from "../middleware/index";
 
 router.get('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 	User.findAll(res.locals.user.isAdmin).then((userArray) => {
-		res.status(200).json({ success: true, message: 'User Successfully retrieved', status: 200, users: userArray });
+		res.status(200).json({ success: true, message: 'Users Successfully retrieved', status: 200, users: userArray });
 	}).catch((status, err) => {
 		return Utils.throwError(status, err, null, next);
 	});

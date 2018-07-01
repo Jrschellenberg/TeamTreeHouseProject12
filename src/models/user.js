@@ -35,17 +35,21 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 
-UserSchema.statics.authenticate = function (id, callback){
-	User.findOne({_id: id})
-		.exec(function(err, user){
-			if (err){
-				return callback(500, err);
-			}
-			else if(!user){
-				return callback(401, new Error("User was not found Please Authenticate First!"));
-			}
-			return callback(200, null, user); //User was found, return user
-		});
+UserSchema.statics.authenticate = function (id){
+	return new Promise(function(resolve, reject){
+		User.findOne({_id: id})
+			.exec(function(err, user){
+				if (err){
+					return reject(500, err);
+				}
+				else if(!user){
+					return reject(401, new Error("User was not found Please Authenticate First!"));
+				}
+				return resolve(user); //User was found, return user
+			});
+		
+	})
+	
 };
 
 UserSchema.statics.findAll = function (isAdmin){
