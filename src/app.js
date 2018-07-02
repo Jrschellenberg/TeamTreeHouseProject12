@@ -167,51 +167,27 @@ app.use(function (req, res, next) {
 	next(err);
 });
 
-// error handler
-// app.use(function (err, req, res, next) {
-// 	// set locals, only providing error in development
-// 	res.locals.message = err.message;
-// 	res.locals.error = req.app.get('env') === 'development' ? err : {};
-//
-// 	const status = err.status || 500;
-// 	// render the error page
-//
-// 	res.status(status).json({success: false, status: status, message: err.message});
-// });
-
 app.use(function(err, req, res, next) {
-	//TODO: Add a dual logic check in here if res.locals.isAPICall is true handle errors for API aka in JSON
-	//TODO: IF not, then handle rendering ones.
-	
-	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
-	
-	// render the error page
-	res.status(err.status || 500);
+
+	const status = err.status || 500;
 	
 	if(res.locals.isAPICall){
-		const status = err.status || 500;
-		console.log("hitting inside this if statement?");
-		console.log(err.message);
-		console.log(status);
 		return res.status(status).json({success: false, status: status, message: err.message});
-		//res.send('Hello?');
-		//console.log("hitting after this?!?!");
 	}
 	else{
 		if(err.link){
 			return res.redirect(err.link+'?errorMessage='+res.locals.message+'&errorStatus='+err.status+'&error='+res.locals.error);
 		}
 		if(err.status === 404){ // Handle our 404 cases for now. Should render pages. eventually
-			return res.status(err.status).json({success: false, status: err.status, message: err.message});
+			return res.status(status).json({success: false, status: status, message: err.message});
 		}
 		else{ //Fall back if can't redirect error to same page.
 			
-			return res.render('error', { title: "Error", errorMessage: res.locals.message, errorStatus: err.status, error: res.locals.error });
+			return res.render('error', { title: "Error", errorMessage: res.locals.message, errorStatus: status, error: res.locals.error });
 		}
 	}
-
 });
 
 module.exports = app; // This for testing...

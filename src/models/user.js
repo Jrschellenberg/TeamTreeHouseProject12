@@ -40,9 +40,7 @@ UserSchema.statics.authenticate = function (id){
 			.exec(function(err, user){
 				if (err){
 					if(err.message.toLowerCase().includes('cast to objectid failed')){
-						console.log("we inside cast to object fail?!?!");
-						//reject(Utils.rejectError(422, "Unprocessable Entity"));
-						reject(Utils.rejectError(422, "Unprocessed Entity"));
+						reject(Utils.rejectError(422, "Unprocessable Entity"));
 					}
 					reject(Utils.rejectError(500, err.message));
 				}
@@ -51,9 +49,7 @@ UserSchema.statics.authenticate = function (id){
 				}
 				resolve(user); //User was found, return user
 			});
-		
-	})
-	
+	});
 };
 
 UserSchema.statics.findAll = function (isAdmin){
@@ -74,9 +70,6 @@ UserSchema.statics.findAll = function (isAdmin){
 			});
 	});
 };
-
-
 const User = mongoose.model('User', UserSchema); // This has to be after methods defined, or fails..
-
 
 module.exports = User;

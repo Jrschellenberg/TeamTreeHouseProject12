@@ -32,12 +32,12 @@ describe('Users', () => {
 		});
 	});
 	
-	afterEach((done) => {
-		Utils.sleep(2000).then(() => {
-			done();
-		});
-	});
-	
+	// afterEach((done) => {
+	// 	Utils.sleep(2000).then(() => {
+	// 		done();
+	// 	});
+	// });
+	//
 	let users = [ { currentStops: [],
 		_id: "57029ed4795118be119cc437",
 		email: 'tooth.paste.hurt@gmail.com',
@@ -67,9 +67,8 @@ describe('Users', () => {
 	});
 	it('should give 422 if user supplied wrong _id format', (done) => {
 		let id = '?sessionID=thisISBadSessionID';
-		getAuthRequest(401, true, "User Successfully retrieved", id, done);
+		getAuthRequest(422, false, "Unprocessable Entity", id, done);
 	});
-	
 	
 	function getAuthRequest(status, success, msg, id, done) {
 		if(!id){
@@ -78,7 +77,6 @@ describe('Users', () => {
 		chai.request(server)
 			.get(getAPI+id)
 			.end((err, res) => {
-				console.log("hitting end in User test?!?!");
 				res.should.have.status(status);
 				res.body.should.have.property('success').equal(success);
 				res.body.should.have.property('message').equal(msg);
@@ -86,7 +84,6 @@ describe('Users', () => {
 			
 			});
 	}
-	
 	
 	function requestUsers(status, success, message, users, done){
 		chai.request(server)
