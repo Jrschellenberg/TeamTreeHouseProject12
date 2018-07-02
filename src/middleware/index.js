@@ -19,6 +19,12 @@ export function setResponseAPI(req, res, next){
 	return next();
 }
 
+export function isUserAuthorized(req, res, next){
+	isAuthorized(res).then(() => {
+		return next();
+	}).catch(next);
+}
+
 export function isUserAuthenticated(req, res, next){
 	if(res.locals.testSession && req.query.sessionID){ //We Are currently running tests and wish to authenticate......
 		req.session.passport = {};
@@ -50,5 +56,15 @@ export function passCaptcha(req, res, next){
 			return res.status(status).json({success: false, status: status, message:"", errorMessage: "Captcha URL potentially malformed, Please try again."});
 		}
 		next();
+	});
+}
+
+
+function isAuthorized(res){
+	return new Promise((resolve, reject) => {
+		if(!res.locals.user.isAdmin){
+			reject(Utils.rejectError(403, "Forbidden"));
+		}
+		resolve();
 	});
 }

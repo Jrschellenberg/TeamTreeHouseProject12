@@ -51,11 +51,8 @@ UserSchema.statics.authenticate = function (id){
 	});
 };
 
-UserSchema.statics.findAll = function (isAdmin){
+UserSchema.statics.findAll = function (){
 	return new Promise(function(resolve, reject){
-		if(!isAdmin){
-			reject(Utils.rejectError(403, "Forbidden"));
-		}
 		User.find()
 			.exec(function(err, users) {
 				if(err){
@@ -69,6 +66,22 @@ UserSchema.statics.findAll = function (isAdmin){
 			});
 	});
 };
+
+UserSchema.statics.findUserById = function (id){
+	console.log("hit this?!?!");
+	return new Promise(function(resolve, reject){
+		User.findOne({_id: id})
+			.exec(function(err, user){
+				if(err){
+					console.log("we hitting error here?");
+					console.log(err.message);
+					reject(Utils.rejectError(500, err.message));
+				}
+				resolve(user);
+			});
+	});
+};
+
 const User = mongoose.model('User', UserSchema); // This has to be after methods defined, or fails..
 
 module.exports = User;
