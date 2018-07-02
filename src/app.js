@@ -85,10 +85,10 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.on('connected', function () {
 	if(config.util.getEnv('NODE_ENV') === 'test') { // If the environment is test, then nuke the Test Database
 		seeder.connect(dbConfig, function () {
-			console.log('seeder connected to Database ' + dbConfig);
-			console.log("Deleting Test Database...");
+			// console.log('seeder connected to Database ' + dbConfig);
+			// console.log("Deleting Test Database...");
 			db.dropDatabase(function(){
-				console.log("dropping Database Finished ------ Now Seeding");
+				//console.log("dropping Database Finished ------ Now Seeding");
 				// Load Mongoose models
 				seeder.loadModels([
 					path.join(__dirname, '/models/user'),
@@ -100,7 +100,7 @@ db.on('connected', function () {
 				seeder.clearModels(['User', 'Request', 'Location', 'CurrentRoute'], function () {
 					// Callback to populate DB once collections have been cleared
 					seeder.populateModels(data, function () {
-						console.log('Finished seeding Database!');
+						//console.log('Finished seeding Database!');
 						app.emit('appStarted'); // Emits an event to tell our tests it is ok to now test.
 					});
 				});

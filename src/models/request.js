@@ -14,6 +14,10 @@ const RequestSchema = new mongoose.Schema({
 		type: Number,
 		default: 5
 	},
+	requestCooldownTimeMS: {
+		type: Number,
+		default: 60 * 1000 // 1 Minute
+	},
 	isRequestLimitMaximumHit: {
 		type: Boolean,
 		default: false
@@ -22,10 +26,6 @@ const RequestSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now()
 	},
-	// user: {
-	// 	type: Schema.Types.ObjectId,
-	// 	ref: 'User'
-	// }
 });
 
 const Request = mongoose.model('Request', RequestSchema);
