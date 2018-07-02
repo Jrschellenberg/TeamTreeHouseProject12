@@ -24,7 +24,6 @@ export function isUserAuthenticated(req, res, next){
 		req.session.passport = {};
 		req.session.passport.user = req.query.sessionID;
 	}
-
 	if(!req.session || !req.session.passport || !req.session.passport.user){
 		return Utils.throwError(401, 'You must be logged in to view Profile Assets, Please login now', redirectUrl, next);
 	}
@@ -35,24 +34,6 @@ export function isUserAuthenticated(req, res, next){
 		return next();
 	}).catch((next));
 }
-
-export function getUser(req, res, next){
-	if(req.session.passport.user){
-		User.findById(req.session.passport.user)
-			.exec(function (error, user) {
-				if (error) {
-					return next(error);
-				}
-				res.locals.user = user;
-				return next();
-			});
-	}
-	else { //Need the else or it will hit both next() and get race conditions...
-		res.locals.user = "";
-		return next();
-	}
-}
-
 
 export function passCaptcha(req, res, next){
 	if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' ||	req.body['g-recaptcha-response'] === null){

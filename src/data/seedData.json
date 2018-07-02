@@ -8,6 +8,7 @@
         "firstName": "Joe",
         "lastName": "Smith",
         "request": "57029ed4795118be119cc43a",
+        "isAdmin": true,
         "currentStops": "5b39440fcda6237afb56e1b9"
       },
       "samJones": {
@@ -22,7 +23,7 @@
         "_id": "57029ed4795118be119cc439",
         "email": "sam@smith.com",
         "firstName": "Sam",
-        "lastName": "Jones",
+        "lastName": "Smith",
         "request": "57029ed4795118be119cc43b"
       }
     }

@@ -35,7 +35,6 @@ const UserSchema = new mongoose.Schema({
 });
 UserSchema.statics.authenticate = function (id){
 	return new Promise(function(resolve, reject){
-		console.log("Are we getting inside of this statement in user?!?!");
 		User.findOne({_id: id})
 			.exec(function(err, user){
 				if (err){
@@ -45,7 +44,7 @@ UserSchema.statics.authenticate = function (id){
 					reject(Utils.rejectError(500, err.message));
 				}
 				else if(!user){
-					reject(Utils.rejectError(401,"User was not found Please Authenticate First!"));
+					reject(Utils.rejectError(401,"Unauthorized"));
 				}
 				resolve(user); //User was found, return user
 			});

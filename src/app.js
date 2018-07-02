@@ -146,10 +146,12 @@ app.set('view engine', 'pug');
 
 
 if(process.env.NODE_ENV !== 'test') {
-	app.use((req, res, next) =>{
-		res.locals.currentUser = req.session.passport.user;
-		next();
-	});
+	// app.use((req, res, next) =>{
+	// 	if(req.session && req.session.passport && req.session.passport.user) {
+	// 		res.locals.currentUser = req.session.passport.user;
+	// 		next();
+	// 	}
+	// });
 	app.use(logger('dev'));
 }
 app.use(bodyParser.json());
