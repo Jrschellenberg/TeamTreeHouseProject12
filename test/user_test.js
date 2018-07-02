@@ -58,7 +58,7 @@ describe('Users', () => {
 		let auth = {
 			user: "THIS IS AN INVALID USER!"
 		};
-		getAuthRequest(auth, 200, true, "User Successfully retrieved", done);
+		getAuthRequest(auth, 401, true, "User Successfully retrieved", done);
 	});
 	
 	

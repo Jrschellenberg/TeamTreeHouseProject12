@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 router.use('/api/users', require('./users'));
 router.use('/auth', require('./auth'));
@@ -23,8 +23,5 @@ router.get('/', function(req, res, next) {
 });
 
 
-// router.get('/', function(req, res, next) {
-// 	res.render('index', { title: 'Base Home Root' });
-// });
 
 module.exports = router;
