@@ -38,7 +38,13 @@
         "_id": "57029ed4795118be119cc43b"
       },
       "three": {
-        "_id": "57029ed4795118be119cc43c"
+        "_id": "57029ed4795118be119cc43c",
+        "lastReqTimeStamp" : "2018-07-02T21:03:26.813Z",
+        "currentNumberRequestAttempts" : 0, 
+        "requestLimitMaximum" : 5, 
+        "requestCooldownTimeMS" : 60000, 
+        "isRequestLimitMaximumHit" : false, 
+        "requestLimitMaxTimestamp" : "2018-07-02T21:03:26.813Z"
       }
     }
   },

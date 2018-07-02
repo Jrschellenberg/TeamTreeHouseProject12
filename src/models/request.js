@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const RequestSchema = new mongoose.Schema({
 	lastReqTimeStamp: {
 		type: Date,
-		default: Date.now()
+		default: new Date('2001-07-02T19:46:49.870Z'),
 	},
 	currentNumberRequestAttempts: {
 		type: Number,
@@ -17,10 +17,6 @@ const RequestSchema = new mongoose.Schema({
 	requestCooldownTimeMS: {
 		type: Number,
 		default: 60 * 1000 // 1 Minute
-	},
-	isRequestLimitMaximumHit: {
-		type: Boolean,
-		default: false
 	},
 	requestLimitMaxTimestamp: {
 		type: Date,
