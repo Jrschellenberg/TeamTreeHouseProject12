@@ -20,21 +20,25 @@ export function setResponseAPI(req, res, next){
 }
 
 export function isUserAuthenticated(req, res, next){
-	//console.log(req);
-	console.log(req.session);
-	console.log(req.passport);
+	if(res.locals.testSession && req.query.sessionID){ //We Are currently running tests and wish to authenticate......
+		req.session = {
+			passport:{
+				user: req.query.sessionID
+			}
+		};
+	}
+
 	if(!req.session || !req.session.passport || !req.session.passport.user){
-		console.log("this SHIT HITTING INSIDE IFF?")
 		return Utils.throwError(401, 'You must be logged in to view Profile Assets, Please login now', redirectUrl, next);
 	}
 	let userId = req.session.passport.user;
-	console.log(`THE USER ID IS ${userId}`);
 	
 	User.authenticate(userId).then((user) => {
 		res.locals.user = user;
 		return next();
-	}).catch((status, err) => {
-		return Utils.throwError(status, err, redirectUrl, next);
+	}).catch((err) => {
+		console.log(`Catching here, status is ${err.status}\n Error is ${err}`);
+		return Utils.throwError(err.status, err.message, redirectUrl, next);
 	});
 }
 

@@ -55,17 +55,17 @@ describe('Users', () => {
 		requestUsers(401, false, msg, null, done);
 	});
 	it('should give 401 if user supplied wrong _id', (done) => {
-		let auth = {
-			user: "THIS IS AN INVALID USER!"
-		};
-		getAuthRequest(auth, 401, true, "User Successfully retrieved", done);
+		let id = '?sessionID=thisISBadSessionID';
+		getAuthRequest(401, true, "User Successfully retrieved", id, done);
 	});
 	
 	
-	function getAuthRequest(auth, status, success, msg, done) {
+	function getAuthRequest(status, success, msg, id, done) {
+		if(!id){
+			id = '';
+		}
 		chai.request(server)
-			.get(getAPI)
-			.auth(auth.user)
+			.get(getAPI+id)
 			.end((err, res) => {
 				res.should.have.status(status);
 				res.body.should.have.property('success').equal(success);

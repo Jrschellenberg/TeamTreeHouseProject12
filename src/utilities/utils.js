@@ -28,6 +28,12 @@ export default class Utils {
 		err.link = link;
 		return next(err);
 	}
+	static rejectError(status, message){
+		let err = new Error(message);
+		err.status = status;
+		return err;
+	}
+	
 	static renderView(view, obj, req, res){
 		if (req.query.errorMessage && req.query.errorStatus && req.query.error) {
 			obj.errorMessage = req.query.errorMessage;

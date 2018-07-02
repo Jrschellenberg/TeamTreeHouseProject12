@@ -29,12 +29,10 @@ passport.use(new GoogleStrategy({
 	clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
 	callbackURL: "http://localhost:3000/auth/google/return"
 }, function(accessToken, refreshToken, profile, done){
-	console.log("hitting this");
 	let request = new Request({
 		_id: new mongoose.Types.ObjectId(),
 	});
 	if(!profile.emails[0]) {
-		console.log("we hitting this here?!?!");
 		let noEmailError = new Error("Your email privacy settings prevent you from authorizing with this application!");
 		done(noEmailError, null);
 	}
@@ -128,6 +126,10 @@ app.use(passport.session());
 
 if (config.util.getEnv('NODE_ENV') === 'test') {
 	process.env.NODE_ENV = 'test';
+	app.use((req, res, next) => {
+		res.locals.testSession = true;
+		next();
+	});
 }
 
 
@@ -179,6 +181,8 @@ app.use(function(err, req, res, next) {
 	//TODO: IF not, then handle rendering ones.
 	
 	console.log("hitting the errors here...");
+	console.log(err.status);
+	console.log(err.message);
 	
 	// set locals, only providing error in development
 	res.locals.message = err.message;

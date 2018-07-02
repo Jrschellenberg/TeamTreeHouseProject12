@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+import Utils from '../utilities/utils';
 
 const UserSchema = new mongoose.Schema({
 	email: {
@@ -32,20 +33,18 @@ const UserSchema = new mongoose.Schema({
 		ref: 'CurrentRoute'
 	}
 });
-
-const User = mongoose.model('User', UserSchema);
-
 UserSchema.statics.authenticate = function (id){
 	return new Promise(function(resolve, reject){
+		console.log("Are we getting inside of this statement in user?!?!");
 		User.findOne({_id: id})
 			.exec(function(err, user){
 				if (err){
-					return reject(500, err);
+					reject(Utils.rejectError(500, err.message));
 				}
 				else if(!user){
-					return reject(401, new Error("User was not found Please Authenticate First!"));
+					reject(Utils.rejectError(401,"User was not found Please Authenticate First!"));
 				}
-				return resolve(user); //User was found, return user
+				resolve(user); //User was found, return user
 			});
 		
 	})
@@ -72,6 +71,7 @@ UserSchema.statics.findAll = function (isAdmin){
 };
 
 
+const User = mongoose.model('User', UserSchema); // This has to be after methods defined, or fails..
 
 
 module.exports = User;
