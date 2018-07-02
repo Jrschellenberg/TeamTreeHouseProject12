@@ -29,9 +29,11 @@ export default class Utils {
 		return next(err);
 	}
 	static rejectError(status, message){
-		let err = new Error(message);
-		err.status = status;
-		return err;
+		let rejectError = {
+			status: status,
+			message: message
+		};
+		return rejectError;
 	}
 	
 	static renderView(view, obj, req, res){

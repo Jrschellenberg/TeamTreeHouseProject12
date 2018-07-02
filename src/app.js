@@ -1,5 +1,4 @@
 require('dotenv').config();  // Get all of our secrets...
-
 //Require all of our dependencies...
 const express = require('express'),
  logger = require('morgan'),
@@ -112,6 +111,10 @@ db.on('connected', function () {
 /*
 Setup our Sessions and bind them with our passport!
  */
+
+
+
+
 app.use(session({
 	secret: 'The Session secret, which should not be public. Put into a secrets.js',
 	resave: true,
@@ -180,10 +183,6 @@ app.use(function(err, req, res, next) {
 	//TODO: Add a dual logic check in here if res.locals.isAPICall is true handle errors for API aka in JSON
 	//TODO: IF not, then handle rendering ones.
 	
-	console.log("hitting the errors here...");
-	console.log(err.status);
-	console.log(err.message);
-	
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -194,18 +193,25 @@ app.use(function(err, req, res, next) {
 	if(res.locals.isAPICall){
 		const status = err.status || 500;
 		console.log("hitting inside this if statement?");
-		res.status(status).json({success: false, status: status, message: err.message});
+		console.log(err.message);
+		console.log(status);
+		return res.status(status).json({success: false, status: status, message: err.message});
+		//res.send('Hello?');
+		//console.log("hitting after this?!?!");
 	}
-	if(err.link){
-		res.redirect(err.link+'?errorMessage='+res.locals.message+'&errorStatus='+err.status+'&error='+res.locals.error);
+	else{
+		if(err.link){
+			return res.redirect(err.link+'?errorMessage='+res.locals.message+'&errorStatus='+err.status+'&error='+res.locals.error);
+		}
+		if(err.status === 404){ // Handle our 404 cases for now. Should render pages. eventually
+			return res.status(err.status).json({success: false, status: err.status, message: err.message});
+		}
+		else{ //Fall back if can't redirect error to same page.
+			
+			return res.render('error', { title: "Error", errorMessage: res.locals.message, errorStatus: err.status, error: res.locals.error });
+		}
 	}
-	if(err.status === 404){ // Handle our 404 cases for now. Should render pages. eventually
-		res.status(err.status).json({success: false, status: err.status, message: err.message});
-	}
-	else{ //Fall back if can't redirect error to same page.
-		
-		res.render('error', { title: "Error", errorMessage: res.locals.message, errorStatus: err.status, error: res.locals.error });
-	}
+
 });
 
 module.exports = app; // This for testing...

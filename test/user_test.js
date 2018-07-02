@@ -1,7 +1,7 @@
 //During the test the env variable is set to test
 'use strict';
 process.env.NODE_ENV = 'test';
-
+import Utils from '../src/utilities/utils';
 const User = require('../src/models/user');
 
 const chai = require('chai');
@@ -9,10 +9,15 @@ const chaiHttp = require('chai-http');
 const server = require('../src/app');
 const should = chai.should();
 const expect = chai.expect;
+const spies = require('chai-spies');
+
 chai.use(chaiHttp);
+chai.use(spies);
 
 const postAPI = '/api/users';
 const getAPI = postAPI;
+
+const spy = chai.spy();
 
 import {dataBaseFinishSeed} from "../src/finishSeed";
 
@@ -23,6 +28,12 @@ describe('Users', () => {
 			done();
 		} //if it has finished seeding it will hit callback, else forever hangs
 		server.on('appStarted', () => { //Once finish seed, set to true and stop hang.
+			done();
+		});
+	});
+	
+	afterEach((done) => {
+		Utils.sleep(2000).then(() => {
 			done();
 		});
 	});
@@ -54,7 +65,7 @@ describe('Users', () => {
 		let msg = 'You must be logged in to view Profile Assets, Please login now';
 		requestUsers(401, false, msg, null, done);
 	});
-	it('should give 401 if user supplied wrong _id', (done) => {
+	it('should give 422 if user supplied wrong _id format', (done) => {
 		let id = '?sessionID=thisISBadSessionID';
 		getAuthRequest(401, true, "User Successfully retrieved", id, done);
 	});
@@ -67,15 +78,12 @@ describe('Users', () => {
 		chai.request(server)
 			.get(getAPI+id)
 			.end((err, res) => {
+				console.log("hitting end in User test?!?!");
 				res.should.have.status(status);
 				res.body.should.have.property('success').equal(success);
 				res.body.should.have.property('message').equal(msg);
-				// if(user){
-				// 	res.body.should.have.property('user').property('fullName').equal(user.fullName);
-				// 	res.body.should.have.property('user').property('emailAddress').equal(user.emailAddress);
-				// 	res.body.should.have.property('user').property('_id').equal(user._id);
-				// }
 				done();
+			
 			});
 	}
 	

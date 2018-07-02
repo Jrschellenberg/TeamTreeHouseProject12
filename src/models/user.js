@@ -39,6 +39,11 @@ UserSchema.statics.authenticate = function (id){
 		User.findOne({_id: id})
 			.exec(function(err, user){
 				if (err){
+					if(err.message.toLowerCase().includes('cast to objectid failed')){
+						console.log("we inside cast to object fail?!?!");
+						//reject(Utils.rejectError(422, "Unprocessable Entity"));
+						reject(Utils.rejectError(422, "Unprocessed Entity"));
+					}
 					reject(Utils.rejectError(500, err.message));
 				}
 				else if(!user){
@@ -54,12 +59,12 @@ UserSchema.statics.authenticate = function (id){
 UserSchema.statics.findAll = function (isAdmin){
 	return new Promise(function(resolve, reject){
 		if(!isAdmin){
-			reject(403, "Forbidden");
+			reject(Utils.rejectError(403, "Forbidden"));
 		}
 		User.find()
 			.exec(function(err, users) {
 				if(err){
-					reject(500, err);
+					reject(Utils.rejectError(500, err.message));
 				}
 				let userArray = [];
 				users.forEach(function(user) {

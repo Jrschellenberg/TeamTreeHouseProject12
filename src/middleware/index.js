@@ -21,11 +21,8 @@ export function setResponseAPI(req, res, next){
 
 export function isUserAuthenticated(req, res, next){
 	if(res.locals.testSession && req.query.sessionID){ //We Are currently running tests and wish to authenticate......
-		req.session = {
-			passport:{
-				user: req.query.sessionID
-			}
-		};
+		req.session.passport = {};
+		req.session.passport.user = req.query.sessionID;
 	}
 
 	if(!req.session || !req.session.passport || !req.session.passport.user){
@@ -36,10 +33,7 @@ export function isUserAuthenticated(req, res, next){
 	User.authenticate(userId).then((user) => {
 		res.locals.user = user;
 		return next();
-	}).catch((err) => {
-		console.log(`Catching here, status is ${err.status}\n Error is ${err}`);
-		return Utils.throwError(err.status, err.message, redirectUrl, next);
-	});
+	}).catch((next));
 }
 
 export function getUser(req, res, next){
