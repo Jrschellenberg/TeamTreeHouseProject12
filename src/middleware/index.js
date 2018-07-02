@@ -1,4 +1,3 @@
-//@ts-check
 
 import Utils from '../utilities/utils';
 const User = require('../models/user');
@@ -7,12 +6,6 @@ const secretCaptcha = process.env.RECAPTCHA_SECRET;
 
 const redirectUrl = '/login';
 
-export function loggedOut(req, res, next) {
-	if(req.session && req.session.userId){
-		return res.redirect('/profile');
-	}
-	return next();
-}
 
 export function setResponseAPI(req, res, next){
 	res.locals.isAPICall = true;
@@ -58,7 +51,6 @@ export function passCaptcha(req, res, next){
 		next();
 	});
 }
-
 
 function isAuthorized(res){
 	return new Promise((resolve, reject) => {

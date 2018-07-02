@@ -1,8 +1,6 @@
 //During the test the env variable is set to test
 'use strict';
 process.env.NODE_ENV = 'test';
-import Utils from '../src/utilities/utils';
-const User = require('../src/models/user');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -10,12 +8,9 @@ const server = require('../src/app');
 const should = chai.should();
 const expect = chai.expect;
 
+import {beforeTest} from "./utilities";
+
 chai.use(chaiHttp);
-
-
-
-import {dataBaseFinishSeed} from "../src/finishSeed";
-
 
 describe('GET Users', () => {
 	beforeEach((done) => { //This hangs the tests until databaesFinish seed..
@@ -29,7 +24,6 @@ describe('GET Users', () => {
 		let id = '?sessionID=57029ed4795118be119cc437';
 		getAuthRequest(200, true, "Users Successfully retrieved", getAPI, id, done);
 	});
-	
 });
 
 describe('GET USER', () => {
@@ -74,21 +68,7 @@ function testMiddleWares(endPoint){
 		let id = '?sessionID=57029ed4795118be119cc439';
 		getAuthRequest(403, false, "Forbidden", endPoint, id, done);
 	});
-	
-	
-	
-	
 }
-
-function beforeTest(done){
-	if (dataBaseFinishSeed) {
-		done();
-	} //if it has finished seeding it will hit callback, else forever hangs
-	server.on('appStarted', () => { //Once finish seed, set to true and stop hang.
-		done();
-	});
-}
-
 
 function getAuthRequest(status, success, msg, endPoint, id, done, user) {
 	if(!id){

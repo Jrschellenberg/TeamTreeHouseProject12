@@ -68,16 +68,27 @@ UserSchema.statics.findAll = function (){
 };
 
 UserSchema.statics.findUserById = function (id){
-	console.log("hit this?!?!");
 	return new Promise(function(resolve, reject){
 		User.findOne({_id: id})
 			.exec(function(err, user){
 				if(err){
-					console.log("we hitting error here?");
-					console.log(err.message);
 					reject(Utils.rejectError(500, err.message));
 				}
 				resolve(user);
+			});
+	});
+};
+
+UserSchema.statics.getRequest = function(id){
+	return new Promise(function(resolve, reject){
+		console.log("hitting in here?");
+		User.findOne({_id: id})
+			.populate('request')
+			.exec(function (err, user) {
+				if(err){
+					reject(Utils.rejectError(500, err.message));
+				}
+				resolve(user.request)
 			});
 	});
 };

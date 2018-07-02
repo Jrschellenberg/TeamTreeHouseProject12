@@ -108,14 +108,13 @@ db.on('connected', function () {
 		});
 	}
 });
+/*
+End Database Logic
+ */
 
 /*
 Setup our Sessions and bind them with our passport!
  */
-
-
-
-
 app.use(session({
 	secret: 'The Session secret, which should not be public. Put into a secrets.js',
 	resave: true,
@@ -124,18 +123,19 @@ app.use(session({
 }));
 
 app.use(passport.initialize());
-
 //Restore Sesssion
 app.use(passport.session());
 
 if (config.util.getEnv('NODE_ENV') === 'test') {
 	process.env.NODE_ENV = 'test';
 	app.use((req, res, next) => {
-		res.locals.testSession = true;
+		res.locals.testSession = true; // Used for mocking session object during testing..
 		next();
 	});
 }
-
+/*
+End session Logic.
+ */
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -147,12 +147,6 @@ app.set('view engine', 'pug');
 
 
 if(process.env.NODE_ENV !== 'test') {
-	// app.use((req, res, next) =>{
-	// 	if(req.session && req.session.passport && req.session.passport.user) {
-	// 		res.locals.currentUser = req.session.passport.user;
-	// 		next();
-	// 	}
-	// });
 	app.use(logger('dev'));
 }
 app.use(bodyParser.json());
@@ -166,7 +160,6 @@ app.use(require('./routes'));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 	const err = new Error('Not Found');
-	
 	err.status = 404;
 	next(err);
 });
