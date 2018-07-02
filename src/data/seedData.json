@@ -45,6 +45,15 @@
         "requestCooldownTimeMS" : 60000, 
         "isRequestLimitMaximumHit" : false, 
         "requestLimitMaxTimestamp" : "2018-07-02T21:03:26.813Z"
+      },
+      "four": {
+        "_id": "5b3aa8d7cda6237afb56e1bb",
+        "lastReqTimeStamp" : "2018-07-02T21:03:26.813Z",
+        "currentNumberRequestAttempts" : 5,
+        "requestLimitMaximum" : 5,
+        "requestCooldownTimeMS" : 60000,
+        "isRequestLimitMaximumHit" : false,
+        "requestLimitMaxTimestamp" : "2018-07-02T21:03:26.813Z"
       }
     }
   },

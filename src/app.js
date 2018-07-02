@@ -14,6 +14,7 @@ const express = require('express'),
 	config = require('config'),
 	expressSanitizer = require('express-sanitizer'),
 	path = require('path'),
+	RateLimit = require('express-rate-limit'),
 	dbConfig = config.get('DBHost');
 
 //Configure sessions
@@ -21,6 +22,22 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 const app = express();
+
+/*
+Add Rate Limiting
+ */
+
+app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS if you use an ELB, custom Nginx setup, etc)
+
+const apiLimiter = new RateLimit({
+	windowMs: 2*60*1000, // 2 minutes
+	max: 15,
+	delayMs: 0 // disabled
+});
+
+// only apply to requests that begin with /api/
+app.use('/api/', apiLimiter);
+
 
 //Configure google Strategy.
 passport.use(new GoogleStrategy({
