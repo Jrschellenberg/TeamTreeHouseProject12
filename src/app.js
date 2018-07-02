@@ -12,6 +12,7 @@ const express = require('express'),
 	seeder = require('mongoose-seed'),
 	data = require('./data/seedData.json'),
 	config = require('config'),
+	expressSanitizer = require('express-sanitizer'),
 	path = require('path'),
 	dbConfig = config.get('DBHost');
 
@@ -156,6 +157,7 @@ if(process.env.NODE_ENV !== 'test') {
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(expressSanitizer());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
