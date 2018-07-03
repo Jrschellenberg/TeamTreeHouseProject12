@@ -41,7 +41,6 @@ describe('GET USER', () => {
 			email: "sam@jones.com",
 			firstName: "Sam",
 			lastName: "Jones",
-			request: "57029ed4795118be119cc43c",
 			currentStops: "5b3943f3cda6237afb56e1b8",
 			__v: 0
 		};

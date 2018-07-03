@@ -13,7 +13,7 @@ export function setResponseAPI(req, res, next){
 }
 
 export function isUserAuthorized(req, res, next){
-	isAuthorized(res).then(() => {
+	isAuthorized(req, res).then(() => {
 		return next();
 	}).catch(next);
 }
@@ -52,11 +52,13 @@ export function passCaptcha(req, res, next){
 	});
 }
 
-function isAuthorized(res){
+function isAuthorized(req, res){
 	return new Promise((resolve, reject) => {
-		if(!res.locals.user.isAdmin){
+		if(res.locals.user.isAdmin || req.params.id.toString() === res.locals.user._id.toString()){
+			resolve();
+		}
+		else {
 			reject(Utils.rejectError(403, "Forbidden"));
 		}
-		resolve();
 	});
 }

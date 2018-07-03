@@ -23,11 +23,6 @@ const UserSchema = new mongoose.Schema({
 		type: Boolean,
 		required: false
 	},
-	request: {
-		type: Schema.Types.ObjectId,
-		ref: 'Request',
-		required: true // To enforce that request table is already initialized?
-	},
 	currentStops: {
 		type: Schema.Types.ObjectId,
 		ref: 'CurrentRoute'
@@ -79,19 +74,6 @@ UserSchema.statics.findUserById = function (id){
 	});
 };
 
-UserSchema.statics.getRequest = function(id){
-	return new Promise(function(resolve, reject){
-		console.log("hitting in here?");
-		User.findOne({_id: id})
-			.populate('request')
-			.exec(function (err, user) {
-				if(err){
-					reject(Utils.rejectError(500, err.message));
-				}
-				resolve(user.request)
-			});
-	});
-};
 
 const User = mongoose.model('User', UserSchema); // This has to be after methods defined, or fails..
 

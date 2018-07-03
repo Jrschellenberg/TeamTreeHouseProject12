@@ -7,7 +7,6 @@ const express = require('express'),
 	passport = require('passport'),
 	GoogleStrategy = require('passport-google-oauth20'),
 	User = require('./models/user'),
-	Request = require('./models/request'),
 	mongoose = require('mongoose'),
 	seeder = require('mongoose-seed'),
 	data = require('./data/seedData.json'),
@@ -46,9 +45,6 @@ passport.use(new GoogleStrategy({
 	clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
 	callbackURL: "http://localhost:3000/auth/google/return"
 }, function(accessToken, refreshToken, profile, done){
-	let request = new Request({
-		_id: new mongoose.Types.ObjectId(),
-	});
 	if(!profile.emails[0]) {
 		let noEmailError = new Error("Your email privacy settings prevent you from authorizing with this application!");
 		done(noEmailError, null);
@@ -57,8 +53,7 @@ passport.use(new GoogleStrategy({
 	let userProfile = {
 		email: profile.emails[0].value,
 		firstName: profile.name.givenName,
-		lastName: profile.name.familyName,
-		request: request._id
+		lastName: profile.name.familyName
 	};
 	User.findOne((err, result) => {
 		if (err){
@@ -110,11 +105,10 @@ db.on('connected', function () {
 				seeder.loadModels([
 					path.join(__dirname, '/models/user'),
 					path.join(__dirname, '/models/location'),
-					path.join(__dirname, '/models/request'),
 					path.join(__dirname, '/models/currentRoute')
 				]);
 				// Clear specified collections
-				seeder.clearModels(['User', 'Request', 'Location', 'CurrentRoute'], function () {
+				seeder.clearModels(['User', 'Location', 'CurrentRoute'], function () {
 					// Callback to populate DB once collections have been cleared
 					seeder.populateModels(data, function () {
 						//console.log('Finished seeding Database!');
