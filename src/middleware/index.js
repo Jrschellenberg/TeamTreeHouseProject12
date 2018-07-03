@@ -8,12 +8,13 @@ const redirectUrl = '/login';
 
 function isAuthorized(req, res){
 	return new Promise((resolve, reject) => {
+		if(!req.params.id){
+			req.params.id = ""; //Type force it.
+		}
 		if(res.locals.user.isAdmin || req.params.id.toString() === res.locals.user._id.toString()){
-			resolve();
+			return resolve();
 		}
-		else {
-			reject(Utils.rejectError(403, "Forbidden"));
-		}
+		reject(Utils.rejectError(403, "Forbidden"));
 	});
 }
 
@@ -24,6 +25,7 @@ export function setResponseAPI(req, res, next){
 
 export function isUserAuthorized(req, res, next){
 	isAuthorized(req, res).then(() => {
+		console.log("received resolve...");
 		return next();
 	}).catch(next);
 }

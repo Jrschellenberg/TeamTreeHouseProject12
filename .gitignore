@@ -13,3 +13,4 @@ npm-debug.log.*
 error.log
 warning.log
 .env
+.nyc_*

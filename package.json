@@ -8,6 +8,7 @@
     "start": "cross-env NODE_ENV=development && npm run nodemon",
     "babel-node": "babel-node --presets=es2015",
     "test": "mocha --exit --timeout 20000 --compilers js:babel-register",
+    "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --exit --timeout 10000 --compilers js:babel-core/register",
     "lint": "jshint src/."
   },
   "author": "Justin Schellenberg",
@@ -51,6 +52,7 @@
     "mocha-jshint": "^2.3.1",
     "node-sass": "^4.9.0",
     "nodemon": "^1.17.4",
+    "nyc": "^12.0.2",
     "snyk": "^1.80.0"
   }
 }
