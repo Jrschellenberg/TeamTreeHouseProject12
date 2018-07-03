@@ -6,6 +6,16 @@ const secretCaptcha = process.env.RECAPTCHA_SECRET;
 
 const redirectUrl = '/login';
 
+function isAuthorized(req, res){
+	return new Promise((resolve, reject) => {
+		if(res.locals.user.isAdmin || req.params.id.toString() === res.locals.user._id.toString()){
+			resolve();
+		}
+		else {
+			reject(Utils.rejectError(403, "Forbidden"));
+		}
+	});
+}
 
 export function setResponseAPI(req, res, next){
 	res.locals.isAPICall = true;
@@ -49,16 +59,5 @@ export function passCaptcha(req, res, next){
 			return res.status(status).json({success: false, status: status, message:"", errorMessage: "Captcha URL potentially malformed, Please try again."});
 		}
 		next();
-	});
-}
-
-function isAuthorized(req, res){
-	return new Promise((resolve, reject) => {
-		if(res.locals.user.isAdmin || req.params.id.toString() === res.locals.user._id.toString()){
-			resolve();
-		}
-		else {
-			reject(Utils.rejectError(403, "Forbidden"));
-		}
 	});
 }
