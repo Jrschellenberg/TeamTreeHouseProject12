@@ -34,8 +34,7 @@ const apiLimiter = new RateLimit({
 	delayMs: 0 // disabled
 });
 
-// only apply to requests that begin with /api/
-app.use('/api/', apiLimiter);
+
 
 
 //Configure google Strategy.
@@ -159,6 +158,8 @@ app.set('view engine', 'pug');
 
 if(process.env.NODE_ENV !== 'test') {
 	app.use(logger('dev'));
+	// only apply to requests that begin with /api/
+	app.use('/api/', apiLimiter); // Only apply this if we are not testing.. IE Server is running
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));

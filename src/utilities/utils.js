@@ -19,9 +19,7 @@ let warningLog = bunyan.createLogger({
 });
 
 export default class Utils {
-	static toDate(dateStr){
-		return Date.parse(dateStr);
-	}
+
 	static throwError(status, message, link, next){
 		let err = new Error(message);
 		err.status = status;
@@ -44,6 +42,10 @@ export default class Utils {
 		}
 		return res.render(view, obj);
 	}
+	static toDate(dateStr){
+		return Date.parse(dateStr);
+	}
+	
 	static logError(err){
 		errorLog.error({
 			time: new Date().toString(),

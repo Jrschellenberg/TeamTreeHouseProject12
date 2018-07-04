@@ -12,39 +12,40 @@ import {beforeTest} from "./utilities";
 
 chai.use(chaiHttp);
 
-describe('GET Users', () => {
+describe('GET LOCATIONS', () => {
 	beforeEach((done) => { //This hangs the tests until databaesFinish seed..
 		beforeTest(done);
 	});
 	
-	let getAPI = '/api/users';
+	let getAPI = '/api/locations';
 	testMiddleWares(getAPI);
-
-	it('should return us all Users if we supply valid SessionID and are Admin user', (done) => {
+	
+	it('should return us all locations if we supply valid SessionID and are Admin user', (done) => {
 		let id = '?sessionID=57029ed4795118be119cc437';
-		getAuthRequest(200, true, "Users Successfully retrieved", getAPI, id, done);
+		getAuthRequest(200, true, "Locations Successfully retrieved", getAPI, id, done);
 	});
 });
 
-describe('GET USER', () => {
+describe('GET LOCATION', () => {
 	beforeEach((done) => { //This hangs the tests until databaesFinish seed..
 		beforeTest(done);
 	});
-	const testID = '57029ed4795118be119cc438';
-	let getAPI = '/api/users/'+testID;
-
+	const testID = '57029ed4795118be119cc43d';
+	let getAPI = '/api/locations/'+testID;
+	
 	testMiddleWares(getAPI);
-	it('should return us the user whose id we specified if we are authenticated and authorized', (done) => {
+	it('should return us the location whose id we specified if we are authenticated and authorized', (done) => {
 		let id = '?sessionID=57029ed4795118be119cc437';
-		let user = {
-			_id: "57029ed4795118be119cc438",
-			email: "sam@jones.com",
-			firstName: "Sam",
-			lastName: "Jones",
-			currentStops: "5b3943f3cda6237afb56e1b8",
+		let location = {
+			_id: "57029ed4795118be119cc43d",
+			lat: null,
+			long: null,
+			isGeoEncoded: false,
+			streetAddress: "556 Wilton Bay",
+			postalCode: "R3M2H9",
 			__v: 0
 		};
-		getAuthRequest(200, true, "User Successfully retrieved", getAPI, id, done, user);
+		getAuthRequest(200, true, "Location Successfully retrieved", getAPI, id, done, location);
 	});
 });
 

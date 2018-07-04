@@ -25,7 +25,8 @@ const UserSchema = new mongoose.Schema({
 	},
 	currentStops: {
 		type: Schema.Types.ObjectId,
-		ref: 'CurrentRoute'
+		ref: 'CurrentRoute',
+		default: null
 	}
 });
 UserSchema.statics.authenticate = function (id){
