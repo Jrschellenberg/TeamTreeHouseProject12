@@ -53,7 +53,7 @@
     }
   },
   {
-    "model": "CurrentRoute",
+    "model": "Route",
     "documents": {
       "one": {
         "_id": "5b3943f3cda6237afb56e1b8",

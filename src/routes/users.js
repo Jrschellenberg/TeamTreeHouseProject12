@@ -17,5 +17,12 @@ router.get('/:id', setResponseAPI, isUserAuthenticated, isUserAuthorized, (req, 
 	}).catch(next);
 });
 
+// router.get('/currentRoute/:id', setResponseAPI, isUserAuthenticated, isUserAuthorized, (req, res, next) => {
+// 	User.getRoute(req.params.id).then((route) => {
+// 		console.log(route);
+//		
+// 		res.status(200).json({ success: true, message: 'User Route Successfully retrieved', status: 200, data: userArray });
+// 	}).catch(next);
+// });
 
 module.exports = router;

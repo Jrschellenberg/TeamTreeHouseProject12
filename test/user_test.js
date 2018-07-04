@@ -48,6 +48,29 @@ describe('GET USER', () => {
 	});
 });
 
+// describe('GET USER ROUTE', () => {
+// 	beforeEach((done) => { //This hangs the tests until databaesFinish seed..
+// 		beforeTest(done);
+// 	});
+// 	const testID = '57029ed4795118be119cc438';
+// 	let getAPI = '/api/users/currentRoute/'+testID;
+//	
+// 	testMiddleWares(getAPI);
+// 	it('should return us the Current route of user whose id we specified if we are authenticated and authorized', (done) => {
+// 		let id = '?sessionID=57029ed4795118be119cc437';
+// 		let user = {
+// 			_id: "57029ed4795118be119cc438",
+// 			email: "sam@jones.com",
+// 			firstName: "Sam",
+// 			lastName: "Jones",
+// 			currentStops: "5b3943f3cda6237afb56e1b8",
+// 			__v: 0
+// 		};
+// 		getAuthRequest(200, true, "User Successfully retrieved", getAPI, id, done, user);
+// 	});
+// });
+
+
 
 function testMiddleWares(endPoint){
 	it('should throw 401 error if user is not logged in', (done) => {

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const CurrentRouteSchema = new mongoose.Schema({
+const RouteSchema = new mongoose.Schema({
 	stops: [
 		{
 			type: Schema.Types.ObjectId,
@@ -21,5 +21,5 @@ const CurrentRouteSchema = new mongoose.Schema({
 	}
 });
 
-const CurrentRoute = mongoose.model('CurrentRoute', CurrentRouteSchema);
-module.exports = CurrentRoute;
+const Route = mongoose.model('Route', RouteSchema);
+module.exports = Route;

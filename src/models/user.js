@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
 	},
 	currentStops: {
 		type: Schema.Types.ObjectId,
-		ref: 'CurrentRoute',
+		ref: 'Route',
 		default: null
 	}
 });
@@ -74,6 +74,19 @@ UserSchema.statics.findUserById = function (id){
 			});
 	});
 };
+
+// UserSchema.statics.getRoute = function (id){
+// 	return new Promise(function(resolve, reject){
+// 		User.findOne({_id: id})
+// 			.populate('route')
+// 			.exec(function(err, user){
+// 				if(err){
+// 					reject(Utils.rejectError(500, err.message));
+// 				}
+// 				resolve(user.currentStops);
+// 			});
+// 	});
+// };
 
 
 const User = mongoose.model('User', UserSchema); // This has to be after methods defined, or fails..

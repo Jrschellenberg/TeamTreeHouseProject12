@@ -104,10 +104,10 @@ db.on('connected', function () {
 				seeder.loadModels([
 					path.join(__dirname, '/models/user'),
 					path.join(__dirname, '/models/location'),
-					path.join(__dirname, '/models/currentRoute')
+					path.join(__dirname, '/models/route')
 				]);
 				// Clear specified collections
-				seeder.clearModels(['User', 'Location', 'CurrentRoute'], function () {
+				seeder.clearModels(['User', 'Location', 'Route'], function () {
 					// Callback to populate DB once collections have been cleared
 					seeder.populateModels(data, function () {
 						//console.log('Finished seeding Database!');
