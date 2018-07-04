@@ -75,18 +75,29 @@ UserSchema.statics.findUserById = function (id){
 	});
 };
 
-// UserSchema.statics.getRoute = function (id){
-// 	return new Promise(function(resolve, reject){
-// 		User.findOne({_id: id})
-// 			.populate('route')
-// 			.exec(function(err, user){
-// 				if(err){
-// 					reject(Utils.rejectError(500, err.message));
-// 				}
-// 				resolve(user.currentStops);
-// 			});
-// 	});
-// };
+UserSchema.statics.getRoute = function (id){
+	return new Promise(function(resolve, reject){
+		User.findOne({_id: id})
+			.populate({
+				path: 'currentStops',
+				populate: {path: 'stops'}
+			})
+			.populate({
+					path: 'currentStops',
+					populate: {path: 'startingAddress'}
+			})
+			.populate({
+				path: 'currentStops',
+				populate: {path: 'endingAddress'}
+			})
+			.exec(function(err, user){
+				if(err){
+					reject(Utils.rejectError(500, err.message));
+				}
+				resolve(user.currentStops);
+			});
+	});
+};
 
 
 const User = mongoose.model('User', UserSchema); // This has to be after methods defined, or fails..

@@ -48,27 +48,62 @@ describe('GET USER', () => {
 	});
 });
 
-// describe('GET USER ROUTE', () => {
-// 	beforeEach((done) => { //This hangs the tests until databaesFinish seed..
-// 		beforeTest(done);
-// 	});
-// 	const testID = '57029ed4795118be119cc438';
-// 	let getAPI = '/api/users/currentRoute/'+testID;
-//	
-// 	testMiddleWares(getAPI);
-// 	it('should return us the Current route of user whose id we specified if we are authenticated and authorized', (done) => {
-// 		let id = '?sessionID=57029ed4795118be119cc437';
-// 		let user = {
-// 			_id: "57029ed4795118be119cc438",
-// 			email: "sam@jones.com",
-// 			firstName: "Sam",
-// 			lastName: "Jones",
-// 			currentStops: "5b3943f3cda6237afb56e1b8",
-// 			__v: 0
-// 		};
-// 		getAuthRequest(200, true, "User Successfully retrieved", getAPI, id, done, user);
-// 	});
-// });
+describe('GET USER ROUTE', () => {
+	beforeEach((done) => { //This hangs the tests until databaesFinish seed..
+		beforeTest(done);
+	});
+	const testID = '57029ed4795118be119cc438';
+	let getAPI = '/api/users/route/'+testID;
+
+	testMiddleWares(getAPI);
+	it('should return us the Current route of user whose id we specified if we are authenticated and authorized', (done) => {
+		let id = '?sessionID=57029ed4795118be119cc438';
+		let route = {
+			__v: 0,
+			_id: "5b3943f3cda6237afb56e1b8",
+			endingAddress: {
+				__v: 0,
+				_id: "54759eb3c090d83494e2d805",
+				isGeoEncoded: false,
+				lat: null,
+				long: null,
+				postalCode: "R4G0B3",
+				streetAddress: "2595-B McGillivray Blvd"
+			},
+			startingAddress: {
+				__v: 0,
+				_id: "54759eb3c090d83494e2d805",
+				isGeoEncoded: false,
+				lat: null,
+				long: null,
+				postalCode: "R4G0B3",
+				streetAddress: "2595-B McGillivray Blvd"
+			},
+			stops: [
+				{
+					__v: 0,
+					_id: "57029ed4795118be119cc43d",
+					isGeoEncoded: false,
+					lat: null,
+					long: null,
+					postalCode: "R3M2H9",
+					streetAddress: "556 Wilton Bay"
+				},
+				{
+					__v: 0,
+					_id: "57029ed4795118be119cc440",
+					isGeoEncoded: false,
+					lat: null,
+					long: null,
+					postalCode: "R3Y0L6",
+					streetAddress: "50 Fultz Blvd"
+				}
+			]
+		};
+		
+		getAuthRequest(200, true, "User Route Successfully retrieved", getAPI, id, done, route);
+	});
+});
 
 
 

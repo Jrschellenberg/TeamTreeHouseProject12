@@ -25,7 +25,6 @@ export function setResponseAPI(req, res, next){
 
 export function isUserAuthorized(req, res, next){
 	isAuthorized(req, res).then(() => {
-		console.log("received resolve...");
 		return next();
 	}).catch(next);
 }
