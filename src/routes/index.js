@@ -4,6 +4,7 @@ const router = express.Router();
 router.use('/api/users', require('./users'));
 router.use('/api/locations', require('./locations'));
 router.use('/auth', require('./auth'));
+router.use('/profile', require('./profile'));
 
 
 
@@ -12,7 +13,6 @@ router.get('/home', function(req, res, next) {
   //console.log(req.session.passport.user);
   res.render('index', { title: 'The home Page' });
 });
-
 
 router.get('/failure', function(req, res, next) {
 	res.render('index', { title: 'Failed To Login' });
