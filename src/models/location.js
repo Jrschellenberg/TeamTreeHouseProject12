@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+import Utils from '../utilities/utils';
 
 const LocationSchema = new mongoose.Schema({
 	streetAddress: {
@@ -19,16 +20,46 @@ const LocationSchema = new mongoose.Schema({
 	},
 	lat: {
 		type: String,
-		unique: true
+		default: null
 	},
 	long: {
 		type: String,
-		unique: true
+		default: null
 	},
 	isGeoEncoded: {
-		type: Boolean
+		type: Boolean,
+		default: false
 	}
 });
+LocationSchema.statics.findAll = function (){
+	return new Promise(function(resolve, reject){
+		Location.find()
+			.exec(function(err, locations) {
+				if(err){
+					reject(Utils.rejectError(500, err.message));
+				}
+				let locationArray = [];
+				locations.forEach(function(location) {
+					locationArray.push(location);
+				});
+				resolve(locationArray);
+			});
+	});
+};
+
+LocationSchema.statics.findUserById = function (id){
+	return new Promise(function(resolve, reject){
+		Location.findOne({_id: id})
+			.exec(function(err, location){
+				if(err){
+					reject(Utils.rejectError(500, err.message));
+				}
+				resolve(location);
+			});
+	});
+};
+
+
 
 
 const Location = mongoose.model('Location', LocationSchema);

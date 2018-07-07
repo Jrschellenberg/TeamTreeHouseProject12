@@ -1,9 +1,28 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+router.use('/api/users', require('./users'));
+router.use('/api/locations', require('./locations'));
+router.use('/auth', require('./auth'));
+router.use('/profile', require('./profile'));
+
+
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/home', function(req, res, next) {
+  //console.log(req.session.passport.user);
+  res.render('index', { title: 'The home Page' });
 });
+
+router.get('/failure', function(req, res, next) {
+	res.render('index', { title: 'Failed To Login' });
+});
+
+
+router.get('/', function(req, res, next) {
+	res.render('index', { title: 'Base Home Root' });
+});
+
+
 
 module.exports = router;
