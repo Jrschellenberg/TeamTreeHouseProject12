@@ -144,6 +144,8 @@ if (config.util.getEnv('NODE_ENV') === 'test') {
 		next();
 	});
 }
+
+
 /*
 End session Logic.
  */
@@ -167,6 +169,14 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressSanitizer());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use((req, res, next) => {
+	if(req.session && req.session.passport && req.session.passport.user){
+		res.locals.user = true;
+	}
+	next();
+});
+
 
 app.use(require('./routes'));
 
