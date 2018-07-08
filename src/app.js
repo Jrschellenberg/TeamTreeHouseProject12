@@ -14,6 +14,7 @@ const express = require('express'),
 	expressSanitizer = require('express-sanitizer'),
 	path = require('path'),
 	RateLimit = require('express-rate-limit'),
+	favicon = require('serve-favicon'),
 	dbConfig = config.get('DBHost');
 
 //Configure sessions
@@ -152,7 +153,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public/images/favicon', 'favicon.ico')));
 
 
 
