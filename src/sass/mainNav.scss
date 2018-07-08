@@ -2,17 +2,17 @@
 
 #navigation{
   width: 100%;
-  background-color: $navbar-top-background-color;
+  background-color: $navBar-Footer-colour;
   font-size: medium;
   display:block;
   .dropdown-menu{
-    background-color:$navbar-top-background-color;
+    background-color:$navBar-Footer-colour;
   }
 
   @media (min-width: $lg) {
-    background-color: $navbar-top-background-color;
+    background-color: $navBar-Footer-colour;
     .dropdown-menu{
-      background-color:$navbar-top-background-color;
+      background-color:$navBar-Footer-colour;
     }
   }
   
