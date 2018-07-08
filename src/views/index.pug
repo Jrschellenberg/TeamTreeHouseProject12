@@ -1,5 +1,8 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  #helloVue
+    h1(v-if="title") {{ title }}
+    p(v-if="message") {{ message }}
+    p(v-if="title") here is some element that does not exist!
+
