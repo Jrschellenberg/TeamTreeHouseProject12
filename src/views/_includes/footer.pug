@@ -1,38 +1,39 @@
 footer.footer
   .container-fluid
-    .row.justify-content-center.py-1
-      .navbar.navbar-expand-sm.navbar-right.secondary-text
-        .container-fluid
-          span.sr-only (current)
-          button#toggleExpandMenu.navbar-toggler.mx-auto.align-content-center(type="button" data-toggle="collapse" data-target="#footerNav" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation")
-            span.navbar-toggler-icon
-          #footerNav.collapse.navbar-collapse.mx-auto
-            ul.navbar-nav.navbar-expand.mx-sm-4.d-block.d-sm-flex.mx-auto
-              li.nav-item
-                a.nav-link.comingSoon(href="#" data-initialText="Careers") Careers
-              li.nav-item
-                a.nav-link.comingSoon(href="#" data-initialText="About") About
-              li.nav-item
-                a.nav-link.comingSoon(href="#" data-initialText="Support") Support
-              li.nav-item
-                a.nav-link.comingSoon(href="#" data-initialText="Contact Us") Contact Us
-              li.nav-item
-                a.nav-link.comingSoon(href="#" data-initialText="Press") Press
-    .row.justify-content-center.py-0
-      ul.navbar-nav.navbar-expand
-        li.nav-item
-          a.nav-link.comingSoon(href="#" data-initialText="Terms") Terms
-        li.nav-item
-          p.nav-link |
-        li.nav-item
-          a.nav-link.comingSoon(href="#" data-initialText="Privacy") Privacy
-          
+    .row.my-3
+      .col-11.offset-1.mx-auto
+        h6.text-center Website Developed by Justin Schellenberg
+    .row
+      .col-11.offset-1.mx-auto
+        p.text-muted.text-center All rights Reserved
+    .row
+      ul.navbar-nav.mx-auto.navbar.navbar-expand.navbar-right.secondary-text.navbar-light
+        li.nav-item.mx-md-2.mx-3
+          a.btn.btn-social-icon.btn-website.d-sm-none.d-block(target="_blank" href="https://justin.schellenberg.site")
+            span
+              i.fas.fa-globe
+          a.btn.btn-block.btn-social.btn-website.d-none.d-sm-block(target="_blank" href="https://justin.schellenberg.site")
+            span
+              i.fas.fa-globe
+            | Personal Website
+        li.nav-item.mx-md-2.mx-3
+          a.btn.btn-social-icon.btn-github.d-sm-none.d-block(target="_blank" href="https://github.com/jrschellenberg")
+            span
+              i.fab.fa-github-alt
+          a.btn.btn-block.btn-social.btn-github.d-none.d-sm-block(target="_blank" href="https://github.com/jrschellenberg")
+            span
+              i.fab.fa-github-alt
+            | Github
+        li.nav-item.mx-md-2.mx-3
+          a.btn.btn-social-icon.btn-linkedin.d-sm-none.d-block(target="_blank" href="https://www.linkedin.com/in/justin-schellenberg-667451160/")
+            span
+              i.fab.fa-linkedin
+          a.btn.btn-block.btn-social.btn-linkedin.d-none.d-sm-block(target="_blank" href="https://www.linkedin.com/in/justin-schellenberg-667451160/")
+            span
+              i.fab.fa-linkedin
+            | LinkedIn
+
 //Vue.js Scripts go here..
 script(type="text/javascript" src="/js/dependencies/bootstrap.bundle.min.js" defer)
 script(type="text/javascript" src="/js/dependencies/vue.js" defer)
 script(type="text/javascript" src="/js/app.js" defer)
-script(type="text/javascript").
-  //Function below is required, called when user successfully selects captcha, to pass front end validation check
-  function recaptchaCallback() {
-  document.getElementById('captchaField').value = 'nonEmpty';
-  };

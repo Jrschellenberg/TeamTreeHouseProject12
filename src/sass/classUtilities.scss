@@ -1,7 +1,9 @@
 @import 'variables'; 
 
 
-.change{
-  
+.fixed-top{
+  @media(min-width:$xs){
+    position: absolute !important;
+  }
 }
 

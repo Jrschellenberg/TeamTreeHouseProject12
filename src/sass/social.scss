@@ -44,12 +44,21 @@
 .btn-facebook.disabled:hover,.btn-facebook[disabled]:hover,fieldset[disabled] .btn-facebook:hover,.btn-facebook.disabled:focus,.btn-facebook[disabled]:focus,fieldset[disabled] .btn-facebook:focus,.btn-facebook.disabled.focus,.btn-facebook[disabled].focus,fieldset[disabled] .btn-facebook.focus{background-color:#3b5998;border-color:rgba(0,0,0,0.2)}
 .btn-facebook .badge{color:#3b5998;background-color:#fff}
 
+.btn-website{color:#fff;background-color:#4776b9;border-color:rgba(0,0,0,0.2)}.btn-website:focus,.btn-website.focus{color:#fff;background-color:#144182;border-color:rgba(0,0,0,0.2)}
+.btn-website:hover{color:#fff;background-color:#144182;border-color:rgba(0,0,0,0.2)}
+.btn-website:active,.btn-website.active,.open>.dropdown-toggle.btn-website{color:#fff;background-color:#144182;border-color:rgba(0,0,0,0.2)}.btn-website:active:hover,.btn-website.active:hover,.open>.dropdown-toggle.btn-website:hover,.btn-website:active:focus,.btn-website.active:focus,.open>.dropdown-toggle.btn-website:focus,.btn-website:active.focus,.btn-website.active.focus,.open>.dropdown-toggle.btn-website.focus{color:#fff;background-color:#23345a;border-color:rgba(0,0,0,0.2)}
+.btn-website:active,.btn-website.active,.open>.dropdown-toggle.btn-website{background-image:none}
+.btn-website.disabled:hover,.btn-website[disabled]:hover,fieldset[disabled] .btn-website:hover,.btn-website.disabled:focus,.btn-website[disabled]:focus,fieldset[disabled] .btn-website:focus,.btn-website.disabled.focus,.btn-website[disabled].focus,fieldset[disabled] .btn-website.focus{background-color:#4776b9;border-color:rgba(0,0,0,0.2)}
+.btn-website .badge{color:#4776b9;background-color:#fff}
+
+
 .btn-discord{color:#fff;background-color:#6B80CA;border-color:rgba(0,0,0,0.2)}.btn-discord:focus,.btn-discord.focus{color:#fff;background-color:#4560bd;border-color:rgba(0,0,0,0.2)}
 .btn-discord:hover{color:#fff;background-color:#4560bd;border-color:rgba(0,0,0,0.2)}
 .btn-discord:active,.btn-discord.active,.open>.dropdown-toggle.btn-discord{color:#fff;background-color:#4560bd;border-color:rgba(0,0,0,0.2)}.btn-discord:active:hover,.btn-discord.active:hover,.open>.dropdown-toggle.btn-discord:hover,.btn-discord:active:focus,.btn-discord.active:focus,.open>.dropdown-toggle.btn-discord:focus,.btn-discord:active.focus,.btn-discord.active.focus,.open>.dropdown-toggle.btn-discord.focus{color:#fff;background-color:#23345a;border-color:rgba(0,0,0,0.2)}
 .btn-discord:active,.btn-discord.active,.open>.dropdown-toggle.btn-discord{background-image:none}
 .btn-discord.disabled:hover,.btn-discord[disabled]:hover,fieldset[disabled] .btn-discord:hover,.btn-discord.disabled:focus,.btn-discord[disabled]:focus,fieldset[disabled] .btn-discord:focus,.btn-discord.disabled.focus,.btn-discord[disabled].focus,fieldset[disabled] .btn-discord.focus{background-color:#6B80CA;border-color:rgba(0,0,0,0.2)}
 .btn-discord .badge{color:#6B80CA;background-color:#fff}
+
 
 .btn-flickr{color:#fff;background-color:#ff0084;border-color:rgba(0,0,0,0.2)}.btn-flickr:focus,.btn-flickr.focus{color:#fff;background-color:#cc006a;border-color:rgba(0,0,0,0.2)}
 .btn-flickr:hover{color:#fff;background-color:#cc006a;border-color:rgba(0,0,0,0.2)}
