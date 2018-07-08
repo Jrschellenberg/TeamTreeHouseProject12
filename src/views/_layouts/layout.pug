@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    include ../_includes/head.pug
+  body
+    .wrapper.container-fluid.mainContent
+      #content
+        include ../_includes/main-nav.pug
+        script(type="text/javascript").
+          document.querySelector("#{navId}").classList.toggle("active");
+          document.querySelector("#{navId}").classList.toggle("disabled");
+        .paddingContent
+        block content
+    include ../_includes/footer
+      if recaptcha
+        script(src="https://www.google.com/recaptcha/api.js")

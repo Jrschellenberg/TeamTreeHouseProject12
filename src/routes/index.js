@@ -11,16 +11,16 @@ router.use('/profile', require('./profile'));
 /* GET home page. */
 router.get('/home', function(req, res, next) {
   //console.log(req.session.passport.user);
-  res.render('index', { title: 'The home Page' });
+  res.render('page/index', { title: 'The home Page' });
 });
 
 router.get('/failure', function(req, res, next) {
-	res.render('index', { title: 'Failed To Login' });
+	res.render('page/index', { title: 'Failed To Login' });
 });
 
 
 router.get('/', function(req, res, next) {
-	res.render('index', { title: 'Base Home Root' });
+	res.render('page/index', { title: 'Base Home Root' });
 });
 
 

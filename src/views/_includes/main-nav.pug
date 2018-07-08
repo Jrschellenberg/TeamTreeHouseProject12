@@ -1,0 +1,33 @@
+nav#navigation.navbar.navbar-expand-lg.navbar-dark.navbar-right.fixed-top.secondary-text
+  .container-fluid
+    span.sr-only (current)
+    button#toggleExpandMenu.navbar-toggler.m-2(type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation")
+      span.navbar-toggler-icon
+    img.mx-auto(style="width: 10rem;" src="/images/logo/logo.svg" alt="Ascension")
+    button#toggleExpandAccountMenu.navbar-toggler.m-2(type="button" data-toggle="collapse" data-target="#accountMenu" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation")
+      span
+        i.far.fa-user-circle.accountFont
+    #mainMenu.collapse.navbar-collapse
+      ul.navbar-nav.ml-2
+        li.nav-item
+          a#homeLink.nav-link(href="/") Home
+        li.nav-item
+          a#showcaseLink.nav-link(href="/Showcase") Showcase
+        li.nav-item
+          a#whitePaperLink.nav-link(href="#" data-initialText="White Paper") White Paper
+        li.nav-item
+          a#newsLink.nav-link(href="#" data-initialText="News") News
+        //li.nav-item
+        //  a#icoOfferingLink.nav-link.comingSoon(href="#" data-initialText="ICO Offering") ICO Offering
+    #accountMenu.collapse.navbar-collapse
+      ul.navbar-nav.ml-auto.mr-0
+        li.nav-item
+          a.nav-link(href="#" data-initialText="Support") Support
+        li.nav-item
+          a.nav-link(href="#" data-initialText="My Account") My Account
+        //li.nav-item.dropdown
+        //  a#dropdown03.nav-link.dropdown-toggle(href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") My Account
+        //  .dropdown-menu(aria-labelledby="dropdown03")
+        //    a#loginLink.dropdown-item.comingSoon(href="#" data-initialText="Login") Login
+        //    .dropdown-divider
+        //    a#registerLink.dropdown-item.comingSoon(href="#" data-initialText="Register") Register
