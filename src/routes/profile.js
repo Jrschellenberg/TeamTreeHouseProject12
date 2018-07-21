@@ -5,7 +5,7 @@ import { isUserAuthenticated, setResponseAPI} from "../middleware/index";
 
 
 router.get('/', isUserAuthenticated, (req, res, next) => {
-	res.render('index', { title: 'Welcome to Profile Page' });
+	res.render('page/profile', { title: 'Welcome to Profile Page' });
 });
 
 
