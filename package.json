@@ -4,7 +4,7 @@
   "description": "Final Project for tech Degree TeamTreeHouse",
   "main": "index.js",
   "scripts": {
-    "watchVue": "parcel watch src/public/js/src/* --out-dir src/public/js/dist/",
+    "watchVue": "parcel watch src/client/* --out-dir src/public/js/dist/",
     "buildSass": "gulp sass:build",
     "clean": "gulp cleanDist",
     "nodemon": "nodemon -e pug,js,css --exec npm run babel-node -- src/bin/www",
