@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="thisIsTest">
     <google-map />
   </div>
 </template>
@@ -8,7 +8,7 @@
   import GoogleMap from "./components/GoogleMap";
 
   export default {
-    name: "app",
+    name: "app-container",
     components: {
       GoogleMap
     }
