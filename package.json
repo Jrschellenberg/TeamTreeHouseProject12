@@ -4,7 +4,7 @@
   "description": "Final Project for tech Degree TeamTreeHouse",
   "main": "index.js",
   "scripts": {
-    "watchVue": "parcel watch src/client/* --out-dir src/public/js/dist/",
+    "watchVue": "parcel watch src/client/*/** --out-dir src/public/js/dist/",
     "buildSass": "gulp sass:build",
     "clean": "gulp cleanDist",
     "nodemon": "nodemon -e pug,js,css --exec npm run babel-node -- src/bin/www",
@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "algorithmia": "^0.3.10",
+    "axios": "^0.18.0",
     "body-parser": "~1.18.2",
     "bootstrap": "^4.1.2",
     "bunyan": "^1.8.12",

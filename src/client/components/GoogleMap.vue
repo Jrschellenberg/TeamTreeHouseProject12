@@ -6,7 +6,7 @@
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
-        <button @click="addMarker(false)">Add</button>
+        <button @click="addMarker(false, false)">Add</button>
       </label>
       <br/>
     </div>
@@ -18,7 +18,7 @@
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
-        <button @click="addMarker(true)">Add</button>
+        <button @click="addMarker(true, false)">Add</button>
       </label>
       <br/>
     </div>
@@ -29,7 +29,7 @@
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
-        <button @click="addMarker(true)">Add</button>
+        <button @click="addMarker(true, true)">Add</button>
       </label>
       <br/>
     </div>
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+  import AlgorithmiaApi from '../services/api/algorithmia';
   export default {
     name: "GoogleMap",
     data() {
@@ -65,6 +66,7 @@
         // change this to whatever makes sense
         center: { lat: 49.8951, lng: -97.1384 },
         markers: [],
+        route: [],
         places: [],
         currentPlace: null,
         startingLocation: null,
@@ -83,22 +85,57 @@
       setPlace(place) {
         this.currentPlace = place;
       },
-      addMarker(isStartOrFinishLocation) {
+      addMarker(isStartOrFinishLocation, isAddFinishMarkerCalled) {
         if (this.currentPlace) {
           const marker = {
             lat: this.currentPlace.geometry.location.lat(),
             lng: this.currentPlace.geometry.location.lng()
           };
           if(!isStartOrFinishLocation) {
-	          this.markers.push({position: marker});
+	          this.route.push({position: marker});
           }
+          else{
+          	if(isAddFinishMarkerCalled){
+          		this.finishLocation = {position: marker};
+            }
+            else{
+          		if(this.checked){
+                  this.startingLocation = {position: marker};
+                  this.finishLocation = {position: marker};
+                }
+                else{
+                  this.startingLocation = {position: marker};
+                }
+            }
+          }
+          this.markers.push({position: marker});
           this.places.push(this.currentPlace);
           this.center = marker;
           this.currentPlace = null;
         }
       },
+      
       getMarkers() {
-      	console.log(this.markers);
+      	if(!this.startingLocation && !this.finishLocation){
+      		console.log("Please set a starting and ending location");
+      		return;
+        }
+        let algoInput = {};
+        algoInput.points = this.route.map((val) => {
+        	return `${val.position.lat},${val.position.lng}`;
+        });
+        algoInput.startpoint = `${this.startingLocation.position.lat},${this.startingLocation.position.lng}`;
+        algoInput.endpoint = `${this.finishLocation.position.lat},${this.finishLocation.position.lng}`;
+        
+        console.log(algoInput);
+	
+        AlgorithmiaApi.submitRoute(algoInput)
+          .then(data => {
+          	console.log(data);
+          })
+          .catch(error => {
+          	console.log(error);
+          });
       },
       geolocate: function() {
         navigator.geolocation.getCurrentPosition(position => {

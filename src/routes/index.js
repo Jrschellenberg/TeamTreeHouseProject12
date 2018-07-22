@@ -5,6 +5,7 @@ router.use('/api/users', require('./users'));
 router.use('/api/locations', require('./locations'));
 router.use('/auth', require('./auth'));
 router.use('/profile', require('./profile'));
+router.use('/api/algorithmia', require('./algorithmia'));
 
 
 
