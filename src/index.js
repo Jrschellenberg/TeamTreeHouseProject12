@@ -1,8 +1,9 @@
+require('dotenv').config();  // Get all of our secrets...
+
 const algorithmia = require('algorithmia');
 const client = algorithmia(process.env.ALGORITHMIA_API_KEY);
 const nodeGeocoder = require('node-geocoder');
 
-//let mapAPIKey = "AIzaSyCQClwazNXqYZJpilU-8L7Uow0GdtCFYrE";
 
 var options = {
 	provider: 'google',
@@ -18,8 +19,8 @@ const geocoder = nodeGeocoder(options);
 function callAlgo() {
 	
 	var input = {
-		"points": ["Ankara", "İzmir", "Eskişehir", "Afyonkarahisar", "Konya"],
-		"startpoint": "İstanbul",
+		"points": ["Ankara"],
+		"startpoint": "Ankara",
 		"endpoint": "Istanbul"
 	};
 	client.algo("akadal/TSP/0.2.1")
@@ -40,9 +41,9 @@ function geoCode(){
 		});
 }
 
-//callAlgo();
+callAlgo();
 
-geoCode();
+//geoCode();
 
 
 
