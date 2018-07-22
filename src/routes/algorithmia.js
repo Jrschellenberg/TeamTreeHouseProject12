@@ -1,43 +1,24 @@
-require('dotenv').config();  // Get all of our secrets...
-
+import AlgorithmUtils from '../utilities/algorithmUtils';
 import Utils from '../utilities/utils';
 const express = require('express');
 const router = express.Router();
-const algorithmia = require('algorithmia');
-const client = algorithmia(process.env.ALGORITHMIA_API_KEY);
-
 
 import { isUserAuthenticated, setResponseAPI} from "../middleware/index";
 
-
-
 router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
-	let startTime = Date.now();
-	console.log(req.body);
-	
-	if(!req.body || !req.body.points || !req.body.startpoint || !req.body.endpoint){
+	if(!req.body || !req.body.points || !Array.isArray(req.body.points) || req.body.points.length === 0 ||
+		!req.body.startpoint || typeof req.body.startpoint  !== 'string' || !req.body.endpoint || typeof req.body.endpoint !== 'string' ){
 		return Utils.throwError(422, 'Unprocessable Entity', '/profile', next);
 	}
-	let input = {
-		"points": req.body.points,
-		"startpoint": req.body.startpoint,
-		"endpoint": req.body.endpoint
-	};
-	console.log(input);
+	AlgorithmUtils.setStartTime(Date.now());
 	
-	client.algo("akadal/TSP/0.2.1")
-		.pipe(input)
-		.then(response => {
-			let timeTaken = Math.floor((Date.now() - startTime) / 1000);
-			console.log(`time taken to execute algorithm was ${timeTaken} seconds`)
-			
-			let algoResponse = response.get();
-			console.log(algoResponse);
-			// Do some writing using modals at this point.....
+	AlgorithmUtils.computeAlgorithm(req.body)
+		.then((algoResponse, timeTaken) => {
 			res.status(200).json({ success: true, message: 'successfully called API', status: 200, data: algoResponse, algoTime: timeTaken });
-			
+		})
+		.catch(error => {
+			return Utils.throwError(503, error, '/profile', next);
 		});
 });
-
 
 module.exports = router;
