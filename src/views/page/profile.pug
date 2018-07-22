@@ -3,3 +3,5 @@ extends ../_layouts/layout
 block content
   .my-5.p-5
     #app
+  if user
+    script(type="text/javascript" src="/js/dist/main.js" defer)

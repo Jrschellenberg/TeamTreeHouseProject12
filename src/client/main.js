@@ -10,8 +10,6 @@ Vue.use(VueGoogleMaps, {
   }
 });
 
-
-
 new Vue({
   el: "#app",
   render: h => h(App)

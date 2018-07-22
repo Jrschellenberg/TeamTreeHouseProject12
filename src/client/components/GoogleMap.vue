@@ -1,15 +1,44 @@
 <template>
   <div>
     <div>
-      <h2>Search and add a pin</h2>
+      <h2>Add a pin To your Current Route</h2>
       <label>
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
-        <button @click="addMarker">Add</button>
+        <button @click="addMarker(false)">Add</button>
       </label>
       <br/>
+    </div>
+    
+    <div>
+      <h2>Add a Starting location to Current Route</h2>
+      <input type="checkbox" id="checkbox" v-model="checked" checked> Starting location same as Finish Location?<br>
+      <label>
+        <gmap-autocomplete
+                @place_changed="setPlace">
+        </gmap-autocomplete>
+        <button @click="addMarker(true)">Add</button>
+      </label>
+      <br/>
+    </div>
 
+    <div v-if="!checked">
+      <h2>Add a Finish location to Current Route</h2>
+      <label>
+        <gmap-autocomplete
+                @place_changed="setPlace">
+        </gmap-autocomplete>
+        <button @click="addMarker(true)">Add</button>
+      </label>
+      <br/>
+    </div>
+    
+    
+    
+    <div>
+      <h2>Submit Form</h2>
+      <button @click="getMarkers">Submit Form</button>
     </div>
     <br>
     <gmap-map
@@ -32,12 +61,15 @@
     name: "GoogleMap",
     data() {
       return {
-        // default to Montreal to keep it simple
+        // default to Winnipeg to keep it simple
         // change this to whatever makes sense
-        center: { lat: 45.508, lng: -73.587 },
+        center: { lat: 49.8951, lng: -97.1384 },
         markers: [],
         places: [],
-        currentPlace: null
+        currentPlace: null,
+        startingLocation: null,
+	    finishLocation: null,
+        checked: true
       };
     },
 
@@ -45,22 +77,28 @@
       this.geolocate();
     },
 
+    
     methods: {
       // receives a place object via the autocomplete component
       setPlace(place) {
         this.currentPlace = place;
       },
-      addMarker() {
+      addMarker(isStartOrFinishLocation) {
         if (this.currentPlace) {
           const marker = {
             lat: this.currentPlace.geometry.location.lat(),
             lng: this.currentPlace.geometry.location.lng()
           };
-          this.markers.push({ position: marker });
+          if(!isStartOrFinishLocation) {
+	          this.markers.push({position: marker});
+          }
           this.places.push(this.currentPlace);
           this.center = marker;
           this.currentPlace = null;
         }
+      },
+      getMarkers() {
+      	console.log(this.markers);
       },
       geolocate: function() {
         navigator.geolocation.getCurrentPosition(position => {
