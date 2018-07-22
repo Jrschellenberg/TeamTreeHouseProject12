@@ -17,7 +17,8 @@ export default class AlgorithmUtils {
 		return {
 			"points": reqBody.points,
 			"startpoint": reqBody.startpoint,
-			"endpoint": reqBody.endpoint
+			"endpoint": reqBody.endpoint,
+			"api": process.env.GOOGLE_MAP_API_KEY
 		};
 	}
 	
