@@ -5,7 +5,7 @@ const client = algorithmia(process.env.ALGORITHMIA_API_KEY);
 const nodeGeocoder = require('node-geocoder');
 
 
-var options = {
+const options = {
 	provider: 'google',
 	
 	// Optional depending on the providers
@@ -32,6 +32,8 @@ function callAlgo() {
 
 
 function geoCode(){
+	
+	
 	geocoder.geocode('r3p 2r5')
 		.then(function(res) {
 			console.log(res);

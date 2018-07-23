@@ -14,6 +14,15 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 	
 	AlgorithmUtils.computeAlgorithm(req.body)
 		.then((algoResponse, timeTaken) => {
+			let geoEncode = AlgorithmUtils.convertResponseToObject(algoResponse);
+			let reverseGeoEncodeArray = [];
+			geoEncode.forEach((val) => {
+				Promise.all(reverseGeoEncodeArray.push(AlgorithmUtils.reverseGeoCode(val))).then();
+				
+				
+			});
+			//console.log(geoEncode);
+			console.log(reverseGeoEncodeArray);
 			res.status(200).json({ success: true, message: 'successfully called API', status: 200, data: algoResponse, algoTime: timeTaken });
 		})
 		.catch(error => {
