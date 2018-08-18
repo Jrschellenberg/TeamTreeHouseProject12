@@ -6,8 +6,7 @@ coverage/
 package-lock.json
 src/frontEndJS/dependencies/bundle.js*
 secrets.js
-src/public/js/bundle.js
-src/public/js/bundle.js.map
+
 src/public/stylesheets/
 .snyk
 npm-debug.log.*
@@ -16,3 +15,4 @@ warning.log
 .env
 .nyc_*
 src/public/js/dist/
+src/public/js/dependencies/

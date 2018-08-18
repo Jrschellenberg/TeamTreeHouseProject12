@@ -6,8 +6,9 @@
   "scripts": {
     "watchVue": "parcel watch src/client/*/** --out-dir src/public/js/dist/",
     "buildSass": "parcel build src/assets/sass/styles.js --out-dir src/public/stylesheets/",
+    "buildJSDependencies": "parcel build src/assets/js/dependencies.js --out-dir src/public/js/dependencies",
     "nodemon": "nodemon -e pug,js,css --exec npm run babel-node -- src/bin/www",
-    "start": "cross-env NODE_ENV=development && npm run buildSass && concurrently --kill-others \"npm run watchSass\" \"npm run nodemon\" \"npm run watchVue\"",
+    "start": "cross-env NODE_ENV=development && npm run buildSass && npm run buildJSDependencies && concurrently --kill-others \"npm run watchSass\" \"npm run nodemon\" \"npm run watchVue\"",
     "babel-node": "babel-node --presets=es2015",
     "test": "mocha --exit --timeout 20000 --compilers js:babel-register",
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --exit --timeout 10000 --compilers js:babel-core/register",
