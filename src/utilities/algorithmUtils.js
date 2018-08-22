@@ -66,18 +66,22 @@ export default class AlgorithmUtils {
 		return new Promise((resolve, reject) => {
 			geocoder.reverse(obj)
 				.then(function(res) {
-					console.log(res);
 					resolve(res);
 				})
 				.catch(function(err) {
-					console.log(err);
 					reject(err);
 				});
-			
-		})
-		
+		});
 	}
-	
-	
+	static createLocationModel(item){
+		return {
+			streetAddress: item.formattedAddress,
+			province: item.administrativeLevels.level1long,
+			postalCode: item.zipcode,
+			lat: item.latitude,
+			long: item.longitude,
+			isGeoEncoded: true
+		}
+	}
 	
 }

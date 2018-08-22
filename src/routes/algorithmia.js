@@ -1,5 +1,6 @@
 import AlgorithmUtils from '../utilities/algorithmUtils';
 import Utils from '../utilities/utils';
+import Location from '../models/location';
 const express = require('express');
 const router = express.Router();
 
@@ -15,19 +16,31 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 	AlgorithmUtils.computeAlgorithm(req.body)
 		.then((algoResponse, timeTaken) => {
 			let geoEncode = AlgorithmUtils.convertResponseToObject(algoResponse);
+			let index = 0;
+			let endPoint = geoEncode.length -1;
 			let reverseGeoEncodeArray = [];
-			geoEncode.forEach((val) => {
-				Promise.all(reverseGeoEncodeArray.push(AlgorithmUtils.reverseGeoCode(val))).then();
-				
-				
-			});
-			//console.log(geoEncode);
-			console.log(reverseGeoEncodeArray);
+			geoEncode.reduce((promise, item) => {
+				return promise.then(() => AlgorithmUtils.reverseGeoCode(item).then((item) => {
+					let location = AlgorithmUtils.createLocationModel(item);
+					console.log("finished the promise, item is");
+					console.log(item);
+				}));
+			}, Promise.resolve())
+				.then(() => {
+				console.log("Finished iterating over all");
+				});
+			
 			res.status(200).json({ success: true, message: 'successfully called API', status: 200, data: algoResponse, algoTime: timeTaken });
 		})
 		.catch(error => {
 			return Utils.throwError(503, error, '/profile', next);
 		});
 });
+
+
+
+function processItems(items) {
+	return 
+}
 
 module.exports = router;
