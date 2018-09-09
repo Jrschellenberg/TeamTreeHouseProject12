@@ -27,9 +27,13 @@ export function isUserAuthorized(req, res, next){
 }
 
 export function isUserAuthenticated(req, res, next){
-	if(res.locals.testSession && req.query.sessionID){ //We Are currently running tests and wish to authenticate......
+	if(res.locals.testSession && req.query.sessionID){ //We Are currently running tests and wish to authenticate...... for GET
 		req.session.passport = {};
 		req.session.passport.user = req.query.sessionID;
+	}
+	if(res.locals.testSession && req.body.sessionID){ //We Are currently running tests and wish to authenticate...... for POST
+		req.session.passport = {};
+		req.session.passport.user = req.body.sessionID;
 	}
 	if(!req.session || !req.session.passport || !req.session.passport.user){
 		return Utils.throwError(401, 'You must be logged in to view Profile Assets, Please login now', redirectUrl, next);

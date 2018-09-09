@@ -8,7 +8,20 @@ const server = require('../src/app');
 const should = chai.should();
 const expect = chai.expect;
 
-import {beforeTest} from "./utilities";
+let dataBaseFinishSeed = false;
+
+server.on('appStarted', () => {
+	dataBaseFinishSeed = true;
+});
+
+const beforeTest = done => {
+	if (dataBaseFinishSeed) {
+		done();
+	} //if it has finished seeding it will hit callback, else forever hangs
+	server.on('appStarted', () => { //Once finish seed, set to true and stop hang.
+		done();
+	});
+};
 
 chai.use(chaiHttp);
 
@@ -64,10 +77,6 @@ function testMiddleWares(endPoint){
 		let id = '?sessionID=5b3a4c68cda6237afb56e1ba';
 		getAuthRequest(401, false, "Unauthorized", endPoint, id, done);
 	});
-	// it('should give us 403 error if we are not admin, but supply a valid session ID', (done) => {
-	// 	let id = '?sessionID=57029ed4795118be119cc439';
-	// 	getAuthRequest(403, false, "Forbidden", endPoint, id, done);
-	// });
 }
 
 function getAuthRequest(status, success, msg, endPoint, id, done, user) {
