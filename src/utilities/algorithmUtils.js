@@ -73,7 +73,8 @@ export default class AlgorithmUtils {
 				});
 		});
 	}
-	static createLocationModel(item){
+	static createLocationModel(address){
+		let item = address[0];
 		return {
 			streetAddress: item.formattedAddress,
 			province: item.administrativeLevels.level1long,
