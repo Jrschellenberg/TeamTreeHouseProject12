@@ -1,38 +1,76 @@
 import AlgorithmUtils from '../utilities/algorithmUtils';
 import Utils from '../utilities/utils';
 import Location from '../models/location';
+import Route from '../models/route';
+import User from '../models/user';
 const express = require('express');
 const router = express.Router();
 
+
+
 import { isUserAuthenticated, setResponseAPI} from "../middleware/index";
 
+let geoEncode = null,
+	endPoint = null,
+	actions = null,
+	savedLocation = null,
+	routeModel;
+
 router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
+	if(res.locals.testSession && req.body.points[0]){ // This is for Testing Purposes...
+		req.body.points = [req.body.points[0]];
+	}
 	if(!req.body || !req.body.points || !Array.isArray(req.body.points) || req.body.points.length === 0 ||
 		!req.body.startpoint || typeof req.body.startpoint  !== 'string' || !req.body.endpoint || typeof req.body.endpoint !== 'string' ){
 		return Utils.throwError(422, 'Unprocessable Entity', '/profile', next);
 	}
-	AlgorithmUtils.setStartTime(Date.now());
 	
+	routeModel = {};
+	routeModel.stops = [];
+	AlgorithmUtils.setStartTime(Date.now());
 	AlgorithmUtils.computeAlgorithm(req.body)
 		.then((algoResponse, timeTaken) => {
-			let geoEncode = AlgorithmUtils.convertResponseToObject(algoResponse);
-			let reverseGeoEncodeArray = new Array(geoEncode.length);
-			geoEncode.reduce((promise, item) => {
-				return promise.then(() => AlgorithmUtils.reverseGeoCode(item).then((item) => {
-					let location = AlgorithmUtils.createLocationModel(item);
-					reverseGeoEncodeArray.push(location);
-					// Save this into location now.
-				}));
-			}, Promise.resolve())
-				.then(() => {
-				console.log("ReverseEncode Array is ", reverseGeoEncodeArray);
-				// Or here?
-				res.status(200).json({ success: true, message: 'successfully called API', status: 200, data: reverseGeoEncodeArray, algoTime: timeTaken });
+			geoEncode = AlgorithmUtils.convertResponseToObject(algoResponse);
+			endPoint = geoEncode.length -1;
+			actions = geoEncode.map((item, index) => {
+				return new Promise((resolve) => {
+					AlgorithmUtils.reverseGeoCode(item)
+						.then((item) => {
+							savedLocation = AlgorithmUtils.createLocationModel(item);
+							Location.saveLocation(savedLocation).then(location => {
+								if (index === 0) {
+									routeModel.startingAddress = location._id;
+								}
+								else if (index === endPoint) {
+									routeModel.endingAddress = location._id;
+								}
+								else {
+									routeModel.stops.push(location._id);
+								}
+								resolve();
+							}).catch(next);
+						})
 				});
+			});
+			let results = Promise.all(actions);
+			results.then(() => {
+				let currentUserStops = null;
+				if(res.locals.user.currentStops){// if user currently has stops set, delete them from the DB
+					currentUserStops = res.locals.user.currentStops;
+				}
+				Route.saveRoute(routeModel, currentUserStops)
+					.then((route) => {
+						//console.log("did it get to here?");
+						// Need to now update the User.......
+						User.updateRoute(res.locals.user, route._id)
+							.then((user) => {
+								res.status(200).json({ success: true, message: 'successfully called API', status: 200 });
+							}).catch(next);
+					}).catch(next);
+			});
 		})
 		.catch(error => {
 			return Utils.throwError(503, error, '/profile', next);
 		});
 });
-
 module.exports = router;

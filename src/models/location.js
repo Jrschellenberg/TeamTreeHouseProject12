@@ -61,15 +61,22 @@ LocationSchema.statics.findUserById = function (id){
 
 LocationSchema.statics.saveLocation = function(location){
 	return new Promise(function(resolve, reject){
+
 		Location.findOne({postalCode: location.postalCode})
-			.exec(function(err, location){
+			.exec(function(err, doc){
 				if(err){
 					reject(Utils.rejectError(500, err.message));
 				}
-				if(location){
-					resolve(location); //location already exists in Db so just return it
+				if(doc){
+					resolve(doc); //location already exists in Db so just return it
 				}
 				//No location added to database yet, so lets add it!
+				Location.create(location, function(err, createdDoc){
+					if(err){
+						reject(Utils.rejectError(500, err.message));
+					}
+					resolve(createdDoc);
+				});
 			})
 		
 	});

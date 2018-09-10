@@ -99,6 +99,19 @@ UserSchema.statics.getRoute = function (id){
 	});
 };
 
+UserSchema.statics.updateRoute = function(user, newRouteId){
+	return new Promise(function(resolve, reject) {
+		User.findById(user._id, function(err, doc) {
+			if(err){
+				reject(Utils.rejectError(500, err.message));
+			}
+			doc.currentStops = newRouteId;
+			doc.save();
+			resolve(doc);
+		});
+	});
+};
+
 
 const User = mongoose.model('User', UserSchema); // This has to be after methods defined, or fails..
 

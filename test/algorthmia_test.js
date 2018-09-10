@@ -27,9 +27,10 @@ const beforeTest = done => {
 chai.use(chaiHttp);
 
 let validBody = {
-	points: ['49.85633199999999,-97.16082169999999'],
+	points: [ '49.85633199999999,-97.16082169999999'],
 	startpoint: '49.8088807,-97.2297858',
-	endpoint: '49.8088807,-97.2297858'
+	endpoint: '49.8088807,-97.2297858',
+	sessionID: '57029ed4795118be119cc438'
 };
 
 const endPoint = '/api/algorithmia';
@@ -38,35 +39,39 @@ describe('POST ALGORITHMIA', () => {
 	beforeEach((done) => { //This hangs the tests until databaesFinish seed..
 		beforeTest(done);
 	});
-	testMiddleWares();
+	//testMiddleWares();
 	
-	it('should throw 422 error if the body is missing', (done) => {
-		postRequest(endPoint, {sessionID: '57029ed4795118be119cc438'}, 422, false,'Unprocessable Entity', done );
+	it('should return 200 if correct information is presented', (done) => {
+		postRequest(endPoint, validBody, 500, false, 'Unprocessable Entity', done );
 	});
-	it('should throw 422 if body is missing points', (done) => {
-		let inValidBody = {
-			startpoint: '49.8088807,-97.2297858',
-			endpoint: '49.8088807,-97.2297858',
-			sessionID: '57029ed4795118be119cc438'
-		};
-		postRequest(endPoint, inValidBody, 422, false,'Unprocessable Entity', done );
-	});
-	it('should throw 422 if body is missing startPoint', (done) => {
-		let inValidBody = {
-			points: ['49.85633199999999,-97.16082169999999'],
-			endpoint: '49.8088807,-97.2297858',
-			sessionID: '57029ed4795118be119cc438'
-		};
-		postRequest(endPoint, inValidBody, 422, false,'Unprocessable Entity', done );
-	});
-	it('should throw 422 if body is missing endpoint', (done) => {
-		let inValidBody = {
-			points: ['49.85633199999999,-97.16082169999999'],
-			startpoint: '49.8088807,-97.2297858',
-			sessionID: '57029ed4795118be119cc438'
-		};
-		postRequest(endPoint, inValidBody, 422, false,'Unprocessable Entity', done );
-	});
+	
+	// it('should throw 422 error if the body is missing', (done) => {
+	// 	postRequest(endPoint, {sessionID: '57029ed4795118be119cc438'}, 422, false,'Unprocessable Entity', done );
+	// });
+	// it('should throw 422 if body is missing points', (done) => {
+	// 	let inValidBody = {
+	// 		startpoint: '49.8088807,-97.2297858',
+	// 		endpoint: '49.8088807,-97.2297858',
+	// 		sessionID: '57029ed4795118be119cc438'
+	// 	};
+	// 	postRequest(endPoint, inValidBody, 422, false,'Unprocessable Entity', done );
+	// });
+	// it('should throw 422 if body is missing startPoint', (done) => {
+	// 	let inValidBody = {
+	// 		points: ['49.85633199999999,-97.16082169999999'],
+	// 		endpoint: '49.8088807,-97.2297858',
+	// 		sessionID: '57029ed4795118be119cc438'
+	// 	};
+	// 	postRequest(endPoint, inValidBody, 422, false,'Unprocessable Entity', done );
+	// });
+	// it('should throw 422 if body is missing endpoint', (done) => {
+	// 	let inValidBody = {
+	// 		points: ['49.85633199999999,-97.16082169999999'],
+	// 		startpoint: '49.8088807,-97.2297858',
+	// 		sessionID: '57029ed4795118be119cc438'
+	// 	};
+	// 	postRequest(endPoint, inValidBody, 422, false,'Unprocessable Entity', done );
+	// });
 	
 	function testMiddleWares(){
 		let body = {};

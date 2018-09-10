@@ -43,7 +43,6 @@ export default class AlgorithmUtils {
 					console.log(`time taken to execute algorithm was ${timeTaken} seconds`);
 					let algoResponse = response.get();
 					console.log(algoResponse);
-					console.log();
 					if(Array.isArray(algoResponse)){
 						return resolve(algoResponse, timeTaken);
 					}
