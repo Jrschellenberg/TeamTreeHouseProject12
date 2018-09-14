@@ -21,6 +21,19 @@ const RouteSchema = new mongoose.Schema({
 		ref: 'Location',
 		default: null
 	}
+}, {
+	toObject: {
+		transform: function (doc, ret) {
+			delete ret._id;
+			delete ret.__v;
+		}
+	},
+	toJSON: {
+		transform: function (doc, ret) {
+			delete ret._id;
+			delete ret.__v;
+		}
+	}
 });
 
 RouteSchema.statics.saveRoute = function(route, isRouteExist){

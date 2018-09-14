@@ -3,13 +3,9 @@ import Utils from '../utilities/utils';
 import Location from '../models/location';
 import Route from '../models/route';
 import User from '../models/user';
+import { isUserAuthenticated, setResponseAPI} from "../middleware/index";
 const express = require('express');
 const router = express.Router();
-
-
-
-import { isUserAuthenticated, setResponseAPI} from "../middleware/index";
-
 let geoEncode = null,
 	endPoint = null,
 	actions = null,
@@ -24,7 +20,6 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 		!req.body.startpoint || typeof req.body.startpoint  !== 'string' || !req.body.endpoint || typeof req.body.endpoint !== 'string' ){
 		return Utils.throwError(422, 'Unprocessable Entity', '/profile', next);
 	}
-	
 	routeModel = {};
 	routeModel.stops = [];
 	AlgorithmUtils.setStartTime(Date.now());
@@ -64,7 +59,9 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 						// Need to now update the User.......
 						User.updateRoute(res.locals.user, route._id)
 							.then((user) => {
-								res.status(200).json({ success: true, message: 'successfully called API', status: 200 });
+								User.getRoute(user._id).then((usersRoute) => {
+									res.status(200).json({ success: true, message: 'User Route Successfully retrieved', status: 200, data: usersRoute });
+								}).catch(next);
 							}).catch(next);
 					}).catch(next);
 			});

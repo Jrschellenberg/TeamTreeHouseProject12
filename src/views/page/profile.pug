@@ -4,4 +4,7 @@ block content
   .my-5.p-5
     #app
   if user
+    script.
+      var usersCurrentRoute = #{currentRoute};
+      console.log("Current Route is", usersCurrentRoute);
     script(type="text/javascript" src="/js/dist/main.js" defer)
