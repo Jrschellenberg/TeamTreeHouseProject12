@@ -43,8 +43,6 @@
       <br/>
     </div>
     
-    
-    
     <div>
       <h2>Submit Form</h2>
       <button @click="getMarkers">Submit Form</button>
@@ -86,11 +84,9 @@
         endLocationAdded: false
       };
     },
-
     mounted() {
       this.geolocate();
     },
-    
     methods: {
       // receives a place object via the autocomplete component
       setPlace(place) {

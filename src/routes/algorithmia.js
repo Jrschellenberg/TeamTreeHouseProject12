@@ -13,6 +13,7 @@ let geoEncode = null,
 	routeModel;
 
 router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
+	console.log(req.body);
 	if(res.locals.testSession && req.body.points[0]){ // This is for Testing Purposes...
 		req.body.points = [req.body.points[0]];
 	}
@@ -45,6 +46,7 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 								resolve();
 							}).catch(next);
 						})
+					
 				});
 			});
 			let results = Promise.all(actions);

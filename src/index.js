@@ -17,6 +17,7 @@ const options = {
 const geocoder = nodeGeocoder(options);
 
 function callAlgo() {
+	console.log("hitting this");
 	
 	var input = {
 		"points": ["Ankara"],
