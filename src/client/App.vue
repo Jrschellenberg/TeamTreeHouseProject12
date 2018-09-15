@@ -1,6 +1,10 @@
 <template>
-  <div id="app" class="thisIsTest">
-    <google-map />
+  <div id="app" class="row">
+      <div class="col-lg-6 col-6">
+        <google-map />
+        
+      </div>
+    
   </div>
 </template>
 

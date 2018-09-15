@@ -2,11 +2,14 @@
   <div>
     <div>
       <h2>Add a pin To your Current Route</h2>
-      <label>
+      <label id="routeMarker">
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
         <button @click="addMarker(false, false)">Add</button>
+        <transition name="fade" v-on:enter="endTransition">
+          <p style="display:inline-block;" v-if="routeMarkerAdded">Location Added</p>
+        </transition>
       </label>
       <br/>
     </div>
@@ -14,22 +17,28 @@
     <div>
       <h2>Add a Starting location to Current Route</h2>
       <input type="checkbox" id="checkbox" v-model="checked" checked> Starting location same as Finish Location?<br>
-      <label>
+      <label id="startLocation">
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
         <button @click="addMarker(true, false)">Add</button>
+        <transition name="fade" v-on:enter="endTransition">
+          <p style="display:inline-block;" v-if="startLocationAdded">Location Added</p>
+        </transition>
       </label>
       <br/>
     </div>
 
     <div v-if="!checked">
       <h2>Add a Finish location to Current Route</h2>
-      <label>
+      <label id="endLocation">
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
         <button @click="addMarker(true, true)">Add</button>
+        <transition name="fade" v-on:enter="endTransition">
+          <p style="display:inline-block;" v-if="endLocationAdded">Location Added</p>
+        </transition>
       </label>
       <br/>
     </div>
@@ -71,14 +80,16 @@
         currentPlace: null,
         startingLocation: null,
 	    finishLocation: null,
-        checked: true
+        checked: true,
+        routeMarkerAdded: false,
+        startLocationAdded: false,
+        endLocationAdded: false
       };
     },
 
     mounted() {
       this.geolocate();
     },
-
     
     methods: {
       // receives a place object via the autocomplete component
@@ -93,18 +104,26 @@
           };
           if(!isStartOrFinishLocation) {
 	          this.route.push({position: marker});
+	          this.clearInput("routeMarker");
+	          this.routeMarkerAdded = true;
           }
           else{
           	if(isAddFinishMarkerCalled){
           		this.finishLocation = {position: marker};
+                this.clearInput("endLocation");
+                this.endLocationAdded = true;
             }
             else{
           		if(this.checked){
                   this.startingLocation = {position: marker};
                   this.finishLocation = {position: marker};
+                  this.clearInput("startLocation");
+                  this.startLocationAdded = true;
                 }
                 else{
                   this.startingLocation = {position: marker};
+                  this.clearInput("startLocation");
+                  this.startLocationAdded = true;
                 }
             }
           }
@@ -114,7 +133,17 @@
           this.currentPlace = null;
         }
       },
-      
+      clearInput(id) {
+	      document.querySelector(`#${id} input`).value = '';
+      },
+      endTransition(){
+          let _this = this;
+          setTimeout(() => {
+             _this.routeMarkerAdded = false;
+             _this.endLocationAdded = false;
+             _this.startLocationAdded = false;
+          }, 1000);
+      },
       getMarkers() {
       	if(!this.startingLocation && !this.finishLocation){
       		console.log("Please set a starting and ending location");
