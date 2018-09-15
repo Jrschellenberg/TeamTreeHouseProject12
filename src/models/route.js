@@ -21,7 +21,8 @@ const RouteSchema = new mongoose.Schema({
 		ref: 'Location',
 		default: null
 	}
-}, {
+}
+, {
 	toObject: {
 		transform: function (doc, ret) {
 			delete ret._id;
@@ -34,19 +35,28 @@ const RouteSchema = new mongoose.Schema({
 			delete ret.__v;
 		}
 	}
-});
+}
+);
 
 RouteSchema.statics.saveRoute = function(route, isRouteExist){
 	return new Promise(function(resolve, reject){
-		console.log("route is ", route);
-		console.log("isRouteExist", isRouteExist);
-		Route.findByIdAndUpdate(isRouteExist, route, {upsert: true, new: true}, function(err, route){
-			if(err){
-				console.log("erroring right HERE");
-				reject(Utils.rejectError(500, err.message));
-			}
-			resolve(route);
-		});
+		if(isRouteExist){ // if route already exists, only update it.
+			Route.findByIdAndUpdate(isRouteExist, route, {upsert: true, new: true}, function(err, route){
+				if(err){
+					console.log("erroring right HERE");
+					reject(Utils.rejectError(500, err.message));
+				}
+				resolve(route);
+			});
+		}
+		else{ // Create a new document.
+			Route.create(route, function(err, createdDoc){
+				if(err){
+					reject(Utils.rejectError(500, err.message));
+				}
+				resolve(createdDoc);
+			});
+		}
 	});
 };
 

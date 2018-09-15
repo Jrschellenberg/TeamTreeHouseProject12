@@ -11,7 +11,7 @@
 
 <script>
 	export default {
-		name: "GoogleMap",
+		name: "CurrentRoute",
 		data() {
 			return {
                 currentRoute: usersCurrentRoute
@@ -19,9 +19,7 @@
 		},
 
 		methods: {
-			
-			
-
+          
 		}
 	};
 </script>

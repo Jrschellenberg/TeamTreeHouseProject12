@@ -30,7 +30,8 @@ const LocationSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	}
-}, {
+}
+, {
 	toObject: {
 		transform: function (doc, ret) {
 			delete ret._id;
@@ -43,7 +44,8 @@ const LocationSchema = new mongoose.Schema({
 			delete ret.__v;
 		}
 	}
-});
+}
+);
 LocationSchema.statics.findAll = function (){
 	return new Promise(function(resolve, reject){
 		Location.find()

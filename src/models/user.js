@@ -28,10 +28,11 @@ const UserSchema = new mongoose.Schema({
 		ref: 'Route',
 		default: null
 	}
-}, {
+}
+, {
 	toObject: {
 		transform: function (doc, ret) {
-			delete ret._id;
+			ret._id = ret._id.toString();
 			delete ret.__v;
 		}
 	},
@@ -41,7 +42,8 @@ const UserSchema = new mongoose.Schema({
 			delete ret.__v;
 		}
 	}
-});
+}
+);
 UserSchema.statics.authenticate = function (id){
 	return new Promise(function(resolve, reject){
 		User.findOne({_id: id})

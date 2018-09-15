@@ -5,6 +5,9 @@ import { isUserAuthenticated, setResponseAPI} from "../middleware/index";
 
 router.get('/', isUserAuthenticated, (req, res, next) => {
 	User.getRoute(res.locals.user._id).then((route) => {
+		if(!route){
+			route = false;
+		}
 		res.render('page/profile', { title: 'Welcome to Profile Page', currentRoute: route});
 	}).catch(next);
 });

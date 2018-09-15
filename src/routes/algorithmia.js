@@ -45,8 +45,7 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 								}
 								resolve();
 							}).catch(next);
-						})
-					
+						});
 				});
 			});
 			let results = Promise.all(actions);
@@ -57,7 +56,6 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 				}
 				Route.saveRoute(routeModel, currentUserStops)
 					.then((route) => {
-						//console.log("did it get to here?");
 						// Need to now update the User.......
 						User.updateRoute(res.locals.user, route._id)
 							.then((user) => {
