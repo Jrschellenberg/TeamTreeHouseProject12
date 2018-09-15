@@ -2,7 +2,7 @@
   <div>
     <div>
       <h2>Add a pin To your Current Route</h2>
-      <label id="routeMarker">
+      <label id="routeMarker" class="w-70">
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
@@ -17,7 +17,7 @@
     <div>
       <h2>Add a Starting location to Current Route</h2>
       <input type="checkbox" id="checkbox" v-model="checked" checked> Starting location same as Finish Location?<br>
-      <label id="startLocation">
+      <label id="startLocation" class="w-70">
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
@@ -31,7 +31,7 @@
 
     <div v-if="!checked">
       <h2>Add a Finish location to Current Route</h2>
-      <label id="endLocation">
+      <label id="endLocation" class="w-70">
         <gmap-autocomplete
                 @place_changed="setPlace">
         </gmap-autocomplete>
@@ -156,7 +156,8 @@
 	
         AlgorithmiaApi.submitRoute(algoInput)
           .then(data => {
-          	console.log(data);
+            this.$root.$emit('myEvent',  data.data.data);
+          	console.log(data.data.data);
           })
           .catch(error => {
           	console.log(error);

@@ -13,6 +13,18 @@
 .fade-enter, .fade-leave-to {
   opacity: 0
 }
+.w-70{
+  width:70%;
+  @media(max-width:$xs){
+    width:100%;
+  }
+  input{
+    width:70%;
+    @media(max-width:$xs){
+      width:100%;
+    }
+  }
+}
 
 
 
