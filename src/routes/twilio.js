@@ -14,10 +14,10 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 	}
 	const sendTextTo = '+1' + res.locals.user.phoneNumber.toString();
 	let body = 'Thank you for Using Justins Route Calculator!\n';
+	
 	req.body.data.forEach((val, index) => {
 		body += `${index +1}). ${val.message}\n For directions, please click ${val.url}\n\n`;
 	});
-	
 	twilioClient.messages.create({
 		body: body,
 		to: sendTextTo,  // Text this number

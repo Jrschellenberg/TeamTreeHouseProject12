@@ -111,6 +111,8 @@
                 }
                 let payload = {};
             	payload.data = this.buildMessage();
+            	
+            	console.log(payload.data);
                 // Need to build the text here..
                 
                 TwilioApi.sendText(payload)
@@ -125,21 +127,23 @@
             },
             buildMessage(){
                 let places = [];
-                let current = {};
-                current.message = `Drive from ${this.currentRoute.startingAddress.streetAddress} to ${this.currentRoute.stops[0].streetAddress}`;
-                current.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.startingAddress.lat},${this.currentRoute.startingAddress.long}&destination=${this.currentRoute.stops[0].lat},${this.currentRoute.stops[0].long}`;
-                places.push(current);
+                let initial = {};
+	            initial.message = `Drive from ${this.currentRoute.startingAddress.streetAddress} to ${this.currentRoute.stops[0].streetAddress}`;
+	            initial.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.startingAddress.lat},${this.currentRoute.startingAddress.long}&destination=${this.currentRoute.stops[0].lat},${this.currentRoute.stops[0].long}`;
+                places.push(initial);
                 
                 this.currentRoute.stops.forEach((val, index) => {
                 	if(index !==0 ){
+                		let current = {};
                         current.message = `Drive from ${this.currentRoute.stops[index -1].streetAddress} to ${val.streetAddress}`;
                         current.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.stops[index -1].lat},${this.currentRoute.stops[index -1].long}&destination=${val.lat},${val.long}`;
                         places.push(current);
                     }
                 });
-	            current.message = `Drive from ${this.currentRoute.stops[this.currentRoute.stops.length -1].streetAddress} to ${this.currentRoute.endingAddress.streetAddress}`;
-	            current.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.stops[this.currentRoute.stops.length  -1].lat},${this.currentRoute.stops[this.currentRoute.stops.length  -1].long}&destination=${this.currentRoute.endingAddress.lat},${this.currentRoute.endingAddress.long}`;
-	            places.push(current);
+                let final = {};
+	            final.message = `Drive from ${this.currentRoute.stops[this.currentRoute.stops.length -1].streetAddress} to ${this.currentRoute.endingAddress.streetAddress}`;
+	            final.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.stops[this.currentRoute.stops.length  -1].lat},${this.currentRoute.stops[this.currentRoute.stops.length  -1].long}&destination=${this.currentRoute.endingAddress.lat},${this.currentRoute.endingAddress.long}`;
+	            places.push(final);
               
 	            return places;
             },
