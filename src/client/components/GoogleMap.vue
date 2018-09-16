@@ -153,13 +153,14 @@
         algoInput.endpoint = `${this.finishLocation.position.lat},${this.finishLocation.position.lng}`;
         
         console.log(algoInput);
-	
+	    this.$root.$emit('startLoading');
         AlgorithmiaApi.submitRoute(algoInput)
           .then(data => {
-            this.$root.$emit('myEvent',  data.data.data);
+            this.$root.$emit('successCall',  data.data.data);
           	console.log(data.data.data);
           })
           .catch(error => {
+            this.$root.$emit('failCall');
           	console.log(error);
           });
       },
