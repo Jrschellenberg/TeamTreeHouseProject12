@@ -1,0 +1,75 @@
+[
+  {
+    "model": "User",
+    "documents": {
+      "joeSmith": {
+        "_id": "57029ed4795118be119cc437",
+        "email": "tooth.paste.hurt@gmail.com",
+        "firstName": "Joe",
+        "lastName": "Smith",
+        "isAdmin": true,
+        "currentStops": "5b39440fcda6237afb56e1b9"
+      },
+      "samJones": {
+        "_id": "57029ed4795118be119cc438",
+        "email": "sam@jones.com",
+        "firstName": "Sam",
+        "lastName": "Jones",
+        "currentStops": "5b3943f3cda6237afb56e1b8"
+      },
+      "samSmith": {
+        "_id": "57029ed4795118be119cc439",
+        "email": "sam@smith.com",
+        "firstName": "Sam",
+        "lastName": "Smith"
+      }
+    }
+  },
+  {
+    "model": "Location",
+    "documents": {
+      "one": {
+        "_id": "57029ed4795118be119cc43d",
+        "streetAddress": "556 Wilton Bay",
+        "postalCode": "R3M2H9"
+      },
+      "two": {
+        "_id": "57029ed4795118be119cc440",
+        "streetAddress": "50 Fultz Blvd",
+        "postalCode": "R3Y0L6"
+      },
+      "three": {
+        "_id": "54759eb3c090d83494e2d805",
+        "streetAddress": "2595-B McGillivray Blvd",
+        "postalCode": "R4G0B3",
+        "isStartingAddress": true,
+        "isEndingAddress": true
+      },
+      "four": {
+        "_id": "54759eb3c090d83494e2d804",
+        "streetAddress": "806 Wolseley Ave",
+        "postalCode": "R3G1C6"
+      }
+    }
+  },
+  {
+    "model": "Route",
+    "documents": {
+      "one": {
+        "_id": "5b3943f3cda6237afb56e1b8",
+        "stops": ["57029ed4795118be119cc43d", "57029ed4795118be119cc440"],
+        "startingAddress": "54759eb3c090d83494e2d805",
+        "endingAddress": "54759eb3c090d83494e2d805"
+      },
+      "two": {
+        "_id": "5b39440fcda6237afb56e1b9",
+        "stops": ["57029ed4795118be119cc43d", "57029ed4795118be119cc440", "54759eb3c090d83494e2d804"],
+        "startingAddress": "54759eb3c090d83494e2d805",
+        "endingAddress": "54759eb3c090d83494e2d805"
+      }
+    }
+  }
+  
+    
+
+]

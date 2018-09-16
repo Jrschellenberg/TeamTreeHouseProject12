@@ -1,0 +1,14 @@
+extends ../_layouts/layout
+
+block content
+  main#helloVue.my-5.py-5.container-fluid
+    .row
+      .col-11.offset-1.mx-auto
+        h1.text-center Justin's Route Calculator
+        p.my-4 This is an application to allow a user to select locations using google maps. The user selects  
+          | a location to start from, a location to end at, and 2-8 locations in between. The application
+          | will then calculate the shortest possible trip with the given input, the end result is then displayed 
+          | using google map pin drops and a handy link to initiate the users current trip on google maps.
+        p#requestVue In order to begin using this application, Please login and authenticate using Googles OAuth V2. This is 
+          | to ensure that no malicious api calls may be requested against my server, as I have rate limiting. Users may
+          | make up to 100 API requests every 15 minutes. However, May only make 5 requests using third party services, every 5 minutes.

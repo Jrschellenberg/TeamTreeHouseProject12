@@ -1,0 +1,33 @@
+@import 'variables';
+
+#navigation{
+  width: 100%;
+  background-color: $navBar-Footer-colour;
+  font-size: medium;
+  display:block;
+  .dropdown-menu{
+    background-color:$navBar-Footer-colour;
+  }
+
+  @media (min-width: $lg) {
+    background-color: $navBar-Footer-colour;
+    .dropdown-menu{
+      background-color:$navBar-Footer-colour;
+    }
+  }
+  
+  a{
+    padding-right: 1.2rem;
+  }
+  a:hover{
+    color:$accent-colour;
+  }
+
+  a.disabled{
+    color:darkgray;
+    pointer-events: none;
+  }
+  .dropdown-menu a:hover{
+    //background-color: $navLink-Hover-Background-Color;
+  }
+}

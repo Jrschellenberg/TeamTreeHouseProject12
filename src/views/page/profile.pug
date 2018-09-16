@@ -1,0 +1,12 @@
+extends ../_layouts/layout
+
+block content
+  .my-5.p-5.container-fluid
+    #app
+  if user
+    script.
+      var usersCurrentRoute = #{currentRoute};
+      var usersPhoneNumber = #{phoneNumber};
+      var usersIdentification = "#{user._id}";
+      console.log("Current Route is", usersCurrentRoute);
+    script(type="text/javascript" src="/js/dist/main.js" defer)
