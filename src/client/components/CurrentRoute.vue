@@ -2,6 +2,11 @@
     <div v-if="loading" class="loader"></div>
     <div v-else>
         <div v-if="currentRoute" class="container-fluid">
+            <div v-if="serviceUnavailable" class="row">
+                <div class="col-12">
+                    <h2 class="error-service-unavailable">Service is Currently Unavailable, Please Try again in 5 minutes!</h2>
+                </div>
+            </div>
             <div v-if="updatedStop" class="row">
                 <transition name="fade">
                     <div class="col-12">
@@ -32,6 +37,11 @@
             </div>
         </div>
         <div v-else class="container-fluid">
+            <div v-if="serviceUnavailable" class="row">
+                <div class="col-12">
+                    <h2 class="error-service-unavailable">Service is Currently Unavailable, Please Try again in 5 minutes!</h2>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <h1 >You currently have No Route. Please select and create a route</h1>
@@ -51,7 +61,8 @@
 			return {
                 currentRoute: usersCurrentRoute,
                 updatedStop: false,
-                loading: false
+                loading: false,
+                serviceUnavailable: false
 			};
 		},
         mounted(){
@@ -60,9 +71,14 @@
               this.currentRoute = currentRoute;
               this.updatedStop = true;
               this.loading = false;
+              this.serviceUnavailable = false;
 	        });
-	        this.$root.$on('failCall', () => {
+	        this.$root.$on('failCall', (err) => {
+	        	if(err.message && err.message === "Request failed with status code 503"){
+	        		this.serviceUnavailable = true;
+                }
               this.loading = false;
+              
             });
 	        this.$root.$on('startLoading', () => {
               this.loading = true;

@@ -159,9 +159,8 @@
             this.$root.$emit('successCall',  data.data.data);
           	console.log(data.data.data);
           })
-          .catch(error => {
-            this.$root.$emit('failCall');
-          	console.log(error);
+          .catch((error, data) => {
+            this.$root.$emit('failCall', error);
           });
       },
       geolocate: function() {

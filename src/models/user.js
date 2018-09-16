@@ -9,6 +9,15 @@ const UserSchema = new mongoose.Schema({
 		trim: true,
 		unique: true
 	},
+	phoneNumber: {
+		type: String,
+		validate: {
+			validator: function(v) {
+				return /^[0][1-9]\d{9}$|^[1-9]\d{9}$/g.test(v);
+			},
+			message: props => `${props.value} is not a valid phone number! Requires 10 Digit Phone Number, Area Code +  Number!`
+		},
+	},
 	firstName: {
 		type: String,
 		required: false,
@@ -126,6 +135,19 @@ UserSchema.statics.updateRoute = function(user, newRouteId){
 		});
 	});
 };
+
+/*
+MiddleWare to ensure that Number is saved properly
+ */
+UserSchema.pre('save', function(next){
+	const user = this;
+	user.validate(function(err){
+		if(err){
+			return next(err);
+		}
+		next();
+	});
+});
 
 
 const User = mongoose.model('User', UserSchema); // This has to be after methods defined, or fails..
