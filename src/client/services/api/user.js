@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default {
-	updatePhoneNumber(id, payload){
-		return axios.put('/api/users/phone/'+id, payload);
+	updatePhoneNumber(payload){
+		return axios.put('/api/users/update/phone', payload);
 	}
 }

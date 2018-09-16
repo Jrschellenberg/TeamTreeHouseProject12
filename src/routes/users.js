@@ -24,16 +24,14 @@ router.get('/route/:id', setResponseAPI, isUserAuthenticated, isUserAuthorized, 
 	}).catch(next);
 });
 
-router.put('/phone/:id', setResponseAPI, isUserAuthenticated, (req, res, next) => {
-	if(req.params.id.toString() !== res.locals.user._id.toString()){
-		return Utils.throwError(403, 'Forbidden', '/profile', next);
-	}
+router.put('/update/phone', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 	if(!req.body.phoneNumber || !/^[0][1-9]\d{9}$|^[1-9]\d{9}$/g.test(req.body.phoneNumber)){
 		return Utils.throwError(400, 'Bad Request', '/profile', next);
 	}
-
-	
-	res.status(200).json({ success: true, message: "successfully Hit api", status: 200});
+	User.updatePhoneNumber(res.locals.user, req.body.phoneNumber)
+		.then((user) => {
+			res.status(200).json({ success: true, message: "Successfully Updated User's Phone Number", status: 200, phoneNumber: user.phoneNumber });
+		}).catch(next);
 });
 
 module.exports = router;

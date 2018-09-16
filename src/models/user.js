@@ -136,6 +136,19 @@ UserSchema.statics.updateRoute = function(user, newRouteId){
 	});
 };
 
+UserSchema.statics.updatePhoneNumber = function(user, phoneNumber){
+	return new Promise(function(resolve, reject) {
+		User.findById(user._id, function(err, doc) {
+			if(err){
+				reject(Utils.rejectError(500, err.message));
+			}
+			doc.phoneNumber = phoneNumber;
+			doc.save();
+			resolve(doc);
+		});
+	});
+};
+
 /*
 MiddleWare to ensure that Number is saved properly
  */

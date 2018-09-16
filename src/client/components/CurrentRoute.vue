@@ -1,12 +1,10 @@
 <template>
     <div v-if="loading" class="loader"></div>
     <div v-else>
-        <div class="container-fluid">
+        <div class="container-fluid mt-5 mt-lg-0">
             <div class="row">
                 <div class="col-12">
-                    <div v-if="registeredPhoneNumber && currentRoute">
-                        <button @click="textRoute()">Text Route To Phone</button>
-                    </div>
+                    <h3 class="error-service-unavailable" v-if="formError">{{formError}}</h3>
                     <label>Add Phone Number to Account:</label>
                     <input type="number" v-model="phoneNumberInput" placeholder="EX: 2041234567">
                     <button @click="updateNumber()">Add Number</button>
@@ -47,6 +45,11 @@
                     <p>Drive from <strong>{{currentRoute.stops[currentRoute.stops.length -1].streetAddress}}</strong> to <strong>{{currentRoute.endingAddress.streetAddress}}</strong></p>
                 </div>
             </div>
+            <div v-if="registeredPhoneNumber && currentRoute" class="row">
+                <div class="col-12">
+                    <button @click="textRoute()">Text Route To Phone</button>
+                </div>
+            </div>
         </div>
         <div v-else class="container-fluid">
             <div v-if="serviceUnavailable" class="row">
@@ -77,8 +80,8 @@
                 loading: false,
                 serviceUnavailable: false,
                 registeredPhoneNumber: usersPhoneNumber,
-                usersIdentity: usersIdentification,
-                phoneNumberInput: usersPhoneNumber ? usersPhoneNumber : ''
+                phoneNumberInput: usersPhoneNumber ? usersPhoneNumber : '',
+                formError: false
 			};
 		},
         mounted(){
@@ -105,16 +108,25 @@
             	console.log("pressed button");
             },
           updateNumber(){
+	            if(!this.phoneNumberInput || !/^[0][1-9]\d{9}$|^[1-9]\d{9}$/g.test(this.phoneNumberInput)){
+	            	console.log("Form Validation failed, do stuff...");
+	            	this.formError = "Please Enter a 10 Digit Number with no Spaces!"
+	            	return;
+                }
+            	
             	let payload = {};
             	payload.phoneNumber = this.phoneNumberInput;
-            	UserApi.updatePhoneNumber(this.usersIdentity, payload)
+            	UserApi.updatePhoneNumber(payload)
                   .then(data => {
                   	console.log("successfully updated PhoneNumber");
+                  	console.log(data);
+                  	this.formError = false;
                   	// update this.registeredPhoneNumber now....
                   })
                   .catch(error => {
                   	console.log(error);
                   	console.log("Error occured!");
+                  	this.formError = error.message;
                   });
           }
 		}
