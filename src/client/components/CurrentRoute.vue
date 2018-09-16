@@ -68,10 +68,10 @@
 
 <script>
     import UserApi from '../services/api/user';
+    import TwilioApi from '../services/api/twilio';
 	export default {
 		name: "CurrentRoute",
         computed: {
-          
         },
 		data() {
 			return {
@@ -105,30 +105,65 @@
         },
 		methods: {
             textRoute(){
-            	console.log("pressed button");
-            },
-          updateNumber(){
-	            if(!this.phoneNumberInput || !/^[0][1-9]\d{9}$|^[1-9]\d{9}$/g.test(this.phoneNumberInput)){
-	            	console.log("Form Validation failed, do stuff...");
-	            	this.formError = "Please Enter a 10 Digit Number with no Spaces!"
-	            	return;
+            	if(!this.registeredPhoneNumber){
+            		console.log("Require a phone number to send");
+            		return;
                 }
-            	
-            	let payload = {};
-            	payload.phoneNumber = this.phoneNumberInput;
-            	UserApi.updatePhoneNumber(payload)
+                let payload = {};
+            	payload.data = this.buildMessage();
+                // Need to build the text here..
+                
+                TwilioApi.sendText(payload)
                   .then(data => {
-                  	console.log("successfully updated PhoneNumber");
+                  	console.log("Sent text");
                   	console.log(data);
-                  	this.formError = false;
-                  	// update this.registeredPhoneNumber now....
+                  	
                   })
                   .catch(error => {
-                  	console.log(error);
-                  	console.log("Error occured!");
-                  	this.formError = error.message;
+	                  console.log("Error occured!");
                   });
-          }
+            },
+            buildMessage(){
+                let places = [];
+                let current = {};
+                current.message = `Drive from ${this.currentRoute.startingAddress.streetAddress} to ${this.currentRoute.stops[0].streetAddress}`;
+                current.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.startingAddress.lat},${this.currentRoute.startingAddress.long}&destination=${this.currentRoute.stops[0].lat},${this.currentRoute.stops[0].long}`;
+                places.push(current);
+                
+                this.currentRoute.stops.forEach((val, index) => {
+                	if(index !==0 ){
+                        current.message = `Drive from ${this.currentRoute.stops[index -1].streetAddress} to ${val.streetAddress}`;
+                        current.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.stops[index -1].lat},${this.currentRoute.stops[index -1].long}&destination=${val.lat},${val.long}`;
+                        places.push(current);
+                    }
+                });
+	            current.message = `Drive from ${this.currentRoute.stops[this.currentRoute.stops.length -1].streetAddress} to ${this.currentRoute.endingAddress.streetAddress}`;
+	            current.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.stops[this.currentRoute.stops.length  -1].lat},${this.currentRoute.stops[this.currentRoute.stops.length  -1].long}&destination=${this.currentRoute.endingAddress.lat},${this.currentRoute.endingAddress.long}`;
+	            places.push(current);
+              
+	            return places;
+            },
+            updateNumber(){
+                if(!this.phoneNumberInput || !/^[0][1-9]\d{9}$|^[1-9]\d{9}$/g.test(this.phoneNumberInput)){
+                    console.log("Form Validation failed, do stuff...");
+                    this.formError = "Please Enter a 10 Digit Number with no Spaces!";
+                    return;
+                }
+                let payload = {};
+                payload.phoneNumber = this.phoneNumberInput;
+                UserApi.updatePhoneNumber(payload)
+                  .then(data => {
+                    console.log("successfully updated PhoneNumber");
+                    console.log(data);
+                    this.formError = false;
+                    this.registeredPhoneNumber = data.data.PhoneNumber;
+                  })
+                  .catch(error => {
+                    console.log(error);
+                    console.log("Error occured!");
+                    this.formError = error.message;
+                  });
+            }
 		}
 	};
 </script>
