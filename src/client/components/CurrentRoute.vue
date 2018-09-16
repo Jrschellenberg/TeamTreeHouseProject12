@@ -1,6 +1,18 @@
 <template>
     <div v-if="loading" class="loader"></div>
     <div v-else>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div v-if="registeredPhoneNumber && currentRoute">
+                        <button @click="textRoute()">Text Route To Phone</button>
+                    </div>
+                    <label>Add Phone Number to Account:</label>
+                    <input type="number" v-model="phoneNumberInput" placeholder="EX: 2041234567">
+                    <button @click="updateNumber()">Add Number</button>
+                </div>
+            </div>
+        </div>
         <div v-if="currentRoute" class="container-fluid">
             <div v-if="serviceUnavailable" class="row">
                 <div class="col-12">
@@ -52,6 +64,7 @@
 </template>
 
 <script>
+    import UserApi from '../services/api/user';
 	export default {
 		name: "CurrentRoute",
         computed: {
@@ -62,7 +75,10 @@
                 currentRoute: usersCurrentRoute,
                 updatedStop: false,
                 loading: false,
-                serviceUnavailable: false
+                serviceUnavailable: false,
+                registeredPhoneNumber: usersPhoneNumber,
+                usersIdentity: usersIdentification,
+                phoneNumberInput: usersPhoneNumber ? usersPhoneNumber : ''
 			};
 		},
         mounted(){
@@ -85,7 +101,22 @@
             })
         },
 		methods: {
-
+            textRoute(){
+            	console.log("pressed button");
+            },
+          updateNumber(){
+            	let payload = {};
+            	payload.phoneNumber = this.phoneNumberInput;
+            	UserApi.updatePhoneNumber(this.usersIdentity, payload)
+                  .then(data => {
+                  	console.log("successfully updated PhoneNumber");
+                  	// update this.registeredPhoneNumber now....
+                  })
+                  .catch(error => {
+                  	console.log(error);
+                  	console.log("Error occured!");
+                  });
+          }
 		}
 	};
 </script>
