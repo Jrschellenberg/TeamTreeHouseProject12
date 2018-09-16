@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    include ../_includes/head.pug
+  body
+    .wrapper.container-fluid.mainContent
+      include ../_includes/main-nav.pug
+      //script(type="text/javascript").
+      //  document.querySelector("#{navId}").classList.toggle("active");
+      //  document.querySelector("#{navId}").classList.toggle("disabled");
+      block content
+    include ../_includes/footer
+      

@@ -1,0 +1,13 @@
+if errorStatus
+  .row.mt-5.pt-5
+    .col-12
+      ul.parsley-errors-list.filled
+        li.parsley-custom-error-message Status: #{errorStatus}
+  if errorMessage
+    .col-12
+      ul.parsley-errors-list.filled
+        li.parsley-custom-error-message #{errorMessage}
+  if error
+    .col-12
+      ul.parsley-errors-list.filled
+        li.parsley-custom-error-message #{error}

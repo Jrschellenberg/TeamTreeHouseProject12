@@ -14,6 +14,7 @@ const express = require('express'),
 	expressSanitizer = require('express-sanitizer'),
 	path = require('path'),
 	RateLimit = require('express-rate-limit'),
+	favicon = require('serve-favicon'),
 	dbConfig = config.get('DBHost');
 
 //Configure sessions
@@ -143,6 +144,8 @@ if (config.util.getEnv('NODE_ENV') === 'test') {
 		next();
 	});
 }
+
+
 /*
 End session Logic.
  */
@@ -152,7 +155,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public/images/favicon', 'favicon.ico')));
 
 
 
@@ -167,6 +170,14 @@ app.use(expressSanitizer());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+	if(req.session && req.session.passport && req.session.passport.user){
+		res.locals.user = true;
+	}
+	next();
+});
+
+
 app.use(require('./routes'));
 
 // catch 404 and forward to error handler
@@ -177,6 +188,8 @@ app.use(function (req, res, next) {
 });
 
 app.use(function(err, req, res, next) {
+	console.log("Error is");
+	console.log(err);
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 

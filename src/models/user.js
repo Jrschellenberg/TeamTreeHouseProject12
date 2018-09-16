@@ -9,6 +9,15 @@ const UserSchema = new mongoose.Schema({
 		trim: true,
 		unique: true
 	},
+	phoneNumber: {
+		type: String,
+		validate: {
+			validator: function(v) {
+				return /^[0][1-9]\d{9}$|^[1-9]\d{9}$/g.test(v);
+			},
+			message: props => `${props.value} is not a valid phone number! Requires 10 Digit Phone Number, Area Code +  Number!`
+		},
+	},
 	firstName: {
 		type: String,
 		required: false,
@@ -28,7 +37,22 @@ const UserSchema = new mongoose.Schema({
 		ref: 'Route',
 		default: null
 	}
-});
+}
+, {
+	toObject: {
+		transform: function (doc, ret) {
+			ret._id = ret._id.toString();
+			delete ret.__v;
+		}
+	},
+	toJSON: {
+		transform: function (doc, ret) {
+			delete ret._id;
+			delete ret.__v;
+		}
+	}
+}
+);
 UserSchema.statics.authenticate = function (id){
 	return new Promise(function(resolve, reject){
 		User.findOne({_id: id})
@@ -98,6 +122,45 @@ UserSchema.statics.getRoute = function (id){
 			});
 	});
 };
+
+UserSchema.statics.updateRoute = function(user, newRouteId){
+	return new Promise(function(resolve, reject) {
+		User.findById(user._id, function(err, doc) {
+			if(err){
+				reject(Utils.rejectError(500, err.message));
+			}
+			doc.currentStops = newRouteId;
+			doc.save();
+			resolve(doc);
+		});
+	});
+};
+
+UserSchema.statics.updatePhoneNumber = function(user, phoneNumber){
+	return new Promise(function(resolve, reject) {
+		User.findById(user._id, function(err, doc) {
+			if(err){
+				reject(Utils.rejectError(500, err.message));
+			}
+			doc.phoneNumber = phoneNumber;
+			doc.save();
+			resolve(doc);
+		});
+	});
+};
+
+/*
+MiddleWare to ensure that Number is saved properly
+ */
+UserSchema.pre('save', function(next){
+	const user = this;
+	user.validate(function(err){
+		if(err){
+			return next(err);
+		}
+		next();
+	});
+});
 
 
 const User = mongoose.model('User', UserSchema); // This has to be after methods defined, or fails..

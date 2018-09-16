@@ -30,7 +30,22 @@ const LocationSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	}
-});
+}
+, {
+	toObject: {
+		transform: function (doc, ret) {
+			delete ret._id;
+			delete ret.__v;
+		}
+	},
+	toJSON: {
+		transform: function (doc, ret) {
+			delete ret._id;
+			delete ret.__v;
+		}
+	}
+}
+);
 LocationSchema.statics.findAll = function (){
 	return new Promise(function(resolve, reject){
 		Location.find()
@@ -56,6 +71,29 @@ LocationSchema.statics.findUserById = function (id){
 				}
 				resolve(location);
 			});
+	});
+};
+
+LocationSchema.statics.saveLocation = function(location){
+	return new Promise(function(resolve, reject){
+
+		Location.findOne({postalCode: location.postalCode})
+			.exec(function(err, doc){
+				if(err){
+					reject(Utils.rejectError(500, err.message));
+				}
+				if(doc){
+					resolve(doc); //location already exists in Db so just return it
+				}
+				//No location added to database yet, so lets add it!
+				Location.create(location, function(err, createdDoc){
+					if(err){
+						reject(Utils.rejectError(500, err.message));
+					}
+					resolve(createdDoc);
+				});
+			})
+		
 	});
 };
 
