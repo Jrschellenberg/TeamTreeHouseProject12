@@ -17,7 +17,7 @@
     "deployProduction": "npm run buildJSDependencies && npm run buildSass && npm run build",
     "watchSass": "parcel watch src/assets/sass/styles.js --out-dir src/public/stylesheets/",
     "production": "npm run deployProduction && npm run runProduction",
-    "runProduction": "node dist/bin/www"
+    "runProduction": "cross-env NODE_ENV=production node dist/bin/www"
   },
   "author": "Justin Schellenberg",
   "license": "MIT",
