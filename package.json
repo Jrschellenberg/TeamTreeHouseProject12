@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watchVue": "parcel watch src/client/*/** --out-dir src/public/js/dist/",
+    "buildVue": "parcel build src/client/*/** --out-dir src/public/js/dist/",
     "buildSass": "parcel build src/assets/sass/styles.js --out-dir src/public/stylesheets/",
     "buildJSDependencies": "parcel build src/assets/js/dependencies.js --out-dir src/public/js/dependencies",
     "nodemon": "nodemon -e pug,js,css --exec npm run babel-node -- src/bin/www",
@@ -14,7 +15,7 @@
     "test": "mocha --exit --timeout 20000 --compilers js:babel-register",
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --exit --timeout 10000 --compilers js:babel-core/register",
     "lint": "jshint src/.",
-    "deployProduction": "npm run buildJSDependencies && npm run buildSass && npm run build",
+    "deployProduction": "npm run buildJSDependencies && npm run buildVue && npm run buildSass && npm run build",
     "watchSass": "parcel watch src/assets/sass/styles.js --out-dir src/public/stylesheets/",
     "production": "npm run deployProduction && npm run runProduction",
     "runProduction": "cross-env NODE_ENV=production node dist/bin/www"
