@@ -10,10 +10,14 @@
     "nodemon": "nodemon -e pug,js,css --exec npm run babel-node -- src/bin/www",
     "start": "cross-env NODE_ENV=development && npm run buildJSDependencies && concurrently --kill-others \"npm run watchSass\" \"npm run nodemon\" \"npm run watchVue\"",
     "babel-node": "babel-node --presets=es2015",
+    "build": "babel src -d dist --presets=es2015 --copy-files --ignore client/*",
     "test": "mocha --exit --timeout 20000 --compilers js:babel-register",
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --exit --timeout 10000 --compilers js:babel-core/register",
     "lint": "jshint src/.",
-    "watchSass": "parcel watch src/assets/sass/styles.js --out-dir src/public/stylesheets/"
+    "deployProduction": "npm run buildJSDependencies && npm run buildSass && npm run build",
+    "watchSass": "parcel watch src/assets/sass/styles.js --out-dir src/public/stylesheets/",
+    "production": "npm run deployProduction && npm run runProduction",
+    "runProduction": "node dist/bin/www"
   },
   "author": "Justin Schellenberg",
   "license": "MIT",

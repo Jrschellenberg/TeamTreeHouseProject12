@@ -3,6 +3,7 @@ const router = express.Router();
 var twilio = require('twilio');
 var accountSid = process.env.TWILIO_ACCOUNT_SID_SECRET; // Your Account SID from www.twilio.com/console
 var authToken = process.env.TWILIO_ACCOUNT_AUTH_TOKEN;   // Your Auth Token from www.twilio.com/console
+var twilioNumber = process.env.TWILLIO_ACCOUNT_PHONE_NUMBER;
 var twilioClient = new twilio(accountSid, authToken);
 import { isUserAuthenticated, setResponseAPI} from "../middleware/index";
 import Utils from '../utilities/utils';
@@ -21,10 +22,13 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 	twilioClient.messages.create({
 		body: body,
 		to: sendTextTo,  // Text this number
-		from: '+12494955339' // From a valid Twilio number
+		from: twilioNumber // From a valid Twilio number
 	})
 		.then((message) => {
-			res.status(200).json({ success: true, message: "Successfully Sent Text!", status: 200, data: message });
+		if(message.errorCode){
+			return Utils.throwError(message.errorCode, message.errorMessage, '/profile', next);
+		}
+			res.status(200).json({ success: true, message: "Successfully Sent Text!", status: 200, data: message.sid });
 		});
 });
 
