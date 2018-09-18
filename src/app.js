@@ -43,7 +43,7 @@ passport.use(new GoogleStrategy({
 	
 	clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
 	clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
-	callbackURL: process.env.NODE_ENV !== 'production' ? process.env.PRODUCTION_DOMAIN_URL : "http://localhost:3000/auth/google/return"
+	callbackURL: process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_DOMAIN_URL : "http://localhost:3000/auth/google/return"
 }, function(accessToken, refreshToken, profile, done){
 	if(!profile.emails[0]) {
 		let noEmailError = new Error("Your email privacy settings prevent you from authorizing with this application!");
