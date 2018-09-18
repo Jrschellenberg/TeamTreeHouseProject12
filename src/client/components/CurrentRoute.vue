@@ -17,13 +17,13 @@
                     <h2 class="error-service-unavailable">Service is Currently Unavailable, Please Try again in 5 minutes!</h2>
                 </div>
             </div>
-            <div v-if="updatedStop" class="row">
-                <transition name="fade">
-                    <div class="col-12">
-                        <h1>Successfully Updated Route</h1>
-                    </div>
-                </transition>
+            <transition v-if="updatedStop" name="fade">
+                <div v-if="updatedStop" class="row">
+                <div class="col-12">
+                    <h1>Successfully Updated Route</h1>
+                </div>
             </div>
+            </transition>
             <div v-else class="row">
                 <div class="col-12">
                     <h1>Current Route</h1>
@@ -47,7 +47,7 @@
             </div>
             <div v-if="registeredPhoneNumber && currentRoute" class="row">
                 <div class="col-12">
-                    <button @click="textRoute()">Text Route To Phone</button>
+                    <button @click="textRoute()">Text Route To Phone</button><transition name="fade" v-on:enter="endTransition"><strong v-if="textSent"><span> Text Successfully Sent....</span></strong></transition>
                 </div>
             </div>
         </div>
@@ -81,7 +81,8 @@
                 serviceUnavailable: false,
                 registeredPhoneNumber: usersPhoneNumber,
                 phoneNumberInput: usersPhoneNumber ? usersPhoneNumber : '',
-                formError: false
+                formError: false,
+                textSent: false
 			};
 		},
         mounted(){
@@ -111,13 +112,12 @@
                 }
                 let payload = {};
             	payload.data = this.buildMessage();
-                // Need to build the text here..
-                
+
                 TwilioApi.sendText(payload)
                   .then(data => {
                   	console.log("Sent text");
                   	console.log(data);
-                  	
+                  	this.textSent = true;
                   })
                   .catch(error => {
 	                  console.log("Error occured!");
@@ -125,21 +125,23 @@
             },
             buildMessage(){
                 let places = [];
-                let current = {};
-                current.message = `Drive from ${this.currentRoute.startingAddress.streetAddress} to ${this.currentRoute.stops[0].streetAddress}`;
-                current.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.startingAddress.lat},${this.currentRoute.startingAddress.long}&destination=${this.currentRoute.stops[0].lat},${this.currentRoute.stops[0].long}`;
-                places.push(current);
+                let initial = {};
+	            initial.message = `Drive from ${this.currentRoute.startingAddress.streetAddress} to ${this.currentRoute.stops[0].streetAddress}`;
+	            initial.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.startingAddress.lat},${this.currentRoute.startingAddress.long}&destination=${this.currentRoute.stops[0].lat},${this.currentRoute.stops[0].long}`;
+                places.push(initial);
                 
                 this.currentRoute.stops.forEach((val, index) => {
                 	if(index !==0 ){
+                		let current = {};
                         current.message = `Drive from ${this.currentRoute.stops[index -1].streetAddress} to ${val.streetAddress}`;
                         current.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.stops[index -1].lat},${this.currentRoute.stops[index -1].long}&destination=${val.lat},${val.long}`;
                         places.push(current);
                     }
                 });
-	            current.message = `Drive from ${this.currentRoute.stops[this.currentRoute.stops.length -1].streetAddress} to ${this.currentRoute.endingAddress.streetAddress}`;
-	            current.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.stops[this.currentRoute.stops.length  -1].lat},${this.currentRoute.stops[this.currentRoute.stops.length  -1].long}&destination=${this.currentRoute.endingAddress.lat},${this.currentRoute.endingAddress.long}`;
-	            places.push(current);
+                let final = {};
+	            final.message = `Drive from ${this.currentRoute.stops[this.currentRoute.stops.length -1].streetAddress} to ${this.currentRoute.endingAddress.streetAddress}`;
+	            final.url = `https://www.google.com/maps/dir/?api=1&origin=${this.currentRoute.stops[this.currentRoute.stops.length  -1].lat},${this.currentRoute.stops[this.currentRoute.stops.length  -1].long}&destination=${this.currentRoute.endingAddress.lat},${this.currentRoute.endingAddress.long}`;
+	            places.push(final);
               
 	            return places;
             },
@@ -163,6 +165,13 @@
                     console.log("Error occured!");
                     this.formError = error.message;
                   });
+            },
+            endTransition(){
+                let _this = this;
+                setTimeout(() => {
+                    _this.textSent = false;
+                    
+                }, 3000);
             }
 		}
 	};
