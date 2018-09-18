@@ -12,7 +12,7 @@ router.get('/', isUserAuthenticated, (req, res, next) => {
 		if(res.locals.user.phoneNumber){
 			phone = res.locals.user.phoneNumber;
 		}
-		res.render('page/profile', { title: 'Welcome to Profile Page', currentRoute: route, phoneNumber: phone});
+		res.render('page/profile', { title: 'Welcome to Profile Page', currentRoute: route, phoneNumber: phone, baseURL: res.locals.baseURL});
 	}).catch(next);
 });
 

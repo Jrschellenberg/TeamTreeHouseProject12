@@ -174,8 +174,10 @@ app.use((req, res, next) => {
 	if(req.session && req.session.passport && req.session.passport.user){
 		res.locals.user = true;
 	}
+	res.locals.baseURL = process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_BASE_URL : process.env.DEVELOP_BASE_URL;
 	next();
 });
+
 
 
 app.use(require('./routes'));
