@@ -1,5 +1,5 @@
 require('dotenv').config();  // Get all of our secrets...
-const algorithmia = require('algorithmia');
+const algorithmia = require('algorithmia-updated');
 const client = algorithmia(process.env.ALGORITHMIA_API_KEY);
 const nodeGeocoder = require('node-geocoder');
 const options = {

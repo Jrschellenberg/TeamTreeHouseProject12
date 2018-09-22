@@ -25,7 +25,7 @@
   "author": "Justin Schellenberg",
   "license": "MIT",
   "dependencies": {
-    "algorithmia": "^0.3.10",
+    "algorithmia-updated": "^1.0.0",
     "async": "^2.6.1",
     "axios": "^0.18.0",
     "body-parser": "~1.18.2",

@@ -6,9 +6,15 @@ block content
       .col-11.offset-1.mx-auto
         h1.text-center Justin's Route Calculator
         p.my-4 This is an application to allow a user to select locations using google maps. The user selects  
-          | a location to start from, a location to end at, and 2-8 locations in between. The application
-          | will then calculate the shortest possible trip with the given input, the end result is then displayed 
-          | using google map pin drops and a handy link to initiate the users current trip on google maps.
+          | a location to start from, a location to end at, and multiple locations in between. The application
+          | will then calculate the shortest possible trip with the given input. Once the route has been calculated.
+          | It will then render the route, broken into instructions. If you wish, you may save your phone number to the account, and then text
+          | the instructions to your phone, along with google map routes for each linked destination.
         p#requestVue In order to begin using this application, Please login and authenticate using Googles OAuth V2. This is 
           | to ensure that no malicious api calls may be requested against my server, as I have rate limiting. Users may
           | make up to 100 API requests every 15 minutes. However, May only make 5 requests using third party services, every 5 minutes.
+        h1.text-center IMPORTANT NOTES:
+        p This project relies on a third party algorithm. However, upon developing, it appears this algorithm has some caveats.
+          strong The algorithm has a bug where it will not calculate the route at times.
+        p As far as I can tell, at this moment, it appears to be from over using the algorithm. If this happens, you will have to wait for the limiting to pass. 
+          | at this time, I have no plans to implement this algorithm, however, if it is requested. I may do it as another fun project!
