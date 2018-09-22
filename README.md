@@ -32,11 +32,12 @@ Rename ./example_.env --> .env
 Run ``npm start``
 
 ### Deployment
+- Deployed with:
+  - [Docker](https://www.docker.com/)
 See [Deploy.md](https://github.com/Jrschellenberg/TeamTreeHouseProject12/blob/master/documentation/deploy.md)
 
 ### Built With
 - [Express](https://expressjs.com/)
-- [Gulp](https://gulpjs.com/)
 - [Babel](https://babeljs.io/)
 - [Parcel](https://parceljs.org/)
 - [Mongoose](http://mongoosejs.com/docs/guide.html)
@@ -54,7 +55,7 @@ See [Deploy.md](https://github.com/Jrschellenberg/TeamTreeHouseProject12/blob/ma
 - Justin Schellenberg
   
 ### License
-- Apache-2.0
+- Apache-2.0 See [Here](https://github.com/Jrschellenberg/TeamTreeHouseProject12/blob/master/LICENSE)
 
 ### Acknowledgements
 - Thank You to anyone who's code was used
