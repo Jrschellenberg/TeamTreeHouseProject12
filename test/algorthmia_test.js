@@ -9,6 +9,19 @@ const should = chai.should();
 const expect = chai.expect;
 
 
+
+const validTest = {
+	points:["49.8561519,-97.16069069999998"],
+	startpoint:"49.8088807,-97.2297858",
+	endpoint:"49.8088807,-97.2297858"
+};
+
+const longerTest = {
+	points:["49.8561519,-97.16069069999998","49.932471,-97.06972489999998","50.08294370000001,-97.2263077"],
+	startpoint:"49.8088807,-97.2297858",
+	endpoint:"49.8088807,-97.2297858"
+}
+
 let dataBaseFinishSeed = false;
 
 server.on('appStarted', () => {

@@ -36,6 +36,7 @@ export default class AlgorithmUtils {
 	
 	static computeAlgorithm(reqBody){
 		return new Promise((resolve, reject) => {
+			console.log("Req body is", reqBody);
 			client.algo("akadal/TSP/0.2.1")
 				.pipe(AlgorithmUtils.createInput(reqBody))
 				.then(response => {
@@ -83,5 +84,13 @@ export default class AlgorithmUtils {
 			isGeoEncoded: true
 		}
 	}
+	
+	
+	static calculateRoute(locations){
+		
+		
+		
+	}
+	
 	
 }
