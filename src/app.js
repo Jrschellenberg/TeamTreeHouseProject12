@@ -39,8 +39,8 @@ const apiLimiter = new RateLimit({
 
 
 //Configure google Strategy.
+console.log(process.env.NODE_ENV);
 passport.use(new GoogleStrategy({
-	
 	clientID: process.env.GOOGLE_AUTH_CLIENT_ID,
 	clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
 	callbackURL: process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_DOMAIN_URL : "http://localhost:3000/auth/google/return"
@@ -174,7 +174,6 @@ app.use((req, res, next) => {
 	if(req.session && req.session.passport && req.session.passport.user){
 		res.locals.user = true;
 	}
-	res.locals.baseURL = process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_BASE_URL : process.env.DEVELOP_BASE_URL;
 	next();
 });
 
