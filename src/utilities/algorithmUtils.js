@@ -1,4 +1,6 @@
 require('dotenv').config();  // Get all of our secrets...
+
+//import "core-js/es7/object";
 const algorithmia = require('algorithmia-updated');
 const client = algorithmia(process.env.ALGORITHMIA_API_KEY);
 const nodeGeocoder = require('node-geocoder');
@@ -160,6 +162,52 @@ export default class AlgorithmUtils {
 			
 		}
 	}
+  
+  
+  /**
+   * BRUTE FORCE approach to solve Traveling Salesman Problem.
+   *
+   * @param {Graph} graph
+   * @return {GraphVertex[]}
+   */
+  static bfTravellingSalesman(graph) {
+    // Pick starting point from where we will traverse the graph.
+    const startVertex = graph.getAllVertices()[0];
+    
+    // BRUTE FORCE.
+    // Generate all possible paths from startVertex.
+    const allPossiblePaths = findAllPaths(startVertex);
+    
+    // Filter out paths that are not cycles.
+    const allPossibleCycles = allPossiblePaths.filter((path) => {
+      /** @var {GraphVertex} */
+      const lastVertex = path[path.length - 1];
+      const lastVertexNeighbors = lastVertex.getNeighbors();
+      
+      return lastVertexNeighbors.includes(startVertex);
+    });
+    
+    // Go through all possible cycles and pick the one with minimum overall tour weight.
+    const adjacencyMatrix = graph.getAdjacencyMatrix();
+    const verticesIndices = graph.getVerticesIndices();
+    let salesmanPath = [];
+    let salesmanPathWeight = null;
+    for (let cycleIndex = 0; cycleIndex < allPossibleCycles.length; cycleIndex += 1) {
+      const currentCycle = allPossibleCycles[cycleIndex];
+      const currentCycleWeight = getCycleWeight(adjacencyMatrix, verticesIndices, currentCycle);
+      
+      // If current cycle weight is smaller then previous ones treat current cycle as most optimal.
+      if (salesmanPathWeight === null || currentCycleWeight < salesmanPathWeight) {
+        salesmanPath = currentCycle;
+        salesmanPathWeight = currentCycleWeight;
+      }
+    }
+    
+    // Return the solution.
+    return salesmanPath;
+  }
+  
+  
 }
 
 /**
@@ -222,47 +270,4 @@ function getCycleWeight(adjacencyMatrix, verticesIndices, cycle) {
   }
   
   return weight;
-}
-
-/**
- * BRUTE FORCE approach to solve Traveling Salesman Problem.
- *
- * @param {Graph} graph
- * @return {GraphVertex[]}
- */
-export default function bfTravellingSalesman(graph) {
-  // Pick starting point from where we will traverse the graph.
-  const startVertex = graph.getAllVertices()[0];
-  
-  // BRUTE FORCE.
-  // Generate all possible paths from startVertex.
-  const allPossiblePaths = findAllPaths(startVertex);
-  
-  // Filter out paths that are not cycles.
-  const allPossibleCycles = allPossiblePaths.filter((path) => {
-    /** @var {GraphVertex} */
-    const lastVertex = path[path.length - 1];
-    const lastVertexNeighbors = lastVertex.getNeighbors();
-    
-    return lastVertexNeighbors.includes(startVertex);
-  });
-  
-  // Go through all possible cycles and pick the one with minimum overall tour weight.
-  const adjacencyMatrix = graph.getAdjacencyMatrix();
-  const verticesIndices = graph.getVerticesIndices();
-  let salesmanPath = [];
-  let salesmanPathWeight = null;
-  for (let cycleIndex = 0; cycleIndex < allPossibleCycles.length; cycleIndex += 1) {
-    const currentCycle = allPossibleCycles[cycleIndex];
-    const currentCycleWeight = getCycleWeight(adjacencyMatrix, verticesIndices, currentCycle);
-    
-    // If current cycle weight is smaller then previous ones treat current cycle as most optimal.
-    if (salesmanPathWeight === null || currentCycleWeight < salesmanPathWeight) {
-      salesmanPath = currentCycle;
-      salesmanPathWeight = currentCycleWeight;
-    }
-  }
-  
-  // Return the solution.
-  return salesmanPath;
 }

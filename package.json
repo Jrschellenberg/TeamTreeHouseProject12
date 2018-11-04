@@ -11,7 +11,7 @@
     "nodemon": "cross-env NODE_ENV=development nodemon -e pug,js,css --exec npm run babel-node -- src/bin/www",
     "BDD": "onchange ./**/*.js test/**/*.js -- npm test",
     "start": "npm run buildJSDependencies && concurrently --kill-others \"npm run watchSass\" \"npm run nodemon\" \"npm run watchVue\"",
-    "babel-node": "babel-node --presets=es2015",
+    "babel-node": "babel-node",
     "build": "babel src -d dist --presets=es2015 --copy-files --ignore client/*,public/*",
     "test": "mocha --exit --timeout 20000 --compilers js:@babel/register",
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --exit --timeout 10000 --compilers js:babel-core/register",
@@ -53,11 +53,13 @@
     "pug": "^2.0.3",
     "serve-favicon": "^2.5.0",
     "twilio": "^3.19.2",
-    "vue": "^2.5.16",
+    "vue": "^2.5.17",
+    "vue-hot-reload-api": "^2.3.1",
     "vue2-google-maps": "^0.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
     "@babel/plugin-syntax-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/register": "^7.0.0",
@@ -67,6 +69,7 @@
     "chai-http": "^4.0.0",
     "chai-spies": "^1.0.0",
     "concurrently": "^3.5.1",
+    "core-js": "^2.5.7",
     "cpx": "^1.5.0",
     "cross-env": "^5.2.0",
     "express-sanitizer": "^1.0.4",
@@ -77,8 +80,8 @@
     "nodemon": "^1.18.2",
     "nyc": "^12.0.2",
     "onchange": "^5.0.2",
-    "parcel-bundler": "^1.9.7",
-    "parcel-plugin-vue": "^1.5.0",
-    "snyk": "^1.88.2"
+    "parcel-bundler": "^1.10.3",
+    "snyk": "^1.88.2",
+    "vue-template-compiler": "^2.5.17"
   }
 }
