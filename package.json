@@ -12,7 +12,7 @@
     "BDD": "onchange ./**/*.js test/**/*.js -- npm test",
     "start": "npm run buildJSDependencies && concurrently --kill-others \"npm run watchSass\" \"npm run nodemon\" \"npm run watchVue\"",
     "babel-node": "babel-node",
-    "build": "babel src -d dist --presets=es2015 --copy-files --ignore client/*,public/*",
+    "build": "babel src -d dist --copy-files --ignore client/*,public/*",
     "test": "mocha --exit --timeout 20000 --compilers js:@babel/register",
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --exit --timeout 10000 --compilers js:babel-core/register",
     "copyfiles": "cpx \"src/public/**/*\" dist/public",
@@ -57,6 +57,7 @@
     "vue2-google-maps": "^0.10.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/node": "^7.0.0",
     "@babel/plugin-syntax-object-rest-spread": "^7.0.0",
