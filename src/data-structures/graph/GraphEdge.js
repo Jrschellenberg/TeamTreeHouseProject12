@@ -1,3 +1,4 @@
+// Code from https://github.com/trekhleb/javascript-algorithms
 export default class GraphEdge {
   /**
    * @param {GraphVertex} startVertex

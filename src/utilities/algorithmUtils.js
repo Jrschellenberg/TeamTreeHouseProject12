@@ -1,5 +1,9 @@
 require('dotenv').config();  // Get all of our secrets...
 
+import GraphVertex from '../data-structures/graph/GraphVertex';
+import GraphEdge from '../data-structures/graph/GraphEdge';
+import Graph from '../data-structures/graph/Graph';
+
 //import "core-js/es7/object";
 const algorithmia = require('algorithmia-updated');
 const client = algorithmia(process.env.ALGORITHMIA_API_KEY);
@@ -114,53 +118,42 @@ export default class AlgorithmUtils {
 	}
 	
 	static calculateDistancesArray(distances, origins, destinations){
-
 		let possibleCombinations = [];
 		
 		for(let i = 0; i<distances.rows.length; i++){
 			for(let j = 0; j < distances.rows[i].elements.length; j++){
-				let addValue = true;
 				let value = distances.rows[i].elements[j].distance.value;
-				//console.log(`Hit Loop i = ${i} And J = ${j}`);
 				if(value !== 0){
-					for(let k=0; k < possibleCombinations.length; k++){
-						if(possibleCombinations[k].origin === destinations[j] && possibleCombinations[k].destination === origins[i]){
-							addValue = false;
-						}
-					}
-					if(addValue){
-            let obj = {};
-            obj.origin = origins[i];
-            obj.destination = destinations[j];
-            obj.distanceValue = value;
-            possibleCombinations.push(obj);
-					}
+          let obj = {};
+          obj.origin = origins[i];
+          obj.destination = destinations[j];
+          obj.distanceValue = value;
+          possibleCombinations.push(obj);
 				}
 			}
 		}
-		
 		console.log(possibleCombinations);
 		return possibleCombinations;
 	}
-	
-	
 	static findShortestPath(data, dictionary) {
 		const {points, startpoint, endpoint } = data;
-		const paths = startpoint === endpoint ? 1 + points.length : 2 + points.length;
-		let currentLocation = null;
-		let suitableSelections;
+		let myMap = new Map();
 		
-		console.log(paths);
-		for(let i=0; i<paths; i++){
-			if(i === 0){ // we know we are on start point.
-				currentLocation = startpoint;
-			}	
-			suitableSelections = dictionary.filter((distancePoint) => { // Get locations 
-				return distancePoint.origin === currentLocation;
-			});
-			
-			
-		}
+		const graph = new Graph(true);
+		
+		myMap.set(startpoint, new GraphVertex(startpoint));
+		points.forEach((val) => {
+      myMap.set(val, new GraphVertex(val));
+		});
+    myMap.set(endpoint, new GraphVertex(endpoint));
+		
+    dictionary.forEach((val) => {
+    	graph.addEdge(new GraphEdge(myMap.get(val.origin), myMap.get(val.destination), val.value ));
+    });
+    
+    const salesmanPath = AlgorithmUtils.bfTravellingSalesman(graph);
+    console.log(salesmanPath);
+    
 	}
   
   
@@ -202,12 +195,9 @@ export default class AlgorithmUtils {
         salesmanPathWeight = currentCycleWeight;
       }
     }
-    
     // Return the solution.
     return salesmanPath;
   }
-  
-  
 }
 
 /**
@@ -271,3 +261,54 @@ function getCycleWeight(adjacencyMatrix, verticesIndices, cycle) {
   
   return weight;
 }
+
+
+// static calculateDistancesArray(distances, origins, destinations){
+//   let possibleCombinations = [];
+//  
+//   for(let i = 0; i<distances.rows.length; i++){
+//     for(let j = 0; j < distances.rows[i].elements.length; j++){
+//       let addValue = true;
+//       let value = distances.rows[i].elements[j].distance.value;
+//       //console.log(`Hit Loop i = ${i} And J = ${j}`);
+//       if(value !== 0){
+//         for(let k=0; k < possibleCombinations.length; k++){
+//           if(possibleCombinations[k].origin === destinations[j] && possibleCombinations[k].destination === origins[i]){
+//             addValue = false;
+//           }
+//         }
+//         if(addValue){
+//           let obj = {};
+//           obj.origin = origins[i];
+//           obj.destination = destinations[j];
+//           obj.distanceValue = value;
+//           possibleCombinations.push(obj);
+//         }
+//       }
+//     }
+//   }
+//  
+//   console.log(possibleCombinations);
+//   return possibleCombinations;
+// }
+
+//
+// static findShortestPath(data, dictionary) {
+//   const {points, startpoint, endpoint } = data;
+//   const paths = startpoint === endpoint ? 1 + points.length : 2 + points.length;
+//   let currentLocation = null;
+//   let suitableSelections;
+//  
+//   console.log(paths);
+//   for(let i=0; i<paths; i++){
+//     if(i === 0){ // we know we are on start point.
+//       currentLocation = startpoint;
+//     }
+//     suitableSelections = dictionary.filter((distancePoint) => { // Get locations 
+//       return distancePoint.origin === currentLocation;
+//     });
+//    
+//    
+//   }
+// }
+

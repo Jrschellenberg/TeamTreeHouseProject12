@@ -1,3 +1,5 @@
+// Code from https://github.com/trekhleb/javascript-algorithms
+
 export default class Graph {
   /**
    * @param {boolean} isDirected

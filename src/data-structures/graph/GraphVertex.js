@@ -1,3 +1,4 @@
+// Code from https://github.com/trekhleb/javascript-algorithms
 import LinkedList from '../linked-list/LinkedList';
 
 export default class GraphVertex {
