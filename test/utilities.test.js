@@ -8,10 +8,6 @@ const should = chai.should();
 const expect = chai.expect;
 
 import AlgorithmUtils from '../src/utilities/algorithmUtils';
-import GraphVertex from '../src/data-structures/graph/GraphVertex';
-import GraphEdge from '../src/data-structures/graph/GraphEdge';
-import Graph from '../src/data-structures/graph/Graph';
-
 
 const validTest = {
   points:["49.8561519,-97.16069069999998"],
@@ -23,7 +19,13 @@ const longerTest = {
   points:["49.8561519,-97.16069069999998","49.932471,-97.06972489999998","50.08294370000001,-97.2263077"],
   startpoint:"49.8088807,-97.2297858",
   endpoint:"49.8088807,-97.2297858"
-}
+};
+
+const biggerTest = {
+  points:["49.8561519,-97.16069069999998","49.932471,-97.06972489999998","49.8289535,-97.20393790000003","50.0875625,-97.21965089999998","49.81160809999999,-97.1895045","49.87942019999999,-97.1650315","49.8522527,-97.15120200000001","49.8558043,-97.15962819999999"],
+  startpoint:"49.8088807,-97.2297858",
+  endpoint:"49.8088807,-97.2297858"
+};
 
 describe('Traveling Salesman Problem!', () => {
   it('should valid shortest path for a short list', (done) => {
@@ -49,6 +51,18 @@ describe('Traveling Salesman Problem!', () => {
       console.log("error occured, ", err);
     });
   });
+  
+  it('should valid shortest path for a longer list', (done) => {
+    AlgorithmUtils.queryDistances(biggerTest).then((data) => {
+      const {distances, origins, destinations } = data;
+      const distanceDictoinary = AlgorithmUtils.calculateDistancesArray(distances, origins, destinations);
+      AlgorithmUtils.findShortestPath(biggerTest, distanceDictoinary);
+      done();
+    }).catch((err) => {
+      console.log("error occured, ", err);
+    });
+  });
+  
   
 });
 
