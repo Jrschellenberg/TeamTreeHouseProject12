@@ -4,9 +4,6 @@ import GraphVertex from '../data-structures/graph/GraphVertex';
 import GraphEdge from '../data-structures/graph/GraphEdge';
 import Graph from '../data-structures/graph/Graph';
 
-//import "core-js/es7/object";
-const algorithmia = require('algorithmia-updated');
-const client = algorithmia(process.env.ALGORITHMIA_API_KEY);
 const nodeGeocoder = require('node-geocoder');
 const distance = require('google-distance-matrix');
 
@@ -24,42 +21,20 @@ const options = {
 
 const geocoder = nodeGeocoder(options);
 
-
 export default class AlgorithmUtils {
-	static setStartTime(time){
-		AlgorithmUtils.startTime = time;
-	}
-	static getTimeAlgorithmTakes(){
-		if(!AlgorithmUtils.startTime){
-			return -1;
-		}
-		return Math.ceil((Date.now() - AlgorithmUtils.startTime) / 1000);
-	}
-	
-	static createInput(reqBody){
-		return {
-			"points": reqBody.points,
-			"startpoint": reqBody.startpoint,
-			"endpoint": reqBody.endpoint,
-			"api": process.env.GOOGLE_MAP_API_KEY
-		};
-	}
-	
 	static computeAlgorithm(reqBody){
 		return new Promise((resolve, reject) => {
 			console.log("Req body is", reqBody);
-			client.algo("akadal/TSP/0.2.1")
-				.pipe(AlgorithmUtils.createInput(reqBody))
-				.then(response => {
-					let timeTaken = AlgorithmUtils.getTimeAlgorithmTakes();
-					console.log(`time taken to execute algorithm was ${timeTaken} seconds`);
-					let algoResponse = response.get();
-					console.log(algoResponse);
-					if(Array.isArray(algoResponse)){
-						return resolve(algoResponse, timeTaken);
-					}
-					return reject("An error occured while computing your map.");
-				});
+      AlgorithmUtils.queryDistances(reqBody).then((data) => {
+        const {distances, origins, destinations } = data;
+        const distanceDictionary = AlgorithmUtils.calculateDistancesArray(distances, origins, destinations);
+        const salesmanPath = AlgorithmUtils.findShortestPath(reqBody, distanceDictionary);
+        
+        salesmanPath.push(reqBody.endpoint);
+        resolve(salesmanPath);
+      }).catch((err) => {
+        reject(err);
+      });
 		});
 	}
 	
@@ -96,7 +71,6 @@ export default class AlgorithmUtils {
 		}
 	}
 	
-	
 	static queryDistances(data){
 		return new Promise((resolve, reject) => {
       const {points, startpoint, endpoint} = data;
@@ -132,7 +106,7 @@ export default class AlgorithmUtils {
 				}
 			}
 		}
-		console.log(possibleCombinations);
+		//console.log(possibleCombinations);
 		return possibleCombinations;
 	}
 	static findShortestPath(data, dictionary) {
@@ -150,15 +124,14 @@ export default class AlgorithmUtils {
     dictionary.forEach((val) => {
     	graph.addEdge(new GraphEdge(myMap.get(val.origin), myMap.get(val.destination), val.value ));
     });
+		
+    const salesmanPath = AlgorithmUtils.bfTravellingSalesman(graph).map((graphVertex) => {
+    	return graphVertex.value;
+    });
+		
     
-    const salesmanPath = AlgorithmUtils.bfTravellingSalesman(graph);
-    console.log(salesmanPath);
-    
+    return salesmanPath;
 	}
-	
-	
-  
-  
   /**
    * BRUTE FORCE approach to solve Traveling Salesman Problem.
    *
@@ -263,54 +236,3 @@ function getCycleWeight(adjacencyMatrix, verticesIndices, cycle) {
   
   return weight;
 }
-
-
-// static calculateDistancesArray(distances, origins, destinations){
-//   let possibleCombinations = [];
-//  
-//   for(let i = 0; i<distances.rows.length; i++){
-//     for(let j = 0; j < distances.rows[i].elements.length; j++){
-//       let addValue = true;
-//       let value = distances.rows[i].elements[j].distance.value;
-//       //console.log(`Hit Loop i = ${i} And J = ${j}`);
-//       if(value !== 0){
-//         for(let k=0; k < possibleCombinations.length; k++){
-//           if(possibleCombinations[k].origin === destinations[j] && possibleCombinations[k].destination === origins[i]){
-//             addValue = false;
-//           }
-//         }
-//         if(addValue){
-//           let obj = {};
-//           obj.origin = origins[i];
-//           obj.destination = destinations[j];
-//           obj.distanceValue = value;
-//           possibleCombinations.push(obj);
-//         }
-//       }
-//     }
-//   }
-//  
-//   console.log(possibleCombinations);
-//   return possibleCombinations;
-// }
-
-//
-// static findShortestPath(data, dictionary) {
-//   const {points, startpoint, endpoint } = data;
-//   const paths = startpoint === endpoint ? 1 + points.length : 2 + points.length;
-//   let currentLocation = null;
-//   let suitableSelections;
-//  
-//   console.log(paths);
-//   for(let i=0; i<paths; i++){
-//     if(i === 0){ // we know we are on start point.
-//       currentLocation = startpoint;
-//     }
-//     suitableSelections = dictionary.filter((distancePoint) => { // Get locations 
-//       return distancePoint.origin === currentLocation;
-//     });
-//    
-//    
-//   }
-// }
-

@@ -13,7 +13,6 @@ let geoEncode = null,
 	routeModel;
 
 router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
-	console.log(req.body);
 	if(res.locals.testSession && req.body.points[0]){ // This is for Testing Purposes...
 		req.body.points = [req.body.points[0]];
 	}
@@ -23,10 +22,10 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 	}
 	routeModel = {};
 	routeModel.stops = [];
-	AlgorithmUtils.setStartTime(Date.now());
 	AlgorithmUtils.computeAlgorithm(req.body)
-		.then((algoResponse, timeTaken) => {
+		.then((algoResponse) => {
 			geoEncode = AlgorithmUtils.convertResponseToObject(algoResponse);
+			console.log("geoEncode is", geoEncode);
 			endPoint = geoEncode.length -1;
 			actions = geoEncode.map((item, index) => {
 				return new Promise((resolve) => {
@@ -60,6 +59,7 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 						User.updateRoute(res.locals.user, route._id)
 							.then((user) => {
 								User.getRoute(user._id).then((usersRoute) => {
+									console.log(usersRoute);
 									res.status(200).json({ success: true, message: 'User Route Successfully retrieved', status: 200, data: usersRoute });
 								}).catch(next);
 							}).catch(next);
