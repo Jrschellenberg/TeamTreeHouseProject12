@@ -110,8 +110,13 @@ export default class AlgorithmUtils {
 		return possibleCombinations;
 	}
 	static findShortestPath(data, dictionary) {
-		const {points, startpoint, endpoint } = data;
-		let myMap = new Map();
+		let {points, startpoint, endpoint } = data;
+		
+		const myMap = new Map();
+		
+		if (startpoint === endpoint){
+		  endpoint = endpoint+'000'; // add long value to it, but wil change it's map key.
+    }
 		
 		const graph = new Graph(true);
 		
@@ -128,7 +133,6 @@ export default class AlgorithmUtils {
     const salesmanPath = AlgorithmUtils.bfTravellingSalesman(graph).map((graphVertex) => {
     	return graphVertex.value;
     });
-		
     
     return salesmanPath;
 	}

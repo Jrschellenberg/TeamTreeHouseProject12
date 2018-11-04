@@ -20,17 +20,19 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 		!req.body.startpoint || typeof req.body.startpoint  !== 'string' || !req.body.endpoint || typeof req.body.endpoint !== 'string' ){
 		return Utils.throwError(422, 'Unprocessable Entity', '/profile', next);
 	}
-	routeModel = {};
-	routeModel.stops = [];
+	
 	AlgorithmUtils.computeAlgorithm(req.body)
 		.then((algoResponse) => {
 			geoEncode = AlgorithmUtils.convertResponseToObject(algoResponse);
+      routeModel = {};
+      routeModel.stops = new Array(geoEncode.length); // predeclare our array to be of size of our geoencode size.
 			console.log("geoEncode is", geoEncode);
 			endPoint = geoEncode.length -1;
 			actions = geoEncode.map((item, index) => {
 				return new Promise((resolve) => {
 					AlgorithmUtils.reverseGeoCode(item)
 						.then((item) => {
+						console.log(`INDEX ${index} IS CONTAINING ITEM ${item}`);
 							savedLocation = AlgorithmUtils.createLocationModel(item);
 							Location.saveLocation(savedLocation).then(location => {
 								if (index === 0) {
@@ -39,9 +41,8 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 								else if (index === endPoint) {
 									routeModel.endingAddress = location._id;
 								}
-								else {
-									routeModel.stops.push(location._id);
-								}
+								routeModel.stops[index] = location._id ; // Set all of them into the stops array.
+
 								resolve();
 							}).catch(next);
 						});
@@ -49,6 +50,9 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 			});
 			let results = Promise.all(actions);
 			results.then(() => {
+				//if all of the requests sucessfully completed
+				routeModel.stops.splice(0,1); //remove first element from array, the starting address
+        routeModel.stops.pop(); //remove last element from array, the ending address
 				let currentUserStops = null;
 				if(res.locals.user.currentStops){// if user currently has stops set, delete them from the DB
 					currentUserStops = res.locals.user.currentStops;
@@ -59,7 +63,7 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 						User.updateRoute(res.locals.user, route._id)
 							.then((user) => {
 								User.getRoute(user._id).then((usersRoute) => {
-									console.log(usersRoute);
+									//console.log(usersRoute);
 									res.status(200).json({ success: true, message: 'User Route Successfully retrieved', status: 200, data: usersRoute });
 								}).catch(next);
 							}).catch(next);
