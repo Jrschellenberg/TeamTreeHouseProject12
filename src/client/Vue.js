@@ -8,7 +8,7 @@ console.log(axios.defaults.baseURL);
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyAvSJXbA5BL96GQ_mZfNGhRAGEfHsUJLc0",
+    key: process.env.GOOGLE_MAP_API_KEY,
     libraries: "places" // necessary for places input
   }
 });
