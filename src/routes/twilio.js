@@ -1,3 +1,5 @@
+import "@babel/polyfill"; //polyfill async await
+
 const express = require('express');
 const router = express.Router();
 const twilio = require('twilio');
