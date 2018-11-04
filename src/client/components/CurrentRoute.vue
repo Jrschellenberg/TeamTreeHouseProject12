@@ -87,7 +87,7 @@
 		},
         mounted(){
 	        this.$root.$on('successCall', (currentRoute) => { // here you need to use the arrow function or bind
-              console.log("hit this MyEvent function... UPdating this.currentRoute");
+              //console.log("hit this MyEvent function... UPdating this.currentRoute");
               this.currentRoute = currentRoute;
               this.updatedStop = true;
               this.loading = false;
@@ -113,6 +113,7 @@
                 let payload = {};
             	payload.data = this.buildMessage();
 
+            	console.log("about to send text");
                 TwilioApi.sendText(payload)
                   .then(data => {
                   	console.log("Sent text");
@@ -121,6 +122,7 @@
                   })
                   .catch(error => {
 	                  console.log("Error occured!");
+	                  console.log(error);
                   });
             },
             buildMessage(){
