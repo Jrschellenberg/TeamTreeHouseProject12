@@ -26,13 +26,13 @@ router.post('/', setResponseAPI, isUserAuthenticated, (req, res, next) => {
 			geoEncode = AlgorithmUtils.convertResponseToObject(algoResponse);
       routeModel = {};
       routeModel.stops = new Array(geoEncode.length); // predeclare our array to be of size of our geoencode size.
-			console.log("geoEncode is", geoEncode);
+			//console.log("geoEncode is", geoEncode);
 			endPoint = geoEncode.length -1;
 			actions = geoEncode.map((item, index) => {
 				return new Promise((resolve) => {
 					AlgorithmUtils.reverseGeoCode(item)
 						.then((item) => {
-						console.log(`INDEX ${index} IS CONTAINING ITEM ${item}`);
+							//console.log(`INDEX ${index} IS CONTAINING ITEM ${item}`);
 							savedLocation = AlgorithmUtils.createLocationModel(item);
 							Location.saveLocation(savedLocation).then(location => {
 								if (index === 0) {

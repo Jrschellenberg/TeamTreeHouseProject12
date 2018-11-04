@@ -4,7 +4,7 @@
   "description": "Final Project for tech Degree TeamTreeHouse",
   "main": "index.js",
   "scripts": {
-    "watchVue": "parcel watch src/client/Vue.js --out-dir src/public/js/dist/",
+    "watchVue": "parcel watch src/client/*/** --out-dir src/public/js/dist/",
     "buildVue": "parcel build src/client/Vue.js --out-dir src/public/js/dist/",
     "buildSass": "parcel build src/assets/sass/styles.js --out-dir src/public/stylesheets/",
     "buildJSDependencies": "parcel build src/assets/js/dependencies.js --out-dir src/public/js/dependencies",
