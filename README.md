@@ -21,7 +21,7 @@ Follow these instructions if you wish to get a copy of the website up and runnin
   -  For [Windows](http://treehouse.github.io/installation-guides/windows/mongo-windows.html)
   -  For [Mac](http://treehouse.github.io/installation-guides/mac/mongo-mac.html)
 - Project Utilizes third-party API's And will require a .env file to be created @ /.env Please rename example_.env --> .env
-  - Requires an API key for Algorithmia Please see [Here](https://algorithmia.com/developers/getting-started)
+
   - Requires an API key for google Maps Please see [Here](https://developers.google.com/maps/documentation/distance-matrix/start#get-a-key)
   - Requires an API key for Twilio Please see [Here](https://www.twilio.com/)
 
