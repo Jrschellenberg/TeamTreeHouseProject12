@@ -4,9 +4,13 @@ This is an application to allow a user to select locations using google maps. Th
 In order to begin using this application, Please login and authenticate using Googles OAuth V2. This is to ensure that no malicious api calls may be requested against my server, as I have rate limiting. Users may make up to 100 API requests every 15 minutes. However, May only make 5 requests using third party services, every 5 minutes.
 
 IMPORTANT NOTES:
-This project relies on a third party algorithm. However, upon developing, it appears this algorithm has some caveats.The algorithm has a bug where it will not calculate the route at times.
+This project used to rely on a third party algorithm. However, upon developing, it appears this algorithm had broke some caveats.The algorithm started bugging out and it would not calculate the route at times.
 
-As far as I can tell, at this moment, it appears to be from over using the algorithm. If this happens, you will have to wait for the limiting to pass. at this time, I have no plans to implement this algorithm, however, if it is requested. I may do it as another fun project!
+I ended up implementing my own algorithm within node for solving the TSP. With a lot and help from this repo https://github.com/trekhleb/javascript-algorithms
+
+This algorithm Can only handle up to roughly 11 stops for a given route, it appears to start bugging out after you go over around 11. I had ended up investing more time into this project than initially anticipated. Because of this I am having to leave the bugs for now as is. If someone likes this project and wishes to have it improved. Please contact me and I will let you know if at that time I have the time to invest.
+
+
 
 # Getting Started
 
